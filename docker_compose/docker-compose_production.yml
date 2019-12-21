@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  app:
+    environment:
+      APP_VERSION: "1.0.0"
+      APP_PROFILE: "prod"
+      ENABLE_SECURITY: "false"
+    image: "adsoft/app:1.0.0"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "mongo"
+    restart: always
+  mongo:
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "adsoft"
+      MONGO_INITDB_ROOT_PASSWORD: "adsoft"
+    image: "adsoft/mongo:1.0.0"
+    ports:
+      - "27017:27017"
+    volumes:
+      - /docker/adsoft/mongo:/data/db

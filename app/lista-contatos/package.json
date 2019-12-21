@@ -1,0 +1,14 @@
+{
+    "name"         : "contact-list",
+    "version"      : "1.0.0",
+    "description"  : "Simple contact manager.",
+    "main"         : "server.js",
+    "author"       : "Thalles Bastos",
+    "dependencies" : {
+      "express"    : "~4.7.2",
+      "mongoose"   : "~3.6.2",
+      "morgan"     : "~1.2.2",
+      "body-parser": "~1.5.2",
+      "method-override": "~2.1.2"
+      }
+  }
