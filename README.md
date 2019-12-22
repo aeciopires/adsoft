@@ -14,7 +14,7 @@
 
 # English
 
-Example of infrastructure as code in enterprise ADSoft (Aécio e André Software :-) ).
+Example of infrastructure as code in enterprise ADSoft - Aécio and Déo Software :-).
 
 ## Contributing
 
@@ -41,4 +41,4 @@ mail: andredeo at gmail dot com
 
 ## License
 
-GPL-3.0 2020 Aécio dos Santos Pires
+GPL-3.0 2020 Aécio dos Santos Pires and André Luis Boni Déo
