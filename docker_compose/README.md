@@ -24,8 +24,11 @@ exit
 Start the containers.
 
 ```sh
+mkdir -p /docker/adsoft/mongo
+
 cd docker_compose/
-docker-compose -f docker-compose_production.yml up
+
+docker-compose -f docker-compose_production.yml up --build
 ```
 
 Access the app in the URL http://localhost:8080 (for HTTP).
@@ -34,6 +37,7 @@ Stop the containers.
 
 ```sh
 cd docker_compose/
+
 docker-compose down
 ```
 
