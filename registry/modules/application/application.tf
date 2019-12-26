@@ -12,7 +12,7 @@
 
 # Create Instance Registry
 resource "aws_instance" "registry" {
-  ami                         = var.operating_system
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.machine_type
   key_name                    = aws_key_pair.my_key.key_name
   associate_public_ip_address = true
