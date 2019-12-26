@@ -68,3 +68,19 @@ terraform validate
 terraform apply -auto-approve
 terraform show
 ```
+
+## Using a registry without SSL
+
+Edit or create the daemon.json file, whose default location is /etc/docker/daemon. Add the follow content:
+
+```
+{
+  "insecure-registries" : ["myregistrydomain.com:5000"]
+}
+
+```
+
+sudo systemctl restart docker
+
+Reference:
+https://docs.docker.com/registry/insecure/
