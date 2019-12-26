@@ -52,6 +52,11 @@ variable "port_loki_external" {
   default     = 3100
 }
 
+variable "port_prometheus_external" {
+  description = "Port Prometheus external."
+  default     = 9090
+}
+
 variable "port_protocol" {
   description = "Protocol of container ports."
   default     = "TCP"

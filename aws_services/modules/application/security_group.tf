@@ -35,6 +35,13 @@ resource "aws_security_group" "services" {
     cidr_blocks = [var.address_allowed]
   }
 
+  # Input Prometheus
+  ingress {
+    from_port   = var.port_prometheus_external
+    to_port     = var.port_prometheus_external
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
 
   # Output
   egress {

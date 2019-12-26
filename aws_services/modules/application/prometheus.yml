@@ -1,0 +1,23 @@
+global:
+  # Intervalo de raspagem de métricas. O padrão é a cada 60s
+  scrape_interval:  10s 
+  # Intervalo para avaliação de regras. O padrão é a cada 60s
+  evaluation_interval: 10s 
+  # scrape_timeout é definido como o padrão global (10s).
+
+alerting:
+  alertmanagers:
+  - static_configs: 
+    - targets:
+    # - alertmanager:9093 
+
+rule_files:
+   # - "first_rules.yml"
+   # - "second_rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus' 
+  # metrics_path defaults to '/metrics' 
+  #    scheme defaults to 'http'. 
+  static_configs: 
+  - targets: ['172.17.0.1:9090'] 
