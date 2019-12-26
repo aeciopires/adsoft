@@ -10,28 +10,18 @@
 # https://github.com/salizzar/terraform-aws-docker/
 #------------------------------------------------
 
-# Create Instance 1
+# Create Instance Registry
 resource "aws_instance" "registry" {
-  count                       = 1
-  instance_type               = var.machine_type
   ami                         = var.operating_system
+  instance_type               = var.machine_type
   key_name                    = aws_key_pair.my_key.key_name
   associate_public_ip_address = true
-  security_groups             = [ aws_security_group.instance.name ]
-  
-  connection {
-    type        = var.aws_connection_type
-    user        = var.aws_instance_user
-    private_key = file(var.aws_key_path)
-    host        = aws_instance.registry.*.public_ip
-  }
+  security_groups             = [ aws_security_group.registry.name ]
+  user_data                   = file("install_docker.sh")
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo curl -fsSL https://get.docker.com -o get-docker.sh",
-      "sudo sh get-docker.sh",
-      "sudo usermod -aG docker ubuntu"
-    ]
+  connection {
+    user        = var.aws_instance_user
+    private_key = file(var.aws_key_private_path)
   }
 
   tags = {
@@ -40,29 +30,32 @@ resource "aws_instance" "registry" {
 }
 
 resource "aws_key_pair" "my_key"{
-  key_name    = "my_key"
-  public_key  = file("/home/deo/aws-teste.pub")
+  key_name   = var.aws_key_name
+  public_key = file(var.aws_key_public_path)
 }
 
 # Create Security Group
-resource "aws_security_group" "instance" {
-  name        = "terraform_security_group"
+resource "aws_security_group" "registry" {
+  name        = "terraform_registry"
   description = "AWS security group for terraform"
-  
+
+  # Input
   ingress {
     from_port   = var.port_ssh_external
     to_port     = var.port_ssh_external
     protocol    = var.port_protocol
-    cidr_blocks = ["179.159.236.149/32"]
+    cidr_blocks = [var.address_allowed]
   }
 
+  # Input
   ingress {
     from_port   = var.port_http_external
     to_port     = var.port_http_external
     protocol    = var.port_protocol
-    cidr_blocks = ["179.159.236.149/32"]     # any source
+    cidr_blocks = [var.address_allowed]
   }
 
+  # Output
   egress {
       from_port   = 0               # any port
       to_port     = 0               # any port

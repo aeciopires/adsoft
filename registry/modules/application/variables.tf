@@ -4,7 +4,7 @@
 
 variable "aws_key_name" {
   description = "Key name."
-  default     = "aws-teste.pem"
+  default     = "aws-teste"
 }
 
 variable "aws_connection_type" {
@@ -12,9 +12,14 @@ variable "aws_connection_type" {
   default     = "ssh"
 }
 
-variable "aws_key_path" {
-  description = "Private Key path."
-  default     = "/home/deo/"
+variable "aws_key_private_path" {
+  description = "Private Key Private path."
+  default     = "/home/aws-teste.pem"
+}
+
+variable "aws_key_public_path" {
+  description = "Private Key Public path."
+  default     = "/home/aws-teste.pub"
 }
 
 variable "aws_instance_user" {
@@ -30,7 +35,7 @@ variable "machine_type" {
 # Default: Ubuntu 18.04
 variable "operating_system" {
   description = "Operating System."
-  default     = "ami-0fb0129cd568fe35f"
+  default     = "ami-0d5d9d301c853a04a"
 }
 
 variable "permission_read_only" {
@@ -51,4 +56,9 @@ variable "port_http_external" {
 variable "port_protocol" {
   description = "Protocol of container ports."
   default     = "TCP"
+}
+
+variable "address_allowed" {
+  description = "IP or Net address allowed for remote access."
+  default     = "179.159.236.209/32"
 }
