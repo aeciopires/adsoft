@@ -18,6 +18,7 @@ resource "aws_instance" "registry" {
   associate_public_ip_address = true
   security_groups             = [ aws_security_group.services.name ]
   user_data                   = file("install_docker_registry.sh")
+  availability_zone           = data.aws_availability_zones.available.names[0]
  
   connection {
     user        = var.aws_instance_user

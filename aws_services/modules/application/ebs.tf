@@ -1,16 +1,26 @@
 #resource "aws_ebs_volume" "storage_registry" {
-#  availability_zone = var.aws_ebs_avaliable_zone
-#  size              = 10
-#
+#  availability_zone = data.aws_availability_zones.available.names[0]
+#  size              = 2
+#  
 #  tags = {
 #    Name = "terraform, registry, docker"
 #  }
 #}
-
-#resource "aws_ebs_snapshot" "storage_registry" {
-#  volume_id = aws_ebs_volume.storage_registry.id
-
+#
+#resource "aws_ebs_volume" "storage_loki" {
+#  availability_zone = data.aws_availability_zones.available.names[0]
+#  size              = 2
+#  
 #  tags = {
-#    Name = "terraform, registry, docker"
+#    Name = "terraform, loki, docker"
+#  }
+#}
+#
+#resource "aws_ebs_volume" "storage_monitoring" {
+#  availability_zone = data.aws_availability_zones.available.names[0]
+#  size              = 6
+#  
+#  tags = {
+#    Name = "terraform, monitoring, docker"
 #  }
 #}

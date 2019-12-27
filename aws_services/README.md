@@ -43,6 +43,20 @@ Useful commands:
 * terraform destroy   => Destroy Terraform-managed infrastructure<br>
 * terraform output -module=instances => Show results of module define on ``modules/application/output.tf`` file .
 
+No destroy some resource:
+* list all resources
+  ```
+  terraform state list
+  ```
+* remove that resource you don't want to destroy, you can add more to be excluded if required
+  ```
+  terraform state rm <resource_to_be_deleted>
+  ```
+* destroy the whole stack except above resource(s)
+  ```
+  terraform destroy
+  ```
+
 ## How to
 
 * Download Terraform for Linux: https://www.terraform.io/downloads.html

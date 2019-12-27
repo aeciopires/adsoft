@@ -17,11 +17,6 @@ variable "aws_key_public_path" {
   default     = "/home/aws-teste.pub"
 }
 
-variable "aws_ebs_avaliable_zone"{
-  description = "List of Avaliable Zone for EBS"
-  default     = ("us-east-2c")
-}
-
 variable "aws_instance_user" {
   description = "Instance user for remote connection."
   default     = "ubuntu"
