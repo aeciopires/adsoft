@@ -3,5 +3,13 @@ output "security_group" {
 }
 
 output "registry_ip" {
-  value = aws_instance.registry.private_ip
+  value = aws_instance.registry.public_ip
+}
+
+output "loki_ip" {
+  value = aws_instance.loki.public_ip
+}
+
+output "monitoring_ip" {
+  value = aws_instance.monitoring.public_ip
 }

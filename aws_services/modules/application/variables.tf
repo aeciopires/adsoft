@@ -27,11 +27,6 @@ variable "aws_instance_user" {
   default     = "ubuntu"
 }
 
-variable "machine_type" {
-  description = "Machine Type."
-  default     = "t2.micro"
-}
-
 variable "port_ssh_external" {
   description = "Port SSH external."
   default     = 22
@@ -55,6 +50,16 @@ variable "port_loki_external" {
 variable "port_prometheus_external" {
   description = "Port Prometheus external."
   default     = 9090
+}
+
+variable "port_zabbix_web_external" {
+  description = "Port Prometheus external."
+  default     = 80
+}
+
+variable "port_zabbix_server_external" {
+  description = "Port Zabbix Server external."
+  default     = 10051
 }
 
 variable "port_protocol" {

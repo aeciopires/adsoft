@@ -43,12 +43,28 @@ resource "aws_security_group" "services" {
     cidr_blocks = [var.address_allowed]
   }
 
+  # Input Zabbix Web
+  ingress {
+    from_port   = var.port_zabbix_web_external
+    to_port     = var.port_zabbix_web_external
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
+
+  # Input Zabbix Server
+  ingress {
+    from_port   = var.port_zabbix_server_external
+    to_port     = var.port_zabbix_server_external
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
+
   # Output
   egress {
-      from_port   = 0               # any port
-      to_port     = 0               # any port
-      protocol    = "-1"            # any protocol
-      cidr_blocks = ["0.0.0.0/0"]   # any destination
+      from_port   = 0             # any port
+      to_port     = 0             # any port
+      protocol    = "-1"          # any protocol
+      cidr_blocks = ["0.0.0.0/0"] # any destination
     }
 
   tags = {

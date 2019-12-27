@@ -2,21 +2,21 @@
 # reference: https://www.terraform.io/docs/providers/aws/r/instance.html
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners           = ["099720109477"] # Canonical
+  owners      = ["099720109477"] # Canonical
 
     filter {
-    name      = "root-device-type"
-    values    = ["ebs"]
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 
   filter {
-    name      = "virtualization-type"
-    values    = ["hvm"]
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 
   filter {
-    name      = "name"
-    values    = ["ubuntu*18.04-amd64-server-*"]
+    name   = "name"
+    values = ["ubuntu*18.04-amd64-server-*"]
   }
 
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html

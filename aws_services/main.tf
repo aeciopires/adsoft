@@ -12,7 +12,6 @@ module "instances" {
   #aws_key_private_path = var.aws_key_private_path
   #aws_key_public_path  = var.aws_key_public_path
   #aws_instance_user    = var.aws_instance_user
-  #machine_type         = var.machine_type
   #operating_system     = var.operating_system
   #permission_read_only = var.permission_read_only
   #port_ssh_external    = var.port_ssh_external

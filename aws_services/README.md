@@ -25,16 +25,11 @@ aws_secret_access_key = y+7sVdfsdfsZMfOSsdfasdfasfdfasdfasSHT
 ```
 
 1. This directory contains the files:<br>
-  * ``template.tf`` => that defines the general settings.
-  * ``variables.tf``     => where you can define the values of the variables
+  * ``template.tf``  => that defines the general settings.
+  * ``variables.tf`` => where you can define the values of the variables
 used by ``main.tf``.<br>
 2. The ``modules/application`` subdirectory has the following files:<br>
-  * ``application.tf`` => that defines the creation of instance EC2.<br>
-  * ``variables.tf``   => where the default values to be defined are applied by
-  * ``application.tf`` file. These values will be used when each variable is not customized in the ``terraform.tfvars`` file.<br>
-  * ``output.tf``      => that output values of aws instance. <br>
-3. The goal is to install Docker Registry and provide access on port 5000/TCP the host that runs the container.<br>
-4. The ``graph.png`` file shows the relationship between the resources managed by Terraform.
+3. The goal is to install Docker Registry, Prometheus, Zabbix, Grafana and App.
 
 Useful commands:
 
@@ -59,7 +54,7 @@ Useful commands:
 sudo cp terraform /usr/bin
 sudo chmod 755 /usr/bin/terraform
 ```
-* Change the values according to the need of the environment in the ``terraform.tfvars`` file.
+* Change the values according to the need of the environment in the ``modules/application/variables.tf`` file.
 
 * Validate the settings and create the environment with the following commands
 
@@ -71,7 +66,7 @@ terraform show
 
 ## Using a registry without SSL
 
-Edit or create the daemon.json file, whose default location is /etc/docker/daemon. Add the follow content:
+In the your notebook or computer, edit or create the daemon.json file, whose default location is /etc/docker/daemon. Add the follow content:
 
 ```
 {
@@ -80,7 +75,11 @@ Edit or create the daemon.json file, whose default location is /etc/docker/daemo
 
 ```
 
+Change ``myregistrydomain.com`` for IP Address server of according your environment.
+
+```
 sudo systemctl restart docker
+```
 
 Reference:
 https://docs.docker.com/registry/insecure/

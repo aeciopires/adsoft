@@ -13,7 +13,7 @@
 # Create Instance Monitoring
 resource "aws_instance" "monitoring" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = var.machine_type
+  instance_type               = "t2.medium"
   key_name                    = aws_key_pair.my_key.key_name
   associate_public_ip_address = true
   security_groups             = [ aws_security_group.services.name ]

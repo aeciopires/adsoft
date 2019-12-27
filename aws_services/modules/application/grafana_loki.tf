@@ -13,7 +13,7 @@
 # Create Instance Loki
 resource "aws_instance" "loki" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = var.machine_type
+  instance_type               = "t2.micro"
   key_name                    = aws_key_pair.my_key.key_name
   associate_public_ip_address = true
   security_groups             = [ aws_security_group.services.name ]
