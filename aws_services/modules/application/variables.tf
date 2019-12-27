@@ -22,6 +22,21 @@ variable "aws_instance_user" {
   default     = "ubuntu"
 }
 
+variable "ebs_disk_registry" {
+  description = "EBS ID for Storage Registry."
+  default     = "vol-05f3c466a6e57b4f5"
+}
+
+variable "ebs_disk_monitoring" {
+  description = "EBS ID for Storage Monitoring Tools."
+  default     = "vol-08d3cb4130438be8e"
+}
+
+variable "ebs_disk_loki" {
+  description = "EBS ID for Storage Loki."
+  default     = "vol-0d4fa441c9aaa03e5"
+}
+
 variable "port_ssh_external" {
   description = "Port SSH external."
   default     = 22

@@ -4,6 +4,10 @@ sudo curl -fsSL https://get.docker.com -o get-docker.sh;
 sudo sh get-docker.sh;
 sudo usermod -aG docker ubuntu;
 
+# Prepare Docker workspace
+sudo mkdir /docker
+sudo mount /dev/xvdf1 /docker
+
 # Install Prometheus
 sudo mkdir -p /docker/prometheus
 wget http://aeciopires.com/files/prometheus.yml -O /docker/prometheus/prometheus.yml
@@ -11,6 +15,29 @@ docker run -d -p 9090:9090 \
  --name prometheus \
  -v /docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
  prom/prometheus
+
+# Install Loki
+docker run -d -p 3100:3100 --restart=always --name loki grafana/loki
+
+# Install Node Exporter
+docker run -d --restart=always \
+  --net="host" \
+  --pid="host" \
+  -v "/:/host:ro,rslave" \
+  quay.io/prometheus/node-exporter \
+  --path.rootfs=/host
+
+# Install cAdvisor
+docker run -d --restart=always \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  gcr.io/google-containers/cadvisor:latest
 
 # Install Zabbix
 sudo mkdir -p /docker/mysql/zabbix/data
@@ -66,3 +93,4 @@ docker run -d --name zabbix-agent \
  -e ZBX_HOSTNAME="$(hostname)" \
  -e ZBX_SERVER_HOST="172.17.0.1" \
  zabbix/zabbix-agent:ubuntu-$VERSAO_MAIOR_ZABBIX-latest
+
