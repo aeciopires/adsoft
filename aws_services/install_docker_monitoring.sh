@@ -67,8 +67,8 @@ docker run -d --name zabbix-server \
  -e MYSQL_PASSWORD="zabbix" \
  -e MYSQL_DATABASE="zabbix" \
 zabbix/zabbix-server-mysql:ubuntu-$VERSAO_MAIOR_ZABBIX-latest
-# Wait 2 minutes for populate database
-sleep 120
+# Wait 1 minute for populate database
+sleep 60
 # Zabbix Web
 docker run -d --name zabbix-web \
  --restart always \
