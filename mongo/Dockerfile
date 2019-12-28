@@ -1,4 +1,4 @@
-FROM mongo:latest
+FROM mongo:4.0
 #Image base
 
 # Image Information

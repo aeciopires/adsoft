@@ -31,8 +31,8 @@ RUN mkdir /home/node/app
 COPY lista-contatos /home/node/app
 
 # Downloading the dependences with npm command
-RUN cd /home/node/app \
-    && npm install
+WORKDIR  /home/node/app
+RUN npm install
 
 # Expose the app port
 EXPOSE ${app_port}
