@@ -1,0 +1,7 @@
+version: '1'
+
+tools:
+  tflint:
+    files:
+      - aws_services
+ 
