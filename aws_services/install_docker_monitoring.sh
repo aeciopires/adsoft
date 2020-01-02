@@ -11,9 +11,11 @@ sudo mount /dev/xvdf1 /docker
 # Install Prometheus
 sudo mkdir -p /docker/prometheus
 wget http://aeciopires.com/files/prometheus.yml -O /docker/prometheus/prometheus.yml
+wget http://aeciopires.com/files/alert.conf -O /docker/prometheus/alert.conf
 docker run -d -p 9090:9090 \
  --name prometheus \
  -v /docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+ -v /docker/prometheus/alert.conf:/etc/prometheus/alert.conf \
  prom/prometheus
 
 # Install Loki

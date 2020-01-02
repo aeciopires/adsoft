@@ -72,6 +72,16 @@ variable "port_zabbix_server_external" {
   default     = 10051
 }
 
+variable "port_apps_python_external_01" {
+  description = "Port Apps Python external."
+  default     = 8001
+}
+
+variable "port_apps_python_external_02" {
+  description = "Port Apps Python external."
+  default     = 8002
+}
+
 variable "port_protocol" {
   description = "Protocol of container ports."
   default     = "TCP"

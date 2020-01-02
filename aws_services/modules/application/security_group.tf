@@ -59,6 +59,14 @@ resource "aws_security_group" "services" {
     cidr_blocks = [var.address_allowed]
   }
 
+  # Input Apps_Python
+  ingress {
+    from_port   = var.port_apps_python_external_01
+    to_port     = var.port_apps_python_external_02
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
+
   # Output
   egress {
       from_port   = 0             # any port
