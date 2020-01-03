@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  app:
+    container_name: app
+    build:
+      context: '.'
+      args:
+        APP_VERSION: "1.0.0"
+        APP_PROFILE: "prod"
+        ENABLE_SECURITY: "false"
+    image: adsoft/app:1.0.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+  db:
+    container_name: db_app
+    image: mongo:4
+    ports:
+      - "27017:27017"
+    volumes:
+      - /docker/adsoft/mongo:/data/db

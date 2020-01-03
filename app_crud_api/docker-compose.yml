@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  app_crud_api:
+    container_name: app_crud_api
+    build:
+      context: '.'
+    image: adsoft/app_crud_api:1.0.0
+    volumes:
+      - ./crud/node_modules:/home/app/node_modules
+    ports:
+      - "9000:9000"
+    depends_on:
+      - "db"
+    restart: always
+  db:
+    container_name: db
+    image: mongo:4
+    ports:
+      - "27017:27017"
+    volumes:
+      - /docker/adsoft/mongo:/data/db

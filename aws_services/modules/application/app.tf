@@ -26,6 +26,6 @@ resource "aws_instance" "apps" {
   }
 
   tags = {
-    Name = "apps, python, test, docker, aws"
+    Name = "apps, python, nodejs, test, docker, aws"
   }
 }

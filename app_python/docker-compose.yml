@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  app_python:
+    container_name: app_python
+    build:
+      context: '.'
+    image: adsoft/app_python:1.0.0
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+    restart: always

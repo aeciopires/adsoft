@@ -19,6 +19,11 @@ sudo apt-get install -y git
 
 # Get Apps
 git clone https://github.com/aeciopires/adsoft
-cd adsoft/docker-compose
 sudo mkdir -p /docker/adsoft/mongo
-docker-compose -f docker-compose_production.yml up --build
+
+cd adsoft/app_nodejs
+docker-compose up -d --build
+cd ../app_python
+docker-compose up -d --build
+cd ../app_crud_api
+docker-compose up -d --build
