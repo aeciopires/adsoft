@@ -2,10 +2,9 @@
 
 Attention: 
 
-1) The application run here was developed by Thalles Bastos and is very well documented in the links below.
+1) The application run here was developed by Andreyev Melo and is very well documented in the links below.
 
-* http://thbastos.com/blog/criando-uma-aplicacao-em-nodejs-1-inicio
-* https://github.com/ThBastos/lista-contatos
+* https://github.com/andreyev/prometheus_hands-on/tree/demo/demo
 
 Instructions for downloading and starting Docker Compose
 
@@ -44,5 +43,3 @@ For more information about Docker Compose visit:
 * [https://docs.docker.com/compose/reference](https://docs.docker.com/compose/reference)
 * [https://docs.docker.com/compose/compose-file](https://docs.docker.com/compose/compose-file)
 * [https://docs.docker.com/engine/reference/builder](https://docs.docker.com/engine/reference/builder)
-
-PS.: Disabling authentication of mongodb: https://stackoverflow.com/questions/52373098/disable-default-authentication-in-mongo-docker
