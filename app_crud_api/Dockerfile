@@ -21,4 +21,4 @@ RUN npm install nodemon -g --quiet
 EXPOSE 9000
 
 # Starting the service when starting the container
-CMD nodemon -L --watch . index.js
+CMD ["nodemon", "-L", "--watch", ".", "index.js"]
