@@ -12,7 +12,7 @@ const carros = require('./routes/carros');
 app.use('/api/carros', carros);
 
 mongoose
-  .connect('mongodb://db:27018/crud-node-mongo-docker', {
+  .connect('mongodb://172.17.0.1:27018/crud-node-mongo-docker', {
     useNewUrlParser: true
   })
   .then(result => {

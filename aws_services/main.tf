@@ -18,3 +18,12 @@ module "instances" {
   #port_protocol        = var.port_protocol
   #address_allowed      = var.address_allowed
 }
+
+# Saving state in AWS-S3
+#terraform {
+#  backend "s3" {
+#    bucket = "adsoft-terraform"
+#    key    = "terraformt.tfstate"
+#    region = var.aws_zone
+#  }
+#}
