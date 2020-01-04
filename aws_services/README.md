@@ -46,6 +46,7 @@ Useful commands:
 * terraform output -module=instances => Show results of module define on ``modules/application/output.tf`` file .
 
 No destroy some resource:
+
 * list all resources
   ```
   terraform state list

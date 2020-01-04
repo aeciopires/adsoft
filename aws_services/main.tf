@@ -5,7 +5,6 @@ provider "aws" {
 
 # Creating module
 module "instances" {
-  # Module location  
   source = "./modules/application"
   #aws_key_name         = var.aws_key_name
   #aws_connection_type  = var.aws_connection_type

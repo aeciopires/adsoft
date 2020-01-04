@@ -15,7 +15,7 @@ var methodOverride = require('method-override');
  
 // MONGODB ============================================
 // conectando ao mongodb no 172.17.0.1, criando o banco de dados contato
-mongoose.connect('mongodb://172.17.0.1/contato');
+mongoose.connect('mongodb://db_app:27017/contato');
 // Requisição ao arquivo que cria nosso model Contato
 require('./models/Contato');
  

@@ -82,6 +82,16 @@ variable "port_apps_python_external_02" {
   default     = 8002
 }
 
+variable "port_apps_crud_api" {
+  description = "Port Apps Crud API."
+  default     = 9000
+}
+
+variable "port_apps_nodejs" {
+  description = "Port Apps NodeJS."
+  default     = 8080
+}
+
 variable "port_protocol" {
   description = "Protocol of container ports."
   default     = "TCP"

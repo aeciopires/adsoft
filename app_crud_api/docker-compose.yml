@@ -15,7 +15,13 @@ services:
   db:
     container_name: db
     image: mongo:4
+    # New sintax for declare ports for docker-compose 3.2 or major
+    # https://docs.docker.com/compose/compose-file/#ports
     ports:
-      - "27017:27017"
+      - target: 27017    # container
+        published: 27018 # host
+        protocol: tcp
+        mode: bridge
     volumes:
-      - /docker/adsoft/mongo:/data/db
+      - /docker/adsoft/db_crud_api:/data/db
+    restart: always

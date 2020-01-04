@@ -24,7 +24,7 @@ exit
 Start the containers.
 
 ```sh
-sudo mkdir -p /docker/adsoft/mongo
+sudo mkdir -p /docker/adsoft/db_crud_api
 
 cd adsoft/app_crud_api
 

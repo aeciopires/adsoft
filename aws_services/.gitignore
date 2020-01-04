@@ -2,5 +2,6 @@
 *.terraform
 .terraform.tfstate.lock.info
 terraform.tfstate
-terraform.tfstate.1577991496.backup
 terraform.tfstate.backup
+*.backup
+

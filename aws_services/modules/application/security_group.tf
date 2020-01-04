@@ -67,6 +67,22 @@ resource "aws_security_group" "services" {
     cidr_blocks = [var.address_allowed]
   }
 
+  # Input Apps Crud API
+  ingress {
+    from_port   = var.port_apps_crud_api
+    to_port     = var.port_apps_crud_api
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
+
+  # Input Apps NodeJS
+  ingress {
+    from_port   = var.port_apps_nodejs
+    to_port     = var.port_apps_nodejs
+    protocol    = var.port_protocol
+    cidr_blocks = [var.address_allowed]
+  }
+
   # Output
   egress {
       from_port   = 0             # any port
