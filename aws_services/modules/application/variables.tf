@@ -7,6 +7,11 @@ variable "aws_key_name" {
   default     = "aws-teste"
 }
 
+variable "s3_bucket_name" {
+  description = "S3 bucket name"
+  default     = "adsoft_bucket"
+}
+
 variable "aws_key_private_path" {
   description = "Private Key Private path."
   default     = "/home/aws-teste.pem"
@@ -95,6 +100,11 @@ variable "port_apps_nodejs" {
 variable "port_protocol" {
   description = "Protocol of container ports."
   default     = "TCP"
+}
+
+variable "vpc_cidr_block" {
+  description = "Range of IPv4 address for the VPC."
+  default     = "10.0.0.0/16"
 }
 
 variable "address_allowed" {

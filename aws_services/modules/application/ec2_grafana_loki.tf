@@ -15,8 +15,10 @@ resource "aws_instance" "loki" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.my_key.key_name
+  subnet_id                   = aws_subnet.prod_subnet_public1.id
   associate_public_ip_address = true
-  security_groups             = [ aws_security_group.services.name ]
+  #security_groups             = [ aws_security_group.services.name ]
+  vpc_security_group_ids      = [ aws_security_group.services.id ]
   user_data                   = file("install_docker_loki.sh")
   availability_zone           = data.aws_availability_zones.available.names[0]
 

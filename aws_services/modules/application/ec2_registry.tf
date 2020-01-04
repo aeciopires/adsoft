@@ -10,22 +10,24 @@
 # https://github.com/salizzar/terraform-aws-docker/
 #------------------------------------------------
 
-# Create Instance Apps
-resource "aws_instance" "apps" {
+# Create Instance Registry
+resource "aws_instance" "registry" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t2.small"
+  instance_type               = "t2.micro"
   key_name                    = aws_key_pair.my_key.key_name
+  subnet_id                   = aws_subnet.prod_subnet_public1.id
   associate_public_ip_address = true
-  security_groups             = [ aws_security_group.services.name ]
-  user_data                   = file("install_docker_apps.sh")
+  #security_groups             = [ aws_security_group.services.name ]
+  vpc_security_group_ids      = [ aws_security_group.services.id ]
+  user_data                   = file("install_docker_registry.sh")
   availability_zone           = data.aws_availability_zones.available.names[0]
-
+ 
   connection {
     user        = var.aws_instance_user
     private_key = file(var.aws_key_private_path)
   }
 
   tags = {
-    Name = "apps, python, nodejs, test, docker, aws"
+    Name = "registry, terraform, test, docker, aws"
   }
 }

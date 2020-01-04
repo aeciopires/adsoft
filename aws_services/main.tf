@@ -22,7 +22,7 @@ module "instances" {
 # Saving state in AWS-S3
 #terraform {
 #  backend "s3" {
-#    bucket = "adsoft-terraform"
+#    bucket = var.s3_bucket_name
 #    key    = "terraformt.tfstate"
 #    region = var.aws_zone
 #  }

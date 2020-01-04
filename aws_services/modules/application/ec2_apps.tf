@@ -10,14 +10,16 @@
 # https://github.com/salizzar/terraform-aws-docker/
 #------------------------------------------------
 
-# Create Instance Monitoring
-resource "aws_instance" "monitoring" {
+# Create Instance Apps
+resource "aws_instance" "apps" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t2.medium"
+  instance_type               = "t2.small"
   key_name                    = aws_key_pair.my_key.key_name
+  subnet_id                   = aws_subnet.prod_subnet_public1.id
   associate_public_ip_address = true
-  security_groups             = [ aws_security_group.services.name ]
-  user_data                   = file("install_docker_monitoring.sh")
+  #security_groups             = [ aws_security_group.services.name ]
+  vpc_security_group_ids      = [ aws_security_group.services.id ]
+  user_data                   = file("install_docker_apps.sh")
   availability_zone           = data.aws_availability_zones.available.names[0]
 
   connection {
@@ -26,6 +28,6 @@ resource "aws_instance" "monitoring" {
   }
 
   tags = {
-    Name = "zabbix, prometheus, terraform, test, docker, aws"
+    Name = "apps, python, nodejs, test, docker, aws"
   }
 }
