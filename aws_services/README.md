@@ -194,20 +194,20 @@ cat /tmp/doc.md
 
 | Name | Description |
 |------|-------------|
-| apps\_instance\_id | n/a |
-| apps\_instance\_name | n/a |
-| apps\_ip\_private | n/a |
-| apps\_ip\_public | n/a |
-| loki\_instance\_id | n/a |
-| loki\_instance\_name | n/a |
-| loki\_ip\_private | n/a |
-| loki\_ip\_public | n/a |
-| monitoring\_instance\_id | n/a |
-| monitoring\_instance\_name | n/a |
-| monitoring\_ip\_private | n/a |
-| monitoring\_ip\_public | n/a |
-| registry\_instance\_id | n/a |
-| registry\_instance\_name | n/a |
-| registry\_ip\_private | n/a |
-| registry\_ip\_public | n/a |
-| security\_group | n/a |
+| apps\_instance\_id | ID instance |
+| apps\_instance\_name | Name instance |
+| apps\_ip\_private | Private IP instance |
+| apps\_ip\_public | Public IP instance |
+| loki\_instance\_id | ID instance |
+| loki\_instance\_name | Name instance |
+| loki\_ip\_private | Private IP instance |
+| loki\_ip\_public | Public IP instance |
+| monitoring\_instance\_id | ID instance |
+| monitoring\_instance\_name | Name instance |
+| monitoring\_ip\_private | Private IP instance |
+| monitoring\_ip\_public | Public IP instance |
+| registry\_instance\_id | ID instance |
+| registry\_instance\_name | Name instance |
+| registry\_ip\_private | Private IP instance |
+| registry\_ip\_public | Public IP instance |
+| security\_group | Id of security Group |
