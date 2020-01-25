@@ -28,3 +28,18 @@ cd ../app_python
 docker-compose up -d --build
 cd ../app_crud_api
 docker-compose up -d --build
+
+# Install Node Exporter
+curl -sSL https://cloudesire.github.io/node-exporter-installer/install.sh | sudo sh
+
+# Install cAdvisor
+docker run -d --restart=always \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  gcr.io/google-containers/cadvisor:latest

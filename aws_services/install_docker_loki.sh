@@ -25,12 +25,7 @@ grafana/grafana
 docker run -d -p 3100:3100 --restart=always --name loki grafana/loki
 
 # Install Node Exporter
-docker run -d --restart=always \
-  --net="host" \
-  --pid="host" \
-  -v "/:/host:ro,rslave" \
-  quay.io/prometheus/node-exporter \
-  --path.rootfs=/host
+curl -sSL https://cloudesire.github.io/node-exporter-installer/install.sh | sudo sh
 
 # Install cAdvisor
 docker run -d --restart=always \
