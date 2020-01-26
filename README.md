@@ -1,18 +1,17 @@
-# adsoft_files #
-
 [![Codeac](https://static.codeac.io/badges/2-229420634.svg "Codeac.io")](https://app.codeac.io/github/aeciopires/adsoft)
 
-[English]: #english
-[Contributing]: #contributing
-[Developers]: #developers
-[License]: #license
 
-#### Menu
+<!-- TOC -->
 
-1. [English][English]
-2. [Contributing][Contributing]
-3. [Developers][Developers]
-4. [License][License]
+- [adsoft_files](#adsoftfiles)
+- [English](#english)
+  - [Contributing](#contributing)
+  - [Developers](#developers)
+  - [License](#license)
+
+<!-- TOC -->
+
+# adsoft_files
 
 # English
 

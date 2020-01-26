@@ -1,3 +1,22 @@
+#### Menu
+
+<!-- TOC -->
+
+- [English](#english)
+- [Prerequisites](#prerequisites)
+- [How to](#how-to)
+- [About Terraform commands](#about-terraform-commands)
+- [About Terragrunt commands](#about-terragrunt-commands)
+  - [Using a registry without SSL](#using-a-registry-without-ssl)
+- [Documentation of Code Terraform](#documentation-of-code-terraform)
+  - [Providers](#providers)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
+- [Developers](#developers)
+- [License](#license)
+
+<!-- /TOC -->
+
 # English
 
 # Prerequisites
@@ -44,8 +63,12 @@ used by ``main.tf``, if you not define values in to ``terraform_prod.tfvars`` fi
 
 # How to
 
-* Download Terraform for Linux: https://www.terraform.io/downloads.html
-* Unpack the Terraform package.
+* Download ``Terraform`` for Linux: https://www.terraform.io/downloads.html<br>
+    Home page: https://www.terraform.io<br>
+    GitHub: https://github.com/hashicorp/terraform<br>
+    Documentation: https://www.terraform.io/docs
+
+* Unpack Terraform package.
 * Access the unpacked directory.
 * Copy the Terraform binary to the ``/usr/bin`` directory with the following commands:
 
@@ -53,19 +76,34 @@ used by ``main.tf``, if you not define values in to ``terraform_prod.tfvars`` fi
 sudo cp terraform /usr/bin
 sudo chmod 755 /usr/bin/terraform
 ```
+
+
+* Download ``Terragrunt`` for Linux AMD64: https://github.com/gruntwork-io/terragrunt/releases<br>
+    Home page: https://terragrunt.gruntwork.io<br>
+    GitHub: https://github.com/gruntwork-io/terragrunt<br>
+    Documentation: https://terragrunt.gruntwork.io/docs
+
+```
+sudo mv terragrunt_linux_amd64 /usr/bin/terragrunt
+sudo chmod +x /usr/bin/terragrunt
+```
+
 * Change the values according to the need of the environment in the ``terraform_prod.tfvars`` file.
 
 * Validate the settings and create the environment with the following commands
 
 ```bash
-terraform init
-terraform validate
-terraform plan
-terraform apply
-terraform show
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt show
 ```
 
-## About Terraform commands
+Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple Terraform modules, and managing remote state.
+
+Terragrunt will forward almost all commands, arguments, and options directly to Terraform, but based on the settings in your ``terragrunt.hcl`` file
+
+# About Terraform commands
 
 Useful commands:
 
@@ -95,6 +133,10 @@ No destroy some resource:
   terraform destroy
   ```
 
+# About Terragrunt commands
+
+Access: https://terragrunt.gruntwork.io/docs/getting-started/cli-options/
+
 ## Using a registry without SSL
 
 In the your notebook or computer, edit or create the daemon.json file, whose default location is /etc/docker/daemon. Add the follow content:
@@ -116,7 +158,7 @@ Reference:
 https://docs.docker.com/registry/insecure/
 
 
-# Documentation of Code Terraform (Only Developers)
+# Documentation of Code Terraform
 
 Generate by https://github.com/segmentio/terraform-docs
 
@@ -211,3 +253,16 @@ cat /tmp/doc.md
 | registry\_ip\_private | Private IP instance |
 | registry\_ip\_public | Public IP instance |
 | security\_group | Id of security Group |
+
+# Developers
+
+developer: Aécio dos Santos Pires<br>
+mail: http://blog.aeciopires.com/contato
+
+developer: André Luis Boni Déo<br>
+mail: andredeo at gmail dot com
+
+
+# License
+
+GPL-3.0 2020 Aécio dos Santos Pires and André Luis Boni Déo

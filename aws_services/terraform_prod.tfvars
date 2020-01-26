@@ -7,12 +7,12 @@
 
 aws_zone                     = "us-east-2"
 aws_key_name                 = "aws-teste"
-aws_key_private_path         = "/home/aecio/aws-teste.pem"
-aws_key_public_path          = "/home/aecio/aws-teste.pub"
-s3_bucket_name               = "adsoft_bucket"
+aws_key_private_path         = "/home/aws-teste.pem"
+aws_key_public_path          = "/home/aws-teste.pub"
+s3_bucket_name               = "adsoft-s3"
 aws_instance_user            = "ubuntu"
 disk_type                    = "gp2"
-port_ssh_external            = 22
+port_ssh_external            = 2220
 port_registry_external       = 5000
 port_grafana_external        = 3000
 port_loki_external           = 3100

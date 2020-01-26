@@ -14,7 +14,7 @@ variable "aws_key_name" {
 
 variable "s3_bucket_name" {
   description = "S3 bucket name"
-  default     = "adsoft_bucket"
+  default     = "adsoft-s3"
 }
 
 variable "aws_key_private_path" {
