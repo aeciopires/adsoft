@@ -1,0 +1,6 @@
+# Ignore files and directories
+*.vscode
+*.backup
+*.tgz
+*.yaml.dec
+
