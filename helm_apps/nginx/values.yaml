@@ -56,8 +56,6 @@ serverBlock: |-
     server_name nginx.myenvtest.com;
     location /test1 {
       limit_except GET HEAD POST {}
-      auth_basic           "Administrator’s Area";
-      auth_basic_user_file /opt/bitnami/nginx/conf/server_blocks/.htpasswd;
 
       rewrite ^/(.*)$ /$1 break;
       proxy_set_header X-Real-IP  $remote_addr;
@@ -68,18 +66,16 @@ serverBlock: |-
       proxy_pass http://www.http2demo.io:80;
     }
     location /test2 {
-        limit_except GET HEAD POST {}
-        auth_basic           "Administrator’s Area";
-        auth_basic_user_file /opt/bitnami/nginx/conf/server_blocks/.htpasswd;
+      limit_except GET HEAD POST {}
 
-        rewrite ^/(.*)$ /$1 break;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-NginX-Proxy true;
-        proxy_redirect off;
-        proxy_pass http://demo.redmine.org:80;
-      }
+      rewrite ^/(.*)$ /$1 break;
+      proxy_set_header X-Real-IP  $remote_addr;
+      proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_set_header Host $host;
+      proxy_set_header X-NginX-Proxy true;
+      proxy_redirect off;
+      proxy_pass http://demo.redmine.org:80;
+    }
   }
 
 ## Number of replicas to deploy
@@ -225,9 +221,7 @@ ingress:
   ##
   ## It is also possible to create and manage the certificates outside of this helm chart
   ## Please see README.md for more information
-  # - name: example.local-tls
-  #   key:
-  #   certificate:
+  #  - name: nginx.myenvtest.com-tls
 
 ## Prometheus Exporter / Metrics
 ##

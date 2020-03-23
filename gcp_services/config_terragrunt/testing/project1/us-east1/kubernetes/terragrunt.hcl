@@ -41,7 +41,7 @@ inputs = {
   zones       = ["us-east1-b", "us-east1-c", "us-east1-d"]
 
   master_authorized_networks_display_name = "myipadress-public"
-  master_authorized_networks              = "179.159.236.233/32" //my IP address
+  master_authorized_networks              = "179.159.236.160/32" //my IP address
   k8s_version                             = "1.14.10-gke.17"
 
   services_np = {
