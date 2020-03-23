@@ -2,6 +2,7 @@
 
 - [About](#about)
 - [How to Deploy Nginx in Kubernetes](#how-to-deploy-nginx-in-kubernetes)
+- [Prerequisites for Basic Authentication](#prerequisites-for-basic-authentication)
 - [Install nginx-redirect](#install-nginx-redirect)
 
 <!-- TOC -->
@@ -61,8 +62,6 @@ helm install nginx \
   bitnami/nginx -n redirect
 ```
 
-Reference: https://github.com/bitnami/charts/tree/master/bitnami/nginx
-
 List all releases using Helm.
 
 ```bash
@@ -99,6 +98,8 @@ Access prompt of container.
 
 ```bash
 kubectl exec -it pods/NAME_POD -c NAME_CONTAINER -n redirect -- sh
+or
+kubectl exec -it svc/nginx -n redirect -- sh
 ```
 
 View informations of service.
@@ -117,6 +118,39 @@ Delete nginx using Helm.
 ```bash
 helm uninstall nginx -n redirect
 ```
+
+# Prerequisites for Basic Authentication
+
+In Ubuntu 18.04 install package ``apache2-utils``.
+
+```bash
+sudo apt-get install apache2-utils
+```
+
+Create ``/tmp/auth`` file and define password for user ``admin`` (by example).
+
+```bash
+htpasswd -c /tmp/auth admin
+```
+
+Create a secret in Kubernetes.
+
+```bash
+kubectl create secret generic basic-auth --from-file=/tmp/auth -n redirect
+```
+
+View the secret ``basic-auth`` create in Kubernetes.
+
+```bash
+kubectl get secret basic-auth -o yaml -n redirect
+```
+
+Reference: 
+* https://github.com/bitnami/charts/tree/master/bitnami/nginx
+* https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/
+* https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_except
+* https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html
+* https://github.com/kubernetes/ingress-nginx/tree/master/docs/examples/auth/basic
 
 # Install nginx-redirect
 

@@ -55,6 +55,10 @@ serverBlock: |-
     listen 0.0.0.0:8080;
     server_name nginx.myenvtest.com;
     location /test1 {
+      limit_except GET HEAD POST {}
+      auth_basic           "Administrator’s Area";
+      auth_basic_user_file /opt/bitnami/nginx/conf/server_blocks/.htpasswd;
+
       rewrite ^/(.*)$ /$1 break;
       proxy_set_header X-Real-IP  $remote_addr;
       proxy_set_header X-Forwarded-For $remote_addr;
@@ -64,6 +68,10 @@ serverBlock: |-
       proxy_pass http://www.http2demo.io:80;
     }
     location /test2 {
+        limit_except GET HEAD POST {}
+        auth_basic           "Administrator’s Area";
+        auth_basic_user_file /opt/bitnami/nginx/conf/server_blocks/.htpasswd;
+
         rewrite ^/(.*)$ /$1 break;
         proxy_set_header X-Real-IP  $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr;
