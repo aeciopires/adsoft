@@ -25,7 +25,7 @@ data:
       ssl_prefer_server_ciphers  on;
 
       location /test1 {
-        limit_except GET HEAD POST PUT PATCH TRACE OPTIONS CONNECT {}
+        limit_except GET HEAD POST PUT PATCH OPTIONS {}
 
         auth_basic           "Administrator’s Area";
         auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
@@ -39,7 +39,7 @@ data:
         proxy_pass http://www.http2demo.io:80;
       }
       location /test2 {
-        limit_except GET HEAD POST PUT PATCH TRACE OPTIONS CONNECT {}
+        limit_except GET HEAD POST PUT PATCH OPTIONS {}
 
         auth_basic           "Administrator’s Area";
         auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
@@ -66,6 +66,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   type: LoadBalancer
+  #loadBalancerIP: 34.95.153.3
   loadBalancerSourceRanges:
     - 179.159.236.160/32
   externalTrafficPolicy: "Cluster"

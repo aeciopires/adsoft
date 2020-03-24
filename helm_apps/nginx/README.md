@@ -115,7 +115,7 @@ View the secret ``basic-auth``, ``key`` and ``crt`` create in Kubernetes.
 ```bash
 kubectl get secret basic-auth -o yaml -n redirect
 kubectl get secret key -o yaml -n redirect
-kubectl get secret certname -o yaml -n redirect
+kubectl get secret cert -o yaml -n redirect
 ```
 
 Download and configure the parameters for deploy of ``nginx``.
@@ -156,6 +156,7 @@ References:
 * https://cloud.google.com/kubernetes-engine/docs/concepts/secret
 * https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
 * https://aws.amazon.com/premiumsupport/knowledge-center/eks-cidr-ip-address-loadbalancer/
+* https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
 
 # Command Utils for Troubleshooting
 
