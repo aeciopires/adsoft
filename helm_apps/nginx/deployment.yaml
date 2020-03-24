@@ -25,7 +25,7 @@ data:
       ssl_prefer_server_ciphers  on;
 
       location /test1 {
-        limit_except GET HEAD POST {}
+        limit_except GET HEAD POST PUT PATCH TRACE OPTIONS CONNECT {}
 
         auth_basic           "Administrator’s Area";
         auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
@@ -39,7 +39,7 @@ data:
         proxy_pass http://www.http2demo.io:80;
       }
       location /test2 {
-        limit_except GET HEAD POST {}
+        limit_except GET HEAD POST PUT PATCH TRACE OPTIONS CONNECT {}
 
         auth_basic           "Administrator’s Area";
         auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
