@@ -34,7 +34,7 @@ kubectl create namespace redirect
 
 # How to Deploy Nginx in Kubernetes without Basic Authentication
 
-Add Helm repo official stable charts:
+Add Helm repo Bitnami charts:
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
