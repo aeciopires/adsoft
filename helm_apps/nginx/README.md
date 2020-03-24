@@ -88,6 +88,12 @@ In Ubuntu 18.04 install package ``apache2-utils``.
 sudo apt-get install apache2-utils
 ```
 
+In CentOS 7 install package ``httpd-tools``
+
+```bash
+sudo yum install httpd-tools
+```
+
 Create ``/tmp/auth`` file and define password for user ``admin`` (by example).
 
 ```bash
