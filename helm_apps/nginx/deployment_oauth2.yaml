@@ -24,25 +24,47 @@ data:
       ssl_ciphers  HIGH:!aNULL:!MD5;
       ssl_prefer_server_ciphers  on;
 
-      location /test1 {
-        limit_except GET HEAD POST PUT PATCH OPTIONS {}
+      # https://github.com/vouch/vouch-proxy
+      # send all requests to the `/validate` endpoint for authorization
+      auth_request /validate;
 
-        auth_basic           "Administrator’s Area";
-        auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
+      location /validate {
 
-        rewrite ^/(.*)$ /$1 break;
-        proxy_set_header X-Real-IP  $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-NginX-Proxy true;
-        proxy_redirect off;
-        proxy_pass http://www.http2demo.io:80;
+        # /validate proxies all the requests to vouch
+        # vouch can also run behind the same nginx-revproxy
+        proxy_pass http://127.0.0.1:9090/validate;
+
+        # be sure to pass the original host header
+        proxy_set_header Host $http_host;
+
+        # Vouch Proxy only acts on the request headers
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+
+        # valid user!
+        # optionally add X-Vouch-User as returned by Vouch Proxy along with the request
+        #auth_request_set $auth_resp_x_vouch_user $upstream_http_x_vouch_user;
+
+        # these return values are used by the @error401 call
+        #auth_request_set $auth_resp_jwt $upstream_http_x_vouch_jwt;
+        #auth_request_set $auth_resp_err $upstream_http_x_vouch_err;
+        #auth_request_set $auth_resp_failcount$upstream_http_x_vouch_failcount;
       }
-      location /test2 {
-        limit_except GET HEAD POST PUT PATCH OPTIONS {}
 
-        auth_basic           "Administrator’s Area";
-        auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
+      # if validate returns `401 not authorized` then forward the request to the error401block
+      error_page 401 = @error401;
+
+      location @error401 {
+          # redirect to vouch proxy for login
+          #return 302 https://vouch.myenvtest.com:9090/login?url=$scheme://$http_host$request_uri&lasso-failcount=$auth_resp_failcount&X-Vouch-Token=$auth_resp_jwt&error=$auth_resp_err;
+          return 302 https://vouch.myenvtest.com:9090/login;
+          # you usually *want* to redirect to Vouch running behind the same Nginx config proteced by https
+          # but to get started you can just forward the end user to the port that vouch is running on
+      }
+
+      location / {
+        limit_except GET HEAD POST PUT PATCH OPTIONS {}
+        proxy_pass http://www.http2demo.io:80;
 
         rewrite ^/(.*)$ /$1 break;
         proxy_set_header X-Real-IP  $remote_addr;
@@ -50,7 +72,21 @@ data:
         proxy_set_header Host $host;
         proxy_set_header X-NginX-Proxy true;
         proxy_redirect off;
-        proxy_pass http://demo.redmine.org:80;
+
+
+        # you may need to set these variables in this block as per https://github.com/vouch/vouch-proxy/issues/26#issuecomment-425215810
+        #auth_request_set $auth_resp_x_vouch_user $upstream_http_x_vouch_user
+        #auth_request_set $auth_resp_x_vouch_idp_claims_groups $upstream_http_x_vouch_idp_claims_groups;
+        #auth_request_set $auth_resp_x_vouch_idp_claims_given_name $upstream_http_x_vouch_idp_claims_given_name;
+
+        # set user header (usually an email)
+        #proxy_set_header X-Vouch-User $auth_resp_x_vouch_user;
+        # optionally pass any custom claims you are tracking
+        #proxy_set_header X-Vouch-IdP-Claims-Groups $auth_resp_x_vouch_idp_claims_groups;
+        #proxy_set_header X-Vouch-IdP-Claims-Given_Name $auth_resp_x_vouch_idp_claims_given_name;
+        # optionally pass the accesstoken or idtoken
+        #proxy_set_header X-Vouch-IdP-AccessToken $auth_resp_x_vouch_idp_accesstoken;
+        #proxy_set_header X-Vouch-IdP-IdToken $auth_resp_x_vouch_idp_idtoken;
       }
     }
 ---
@@ -66,19 +102,20 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 spec:
   type: LoadBalancer
-  #loadBalancerIP: 34.95.153.3
+  # Create a new static External IP address on GCP Console in section VPC Network -> External IP addresses.
+  #loadBalancerIP: XXX.XXX.XXX.XXX
   loadBalancerSourceRanges:
-    - 179.159.236.160/32
+    - 179.159.238.22/32 #my IP address
   externalTrafficPolicy: "Cluster"
   ports:
     - name: http
       port: 80
       targetPort: http
-      nodePort: 30080
+      nodePort: 30081
     - name: https
       port: 443
       targetPort: https
-      nodePort: 30443
+      nodePort: 30444
   selector:
     app.kubernetes.io/name: nginx
     app.kubernetes.io/instance: nginx
@@ -140,9 +177,6 @@ spec:
           volumeMounts:
             - name: nginx-server-block
               mountPath: /opt/bitnami/nginx/conf/server_blocks
-            - name: basic-auth
-              mountPath: "/opt/bitnami/nginx/conf/.htpasswd"
-              readOnly: true
             - name: key
               mountPath: "/opt/bitnami/nginx/conf/key"
               readOnly: true
@@ -153,9 +187,6 @@ spec:
         - name: nginx-server-block
           configMap:
             name: nginx
-        - name: basic-auth
-          secret:
-            secretName: basic-auth
         - name: key
           secret:
             secretName: key

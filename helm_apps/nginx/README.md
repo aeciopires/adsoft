@@ -4,6 +4,7 @@
 - [Prerequisites](#prerequisites)
 - [How to Deploy Nginx in Kubernetes without Basic Authentication](#how-to-deploy-nginx-in-kubernetes-without-basic-authentication)
 - [How to Deploy Nginx with Kubectl for enable Basic Authentication](#how-to-deploy-nginx-with-kubectl-for-enable-basic-authentication)
+- [How to Deploy Nginx with Kubectl for enable Oauth2 Authentication on Google](#how-to-deploy-nginx-with-kubectl-for-enable-oauth2-authentication-on-google)
 - [Command Utils for Troubleshooting](#command-utils-for-troubleshooting)
 - [Install nginx-ingress for Services Internal Kubernetes Cluster](#install-nginx-ingress-for-services-internal-kubernetes-cluster)
 
@@ -125,12 +126,12 @@ cd ~
 git clone https://github.com/aeciopires/adsoft.git
 ```
 
-Edit the parameters in ``adsoft/helm_apps/nginx/deployment.yaml`` file.
+Edit the parameters in ``adsoft/helm_apps/nginx/deployment_basic_auth.yaml`` file.
 
 Deploy Nginx in cluster Kubernetes with Kubectl for enable basic authentication and restrict source by IP address.
 
 ```bash
-kubectl apply -f ~/adsoft/helm_apps/nginx/deployment.yaml -n redirect
+kubectl apply -f ~/adsoft/helm_apps/nginx/deployment_basic_auth.yaml -n redirect
 ```
 
 Access Nginx in http://IP-LOADBALANCER:80 and https://IP-LOADBALANCER:443.
@@ -138,7 +139,7 @@ Access Nginx in http://IP-LOADBALANCER:80 and https://IP-LOADBALANCER:443.
 Delete nginx using Kubectl.
 
 ```bash
-kubectl delete -f ~/adsoft/helm_apps/nginx/deployment.yaml -n redirect
+kubectl delete -f ~/adsoft/helm_apps/nginx/deployment_basic_auth.yaml -n redirect
 ```
 
 References: 
@@ -157,6 +158,101 @@ References:
 * https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
 * https://aws.amazon.com/premiumsupport/knowledge-center/eks-cidr-ip-address-loadbalancer/
 * https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
+
+
+# How to Deploy Nginx with Kubectl for enable Oauth2 Authentication on Google
+
+Download and configure the parameters for deploy of ``nginx``.
+
+```bash
+cd ~
+git clone https://github.com/aeciopires/adsoft.git
+cd adsoft/helm_apps/nginx/
+```
+
+Edit the parameters in ``adsoft/helm_apps/nginx/deployment_oauth2.yaml`` file.
+
+Install Helm repository of Halkeye.
+
+```bash
+helm repo add halkeye https://halkeye.github.io/helm-charts
+```
+
+List charts available in Helm repository of Halkeye.
+
+```bash
+helm search repo halkeye
+```
+
+Edit the parameters in ``adsoft/helm_apps/nginx/values_vouch.yaml`` file. Values default are available here: https://hub.helm.sh/charts/halkeye/vouch
+
+Install chart of Vouch Proxy.
+
+```bash
+kubectl create namespace redirect
+helm install vouch halkeye/vouch -f values_vouch.yaml -n redirect
+```
+
+Generate ``server.key`` and ``server.crt`` files following the instructions in this tutorial: http://blog.aeciopires.com/configurando-o-grafana-para-funcionar-sobre-https/
+
+Create the secrets in Kubernetes with Kubectl.
+
+```bash
+kubectl create secret generic key --from-file=server.key -n redirect
+kubectl create secret generic cert --from-file=server.crt -n redirect
+```
+
+View the secret ``key`` and ``crt`` create in Kubernetes.
+
+```bash
+kubectl get secret key -o yaml -n redirect
+kubectl get secret cert -o yaml -n redirect
+```
+
+Deploy Nginx in cluster Kubernetes with Kubectl for enable basic authentication and restrict source by IP address.
+
+```bash
+kubectl apply -f ~/adsoft/helm_apps/nginx/deployment_oauth2.yaml -n redirect
+```
+
+Access Nginx in http://IP-LOADBALANCER:80 and https://IP-LOADBALANCER:443.
+
+Delete nginx using Kubectl.
+
+```bash
+kubectl delete -f ~/adsoft/helm_apps/nginx/deployment_oauth2.yaml -n redirect
+```
+
+Delete vouch using helm.
+
+```bash
+helm delete vouch -n redirect
+```
+
+References: 
+
+* https://halkeye.github.io/helm-charts/
+* https://hub.helm.sh/charts/halkeye/vouch
+* https://github.com/halkeye-helm-charts/vouch
+* https://hub.docker.com/r/voucher/vouch-proxy
+* https://github.com/vouch/vouch-proxy
+* https://medium.com/@vbehar/how-to-protect-a-kubernetes-ingress-behind-okta-with-nginx-91e279e06009
+* https://www.nginx.com/blog/validating-oauth-2-0-access-tokens-nginx/amp/
+* https://medium.com/lasso/use-nginx-and-lasso-to-add-google-authentication-to-any-application-d3a8a7f073dd
+* https://developer.okta.com/blog/2018/08/28/nginx-auth-request
+* https://bitnami.com/stack/nginx/helm
+* https://github.com/bitnami/charts/tree/master/bitnami/nginx
+* https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_except
+* https://kubernetes.io/docs/concepts/configuration/secret/
+* https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/
+* https://www.jeffgeerling.com/blog/2019/mounting-kubernetes-secret-single-file-inside-pod
+* https://www.magalix.com/blog/kubernetes-secrets-101
+* https://cloud.google.com/kubernetes-engine/docs/concepts/secret
+* https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+* https://aws.amazon.com/premiumsupport/knowledge-center/eks-cidr-ip-address-loadbalancer/
+* https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
+
+
 
 # Command Utils for Troubleshooting
 

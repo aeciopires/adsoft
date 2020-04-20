@@ -42,11 +42,11 @@ dependency "us_east1_testing_project1_k8s" {
 inputs = {
 
   network_customer  = dependency.vpc.outputs.vpc_name
-  myipaddress_public = "179.159.236.160/32" //my IP address
+  myipaddress_public = "179.159.238.22/32" //my IP address
 
   # List Source valid IP (my IP address)
   list_valid_ip = [
-    "179.159.236.160/32", 
+    "179.159.238.22/32", 
     "157.245.67.254/32",
   ]
 

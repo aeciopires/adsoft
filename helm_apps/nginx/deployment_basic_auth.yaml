@@ -1,0 +1,166 @@
+# Source: nginx/templates/server-block-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-5.1.11
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+data:
+  server-block.conf: |-
+    server {
+      listen 0.0.0.0:8443 ssl;
+      #listen 0.0.0.0:8080;
+      #listen 0.0.0.0:8080 ssl;
+      server_name nginx.myenvtest.com;
+
+      ssl_certificate      /opt/bitnami/nginx/conf/cert/server.crt;
+      ssl_certificate_key  /opt/bitnami/nginx/conf/key/server.key;
+      ssl_session_cache    shared:SSL:1m;
+      ssl_session_timeout  5m;
+      ssl_protocols TLSv1.2;
+      ssl_ciphers  HIGH:!aNULL:!MD5;
+      ssl_prefer_server_ciphers  on;
+
+      location / {
+        limit_except GET HEAD POST PUT PATCH OPTIONS {}
+
+        auth_basic           "Administrator’s Area";
+        auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
+
+        rewrite ^/(.*)$ /$1 break;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_redirect off;
+        proxy_pass http://www.http2demo.io:80;
+      }
+      location /test2 {
+        limit_except GET HEAD POST PUT PATCH OPTIONS {}
+
+        auth_basic           "Administrator’s Area";
+        auth_basic_user_file /opt/bitnami/nginx/conf/.htpasswd/auth;
+
+        rewrite ^/(.*)$ /$1 break;
+        proxy_set_header X-Real-IP  $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_redirect off;
+        proxy_pass http://demo.redmine.org:80;
+      }
+    }
+---
+# Source: nginx/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-5.1.11
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  # Create a new static External IP address on GCP Console in section VPC Network -> External IP addresses.
+  #loadBalancerIP: XXX.XXX.XXX.XXX
+  loadBalancerSourceRanges:
+    - 179.159.238.22/32 #my IP address
+  externalTrafficPolicy: "Cluster"
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      nodePort: 30080
+    - name: https
+      port: 443
+      targetPort: https
+      nodePort: 30443
+  selector:
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/instance: nginx
+---
+# Source: nginx/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+    helm.sh/chart: nginx-5.1.11
+    app.kubernetes.io/instance: nginx
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx
+      app.kubernetes.io/instance: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx
+        helm.sh/chart: nginx-5.1.11
+        app.kubernetes.io/instance: nginx
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      containers:
+        - name: nginx
+          image: docker.io/bitnami/nginx:1.16.1-debian-10-r57
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 8443
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: nginx-server-block
+              mountPath: /opt/bitnami/nginx/conf/server_blocks
+            - name: basic-auth
+              mountPath: "/opt/bitnami/nginx/conf/.htpasswd"
+              readOnly: true
+            - name: key
+              mountPath: "/opt/bitnami/nginx/conf/key"
+              readOnly: true
+            - name: cert
+              mountPath: "/opt/bitnami/nginx/conf/cert"
+              readOnly: true
+      volumes:
+        - name: nginx-server-block
+          configMap:
+            name: nginx
+        - name: basic-auth
+          secret:
+            secretName: basic-auth
+        - name: key
+          secret:
+            secretName: key
+        - name: cert
+          secret:
+            secretName: cert
+
