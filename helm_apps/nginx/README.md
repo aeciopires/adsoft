@@ -2,17 +2,17 @@
 
 - [About](#about)
 - [Prerequisites](#prerequisites)
-- [How to Deploy Nginx in Kubernetes without Basic Authentication](#how-to-deploy-nginx-in-kubernetes-without-basic-authentication)
-- [How to Deploy Nginx with Kubectl for enable Basic Authentication](#how-to-deploy-nginx-with-kubectl-for-enable-basic-authentication)
-- [How to Deploy Nginx with Kubectl for enable Oauth2 Authentication on Google](#how-to-deploy-nginx-with-kubectl-for-enable-oauth2-authentication-on-google)
-- [Command Utils for Troubleshooting](#command-utils-for-troubleshooting)
-- [Install nginx-ingress for Services Internal Kubernetes Cluster](#install-nginx-ingress-for-services-internal-kubernetes-cluster)
+- [How to deploy Nginx in Kubernetes without basic authentication](#how-to-deploy-nginx-in-kubernetes-without-basic-authentication)
+- [How to deploy Nginx with Kubectl for enable basic authentication](#how-to-deploy-nginx-with-kubectl-for-enable-basic-authentication)
+- [How to deploy Nginx with Kubectl for enable oauth2 authentication on Google](#how-to-deploy-nginx-with-kubectl-for-enable-oauth2-authentication-on-google)
+- [Command utils for troubleshooting](#command-utils-for-troubleshooting)
+- [Install nginx-ingress for services internal Kubernetes cluster](#install-nginx-ingress-for-services-internal-kubernetes-cluster)
 
 <!-- TOC -->
 
 # About
 
-My Helm Values for deploy of nginx using helm chart for proxy/redirect services externals to Kubernetes.
+My Helm Values for deploy of Nginx using Helm Chart for proxy/redirect services externals to Kubernetes.
 
 For install nginx-ingress in Kubernetes cluster see [Install nginx-redirect](#install-nginx-redirect) section.
 
@@ -33,9 +33,9 @@ Create the namespace ``redirect`` if not exists in cluster.
 kubectl create namespace redirect
 ```
 
-# How to Deploy Nginx in Kubernetes without Basic Authentication
+# How to deploy Nginx in Kubernetes without basic authentication
 
-Add Helm repo Bitnami charts:
+Add Helm Bitnami repository of charts:
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -43,13 +43,13 @@ helm repo list
 helm repo update
 ```
 
-Install plugin Helm secrets.
+Install plugin Helm Secrets.
 
 ```bash
 helm plugin install https://github.com/futuresimple/helm-secrets
 ```
 
-Download and configure the parameters for deploy of ``nginx``.
+Download and configure the parameters to deploy of ``nginx``.
 
 ```bash
 cd ~
@@ -58,7 +58,7 @@ git clone https://github.com/aeciopires/adsoft.git
 
 Edit the parameters in `adsoft/helm_apps/nginx/values.yaml` file.
 
-Deploy Nginx in cluster Kubernetes with Helm.
+Deploy Nginx in Kubernetes cluster with Helm.
 
 ```bash
 helm install nginx \
@@ -75,13 +75,13 @@ helm list -n redirect
 Access Nginx in http://IP-LOADBALANCER:80.
 
 
-Delete nginx using Helm.
+Delete Nginx using Helm.
 
 ```bash
 helm uninstall nginx -n redirect
 ```
 
-# How to Deploy Nginx with Kubectl for enable Basic Authentication
+# How to deploy Nginx with Kubectl for enable basic authentication
 
 In Ubuntu 18.04 install package ``apache2-utils``.
 
@@ -128,7 +128,7 @@ git clone https://github.com/aeciopires/adsoft.git
 
 Edit the parameters in ``adsoft/helm_apps/nginx/deployment_basic_auth.yaml`` file.
 
-Deploy Nginx in cluster Kubernetes with Kubectl for enable basic authentication and restrict source by IP address.
+Deploy Nginx in Kubernetes cluster with Kubectl for enable basic authentication and restrict source by IP address.
 
 ```bash
 kubectl apply -f ~/adsoft/helm_apps/nginx/deployment_basic_auth.yaml -n redirect
@@ -160,7 +160,7 @@ References:
 * https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
 
 
-# How to Deploy Nginx with Kubectl for enable Oauth2 Authentication on Google
+# How to deploy Nginx with Kubectl for enable oauth2 authentication on Google
 
 Download and configure the parameters for deploy of ``nginx``.
 
@@ -209,7 +209,7 @@ kubectl get secret key -o yaml -n redirect
 kubectl get secret cert -o yaml -n redirect
 ```
 
-Deploy Nginx in cluster Kubernetes with Kubectl for enable basic authentication and restrict source by IP address.
+Deploy Nginx in Kubernetes cluster with Kubectl for enable basic authentication and restrict source by IP address.
 
 ```bash
 kubectl apply -f ~/adsoft/helm_apps/nginx/deployment_oauth2.yaml -n redirect
@@ -254,7 +254,7 @@ References:
 
 
 
-# Command Utils for Troubleshooting
+# Command utils for troubleshooting
 
 View the pods.
 
@@ -304,7 +304,7 @@ Delete the namespace ``redirect`` in cluster.
 kubectl delete namespace redirect
 ```
 
-# Install nginx-ingress for Services Internal Kubernetes Cluster
+# Install nginx-ingress for services internal Kubernetes cluster
 
 References for install nginx-ingress in Kubernetes cluster:
 

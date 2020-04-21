@@ -1,12 +1,12 @@
 <!-- TOC -->
 
 - [About](#about)
-- [Prerequisites to Development and Test of Helm Charts](#prerequisites-to-development-and-test-of-helm-charts)
-  - [Kubernetes Cluster](#kubernetes-cluster)
+- [Prerequisites to develop and test of Helm Charts](#prerequisites-to-develop-and-test-of-helm-charts)
+  - [Kubernetes cluster](#kubernetes-cluster)
   - [Install Kubectl](#install-kubectl)
   - [Install Helm 3](#install-helm-3)
-- [Basic Commands of Helm 3](#basic-commands-of-helm-3)
-  - [More Installation Methods](#more-installation-methods)
+- [Basic commands of Helm 3](#basic-commands-of-helm-3)
+  - [More installation methods](#more-installation-methods)
 - [Creating Your Own Charts](#creating-your-own-charts)
 - [Developers](#developers)
 - [License](#license)
@@ -17,9 +17,9 @@
 
 My Helm Charts for Kubernetes.
 
-# Prerequisites to Development and Test of Helm Charts
+# Prerequisites to develop and test of Helm Charts
 
-## Kubernetes Cluster
+## Kubernetes cluster
 
 * Read [gcp_services/README.md](../gcp_services/README.md) or [my_helm_charts/README.md](https://github.com/aeciopires/my_helm_charts/blob/master/README.md) files to learn create a Kubernetes cluster.
 
@@ -67,7 +67,7 @@ https://github.com/peelmicro/learn-devops-the-complete-kubernetes-course
 
 ## Install Helm 3
 
-Execute os seguintes comandos para instalar o helm3.
+Execute these commands to install helm 3.
 
 Documentation: https://helm.sh/docs/
 
@@ -111,7 +111,7 @@ https://github.com/peelmicro/learn-devops-the-complete-kubernetes-course
 
 ---
 
-# Basic Commands of Helm 3
+# Basic commands of Helm 3
 
 Add Helm repo official stable charts:
 
@@ -196,7 +196,7 @@ Credits: Helm Doc Community
 
 ---
 
-## More Installation Methods
+## More installation methods
 
 The helm install command can install from several sources:
 
@@ -234,7 +234,7 @@ Credits: Helm Doc Community
 
 # Developers
 
-developer: Aécio dos Santos Pires<br>
+eveloper: Aécio dos Santos Pires<br>
 mail: http://blog.aeciopires.com/contato
 
 developer: André Luis Boni Déo<br>
