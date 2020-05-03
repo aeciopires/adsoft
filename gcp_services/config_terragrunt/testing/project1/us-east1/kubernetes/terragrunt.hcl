@@ -42,19 +42,19 @@ inputs = {
 
   master_authorized_networks_display_name = "myipadress-public"
   master_authorized_networks              = "179.159.238.22/32" //my IP address
-  k8s_version                             = "1.15.11-gke.5"
+  k8s_version                             = "1.15.11-gke.11"
 
   services_np = {
     name = "adsoft"
     initial_node_count = 1
     min_count = 1
     max_count = 2
-    machine_type = "n1-standard-1"
+    machine_type = "n1-standard-1" # reference https://cloud.google.com/compute/vm-instance-pricing
     disk_size_gb = 20
-    disk_type = "pd-ssd"
-    auto_repair = "true"
-    auto_upgrade = "false"
-    preemptible = "true"
+    disk_type = "pd-standard" # pd-standard or pd-ssd
+    auto_repair = "true" # true or false
+    auto_upgrade = "false" # true or false
+    preemptible = "true" # true or false
   }
 
   scost = "testing-project1-t0"
