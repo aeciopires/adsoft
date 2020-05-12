@@ -1,0 +1,3 @@
+.terraform
+kubeconfig*
+config-map-aws-auth*
