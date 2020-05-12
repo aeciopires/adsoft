@@ -42,7 +42,7 @@ config_terragrunt/
 
 # Prerequisites
 
-* Read the parent file [README.md](../README.md) in ``Prerequisites`` section.
+* Configure the AWS Credentials and install the general packages, Terraform, Terragrunt, Go, Gcloud and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
 * Some API GCP must be enable manually in each GCP project. The Terragrunt and Terraform will be failures with names and URL of this APIs.
 

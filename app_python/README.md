@@ -6,21 +6,9 @@ Attention:
 
 * https://github.com/andreyev/prometheus_hands-on/tree/demo/demo
 
-Instructions for downloading and starting Docker Compose
+2) Install Docker and Docker Compose following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
-```sh
-sudo su
-
-COMPOSE_VERSION=1.25.0
-
-curl -L https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
-
-chmod 777 /usr/bin/docker-compose
-
-exit
-```
-
-Start the containers.
+3) Start the containers.
 
 ```sh
 sudo mkdir -p /docker/adsoft/mongo
@@ -30,16 +18,11 @@ cd adsoft/app_python
 docker-compose up --build
 ```
 
-Access the app in the URL http://localhost:8080 (for HTTP).
+4) Access the app in the URL http://localhost:8080 (for HTTP).
 
-Stop the containers.
+5) Stop the containers.
 
 ```sh
 docker-compose down
 ```
 
-For more information about Docker Compose visit:
-
-* [https://docs.docker.com/compose/reference](https://docs.docker.com/compose/reference)
-* [https://docs.docker.com/compose/compose-file](https://docs.docker.com/compose/compose-file)
-* [https://docs.docker.com/engine/reference/builder](https://docs.docker.com/engine/reference/builder)

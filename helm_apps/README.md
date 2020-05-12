@@ -3,13 +3,9 @@
 - [About](#about)
 - [Prerequisites to develop and test of Helm Charts](#prerequisites-to-develop-and-test-of-helm-charts)
   - [Kubernetes cluster](#kubernetes-cluster)
-  - [Install Kubectl](#install-kubectl)
-  - [Install Helm 3](#install-helm-3)
 - [Basic commands of Helm 3](#basic-commands-of-helm-3)
   - [More installation methods](#more-installation-methods)
 - [Creating Your Own Charts](#creating-your-own-charts)
-- [Developers](#developers)
-- [License](#license)
 
 <!-- TOC -->
 
@@ -19,97 +15,11 @@ My Helm Charts for Kubernetes.
 
 # Prerequisites to develop and test of Helm Charts
 
+* Install Kubectl, Helm 3 following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
+
 ## Kubernetes cluster
 
 * Read [gcp_services/README.md](../gcp_services/README.md) or [my_helm_charts/README.md](https://github.com/aeciopires/my_helm_charts/blob/master/README.md) files to learn create a Kubernetes cluster.
-
-## Install Kubectl
-
-Simple shell function for Kubectl installation in Linux 64 bits
-
-Kubectl documentation:
-
-https://kubernetes.io/docs/reference/kubectl/overview/
-
-Copy and paste this code:
-
-```bash
-sudo su
- 
-KUBECTL_BIN=kubectl
- 
-function install_kubectl {
-if [ -z $(which $KUBECTL_BIN) ]; then
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/$KUBECTL_BIN
-    chmod +x ${KUBECTL_BIN}
-    sudo mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
-else
-    echo "Kubectl is most likely installed"
-fi
-}
- 
-install_kubectl
- 
-which kubectl
- 
-kubectl version
- 
-exit
-```
-
----
-
-Credits: Juan Pablo Perez - https://www.linkedin.com/in/juanpabloperezpeelmicro/ 
-
-https://github.com/peelmicro/learn-devops-the-complete-kubernetes-course
-
----
-
-## Install Helm 3
-
-Execute these commands to install helm 3.
-
-Documentation: https://helm.sh/docs/
-
-```bash
-sudo su
-
-HELM_TAR_FILE=helm-v3.0.3-linux-amd64.tar.gz
-HELM_URL=https://get.helm.sh
-HELM_BIN=helm3
-
-function install_helm3 {
-
-if [ -z $(which $HELM_BIN) ]; then
-    wget ${HELM_URL}/${HELM_TAR_FILE}
-    tar -xvzf ${HELM_TAR_FILE}
-    chmod +x linux-amd64/helm
-    sudo cp linux-amd64/helm /usr/local/bin/$HELM_BIN
-    sudo ln -sfn /usr/local/bin/$HELM_BIN /usr/local/bin/helm
-    rm -rf ${HELM_TAR_FILE} linux-amd64
-    echo -e "\nwhich ${HELM_BIN}"
-    which ${HELM_BIN}
-else
-    echo "Helm 3 is most likely installed"
-fi
-}
-
-install_helm3
-
-which helm3
-
-helm3 version
-
-exit
-```
-
----
-
-Credits: Juan Pablo Perez - https://www.linkedin.com/in/juanpabloperezpeelmicro/ 
-
-https://github.com/peelmicro/learn-devops-the-complete-kubernetes-course
-
----
 
 # Basic commands of Helm 3
 
@@ -231,16 +141,3 @@ Credits: Helm Doc Community
 * https://helm.sh/docs/intro/using_helm
 
 ---
-
-# Developers
-
-eveloper: Aécio dos Santos Pires<br>
-mail: http://blog.aeciopires.com/contato
-
-developer: André Luis Boni Déo<br>
-mail: andredeo at gmail dot com
-
-
-# License
-
-GPL-3.0 2020 Aécio dos Santos Pires and André Luis Boni Déo

@@ -3,7 +3,6 @@
 <!-- TOC -->
 
 - [English](#english)
-- [Prerequisites](#prerequisites)
 - [How to](#how-to)
 - [About Terraform commands](#about-terraform-commands)
 - [About Terragrunt commands](#about-terragrunt-commands)
@@ -12,44 +11,18 @@
   - [Providers](#providers)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
-- [Developers](#developers)
-- [License](#license)
 
 <!-- /TOC -->
 
 # English
 
-# Prerequisites
-
 NOTE: Developed using Terraform 0.12.x syntax.
 
-* You will need to create an Amazon AWS account. Create a 'Free Tier' account at Amazon https://aws.amazon.com/ follow the instructions on the pages: https://docs.aws.amazon.com/chime/latest/ag/aws-account.html and https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-limits.html. When creating the account you will need to register a credit card, but since you will create instances using the features offered by the 'Free Tier' plan, nothing will be charged if you do not exceed the limit for the use of the features and time offered and described in the previous link .
-* After creating the account in AWS, access the Amazon CLI interface at: https://aws.amazon.com/cli/
-* Click on the username (upper right corner) and choose the "Security Credentials" option. Then click on the "Access Key and Secret Access Key" option and click the "New Access Key" button to create and view the ID and Secret of the key, as shown below (https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html). The Access Key and Secret Key shown below are for illustration only. They are invalid and you need to exchange for the actual data generated for your account.
-
-```bash
-Access Key ID: YOUR_ACCESS_KEY_HERE
-Secret Access Key: YOUR_SECRET_ACCESS_KEY_HERE
-```
-
-* Create the directory below.
-
-```bash
-mkdir -p /home/USERNAME/.aws/
-touch /home/USERNAME/.aws/credentials
-```
-
-* Access ``/home/USERNAME/.aws/credentials`` file and add the following content. The Access Key and Secret Key shown below are for illustration only. They are invalid and you need to exchange for the actual data generated for your account.
-
-```bash
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_HERE
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE
-```
+* Configure the AWS Credentials and install the general packages, Terraform, Terragrunt, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
 * Clone this repository.
 
-```
+```bash
 git clone https://github.com/aeciopires/adsoft
 
 cd adsoft/aws_services
@@ -62,31 +35,6 @@ used by ``main.tf``, if you not define values in to ``terraform_prod.tfvars`` fi
 2. The goal is to install Docker Registry, Prometheus, Zabbix, Grafana and Apps.
 
 # How to
-
-* Download ``Terraform`` for Linux: https://www.terraform.io/downloads.html<br>
-    Home page: https://www.terraform.io<br>
-    GitHub: https://github.com/hashicorp/terraform<br>
-    Documentation: https://www.terraform.io/docs
-
-* Unpack Terraform package.
-* Access the unpacked directory.
-* Copy the Terraform binary to the ``/usr/bin`` directory with the following commands:
-
-```bash
-sudo cp terraform /usr/bin
-sudo chmod 755 /usr/bin/terraform
-```
-
-
-* Download ``Terragrunt`` for Linux AMD64: https://github.com/gruntwork-io/terragrunt/releases<br>
-    Home page: https://terragrunt.gruntwork.io<br>
-    GitHub: https://github.com/gruntwork-io/terragrunt<br>
-    Documentation: https://terragrunt.gruntwork.io/docs
-
-```
-sudo mv terragrunt_linux_amd64 /usr/bin/terragrunt
-sudo chmod +x /usr/bin/terragrunt
-```
 
 * Change the values according to the need of the environment in the ``terraform_prod.tfvars`` file.
 
@@ -160,35 +108,6 @@ https://docs.docker.com/registry/insecure/
 
 # Documentation of Code Terraform
 
-Generate by https://github.com/segmentio/terraform-docs
-
-* Install Go.
-
-```bash
-VERSION=1.13.5
-mkdir -p $HOME/go
-
-curl https://dl.google.com/go/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
-
-sudo tar -C /usr/local -xzf go.tar.gz
-
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go/bin
-
-go version
-```
-
-* Install terraform-docs.
-
-```bash
-cd $HOME/go
-
-GO111MODULE="off" go get github.com/segmentio/terraform-docs
-
-cd bin
-sudo mv terraform-docs /usr/bin/terraform-docs
-```
-
 * Generate docs with terraform-docs for project ``adsoft/aws_services``.
 
 ```bash
@@ -254,15 +173,3 @@ cat /tmp/doc.md
 | registry\_ip\_public | Public IP instance |
 | security\_group | Id of security Group |
 
-# Developers
-
-developer: Aécio dos Santos Pires<br>
-mail: http://blog.aeciopires.com/contato
-
-developer: André Luis Boni Déo<br>
-mail: andredeo at gmail dot com
-
-
-# License
-
-GPL-3.0 2020 Aécio dos Santos Pires and André Luis Boni Déo
