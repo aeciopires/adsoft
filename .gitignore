@@ -1,0 +1,13 @@
+*.vscode
+*.terraform
+*.backup
+*.tfstate
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
+*.terragrunt-cache
+.terragrunt-cache
+terragrunt.iml
+vendor
+.terraform
+*.out
