@@ -1,0 +1,114 @@
+<!-- TOC -->
+
+- [About](#about)
+- [Requirements](#requirements)
+  - [How to](#how-to)
+- [Documentation of Code Terraform](#documentation-of-code-terraform)
+  - [Providers](#providers)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
+
+<!-- TOC -->
+# About
+
+1. This directory contains the files:<br>
+  * ``variables.tf`` => where you can define the values of the variables used by ``main.tf``.<br>
+  * ``testing.tfvars`` => where you can define the values of the variables used in testing environment.<br>
+2. The goal is to create networking required by EKS cluster in AWS.
+
+# Requirements
+
+=====================
+
+NOTE: Developed using Terraform 0.12.x syntax.
+
+=====================
+
+* Configure the AWS Credentials and install the general packages, Terraform, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
+
+* Execute the commands.
+
+```
+git clone https://github.com/aeciopires/adsoft
+
+cd adsoft/eks/networking-eks
+```
+
+## How to
+
+* Change the values according to the need of the environment in the ``testing.tfvars`` file.
+
+* Validate the settings and create the environment with the following commands
+
+```bash
+terraform init
+terraform validate
+terraform workspace list
+terraform workspace new testing
+terraform workspace select testing
+terraform plan -var-file testing.tfvars
+terraform apply -var-file testing.tfvars
+terraform output
+terraform show
+```
+
+Useful commands:
+
+* ``terraform --help``   => Show help of command terraform<br>
+* ``terraform init``     => Initialize a Terraform working directory<br>
+* ``terraform validate`` => Validates the Terraform files<br>
+* ``terraform plan``     => Generate and show an execution plan<br>
+* ``terraform apply``    => Builds or changes infrastructure<br>
+* ``terraform output``   => Reads an output variable from a Terraform state file and prints the value.<br>
+* ``terraform show``     => Inspect Terraform state or plan<br>
+
+# Documentation of Code Terraform
+
+
+* Generate docs with terraform-docs for project ``adsoft/eks/networking-eks``.
+
+```bash
+cd adsoft/eks/networking-eks
+
+terraform-docs markdown . > /tmp/doc.md
+
+cat /tmp/doc.md
+```
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | >= 2.61.0 |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:-----:|
+| address\_allowed | IP or Net address allowed for remote access. | `any` | n/a | yes |
+| aws\_key\_name | Key pair RSA name. | `any` | n/a | yes |
+| aws\_public\_key\_path | PATH to public key in filesystem local. | `any` | n/a | yes |
+| bucket\_name | Bucket name for storage Terraform tfstate remote. | `any` | n/a | yes |
+| credentials\_file | PATH to credentials file | `string` | `"~/.aws/credentials"` | no |
+| dynamodb\_table\_name | DynamoDB Table name for lock Terraform tfstate remote. | `any` | n/a | yes |
+| environment | n/a | `any` | n/a | yes |
+| profile | n/a | `any` | n/a | yes |
+| region | AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `any` | n/a | yes |
+| subnet\_private1\_cidr\_block | CIDR block to subnet private1. | `any` | n/a | yes |
+| subnet\_public1\_cidr\_block | CIDR block to subnet public1. | `any` | n/a | yes |
+| tags | Maps of tags. | `map` | `{}` | no |
+| vpc1\_cidr\_block | CIDR block to vpc1. | `any` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| bucket\_arn | Bucket ARN |
+| bucket\_domain\_name | FQDN of bucket |
+| bucket\_id | Bucket Name (aka ID) |
+| key\_name | Name of key pair RSA |
+| security\_group | Id of security Group |
+| subnet\_private1 | Id of subnet private 1 |
+| subnet\_public1 | Id of subnet public 1 |
+| vpc1 | Id of VPC1 |
+

@@ -4,37 +4,46 @@
 # https://www.terraform.io/docs/providers/aws/d/subnet.html
 
 # Create VPC
-resource "aws_vpc" "vpc_testing" {
-  cidr_block           = "10.0.0.0/16"
+resource "aws_vpc" "vpc1" {
+  cidr_block           = var.vpc1_cidr_block
   instance_tenancy     = "default"
   enable_dns_support   = true
   #enable_dns_hostnames = true
 
-  tags = {
-    Name = "testing, vpc, terraform, aws"
-  }
+  tags = merge(
+    {
+      Name = "vpc, aws",
+    },
+    var.tags,
+  )
 }
 
 # Subnet Public
-resource "aws_subnet" "testing_subnet_public1" {
-  vpc_id                    = aws_vpc.vpc_testing.id
-  cidr_block                = "10.0.1.0/24"
+resource "aws_subnet" "subnet_public1" {
+  vpc_id                    = aws_vpc.vpc1.id
+  cidr_block                = var.subnet_public1_cidr_block
     map_public_ip_on_launch = "true" #it makes this a public subnet
   availability_zone         = data.aws_availability_zones.available.names[0]
 
-  tags = {
-    Name = "public1, subnet, testing, terraform, aws"
-  }
+  tags = merge(
+    {
+      Name = "public1, subnet, aws",
+    },
+    var.tags,
+  )
 }
 
 # Subnet Private
-resource "aws_subnet" "testing_subnet_private1" {
-  vpc_id                    = aws_vpc.vpc_testing.id
-  cidr_block                = "10.0.50.0/24"
+resource "aws_subnet" "subnet_private1" {
+  vpc_id                    = aws_vpc.vpc1.id
+  cidr_block                = var.subnet_private1_cidr_block
     map_public_ip_on_launch = "false" //it makes this a public subnet
   availability_zone         = data.aws_availability_zones.available.names[1]
 
-  tags = {
-    Name = "private1, subnet, testing, terraform, aws"
-  }
+  tags = merge(
+    {
+      Name = "private1, subnet, aws",
+    },
+    var.tags,
+  )
 }
