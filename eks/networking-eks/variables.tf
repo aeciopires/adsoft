@@ -3,7 +3,9 @@ variable "credentials_file" {
   description = "PATH to credentials file"
   default     = "~/.aws/credentials"
 }
-variable "profile" {}
+variable "profile" {
+  description = "Profile of AWS credential."
+}
 
 variable "region" {
   description = "AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html"
@@ -16,7 +18,9 @@ variable "tags" {
   default     = {}
 }
 
-variable "environment" {}
+variable "environment" {
+  description = "Name Terraform workspace."
+}
 
 variable "address_allowed" {
   description = "IP or Net address allowed for remote access."

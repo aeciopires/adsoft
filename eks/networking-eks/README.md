@@ -91,8 +91,8 @@ cat /tmp/doc.md
 | bucket\_name | Bucket name for storage Terraform tfstate remote. | `any` | n/a | yes |
 | credentials\_file | PATH to credentials file | `string` | `"~/.aws/credentials"` | no |
 | dynamodb\_table\_name | DynamoDB Table name for lock Terraform tfstate remote. | `any` | n/a | yes |
-| environment | n/a | `any` | n/a | yes |
-| profile | n/a | `any` | n/a | yes |
+| environment | Name Terraform workspace. | `any` | n/a | yes |
+| profile | Profile of AWS credential. | `any` | n/a | yes |
 | region | AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `any` | n/a | yes |
 | subnet\_private1\_cidr\_block | CIDR block to subnet private1. | `any` | n/a | yes |
 | subnet\_public1\_cidr\_block | CIDR block to subnet public1. | `any` | n/a | yes |

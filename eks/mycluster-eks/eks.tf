@@ -9,10 +9,8 @@ module "eks-cluster" {
   cluster_enabled_log_types             = var.cluster_enabled_log_types
   cluster_log_retention_in_days         = var.cluster_log_retention_in_days
   cluster_name                          = var.cluster_name
-  #subnets                               = var.subnets
-  subnets                               = [ aws_subnet.testing_subnet_public1.id, aws_subnet.testing_subnet_private1.id]
-  #vpc_id                                = var.vpc_id
-  vpc_id                                = aws_vpc.vpc_testing.id
+  subnets                               = var.subnets
+  vpc_id                                = var.vpc_id
   cluster_endpoint_public_access        = var.cluster_endpoint_public_access
   cluster_endpoint_public_access_cidrs  = var.cluster_endpoint_public_access_cidrs
   cluster_endpoint_private_access       = var.cluster_endpoint_private_access
@@ -33,14 +31,12 @@ module "eks-cluster" {
       public_ip                                = var.public_ip
       suspended_processes                      = var.suspended_processes
       root_volume_size                         = var.root_volume_size
-      #key_name                                 = var.key_name
-      key_name                                 = aws_key_pair.my_key.key_name
+      key_name                                 = var.aws_key_name
     },
   ]
 
   workers_additional_policies          = var.workers_additional_policies
-  #worker_additional_security_group_ids = var.worker_additional_security_group_ids
-  worker_additional_security_group_ids = aws_security_group.services.id
+  worker_additional_security_group_ids = var.worker_additional_security_group_ids
   map_roles                            = var.map_roles
   map_users                            = var.map_users
 

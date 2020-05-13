@@ -27,17 +27,26 @@ NOTE: Developed using Terraform 0.12.x syntax.
 
 * Configure the AWS Credentials and install the general packages, Terraform, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
+* Create the following resources required for the functioning of the EKS cluster. Do this executing the Terraform code as instructed in the file [../networking-eks/README.md](../networking-eks/README.md). See the output of the ``terraform apply`` and change the values ​​of the subnets, vpc, security group in the [testing.tfvars](testing.tfvars) and [backend.tf](backend.tf) files according to the needs of your environment.
+  * bucket S3 and DynamoDB table for Terraform state remote;
+  * subnets public and private;
+  * vpc;
+  * NAT gateway;
+  * Internet Gateway;
+  * security group;
+  * route table;
+
 * Execute the commands.
 
 ```
 git clone https://github.com/aeciopires/adsoft
 
-cd adsoft/mycluster-eks
+cd adsoft/eks/mycluster-eks
 ```
 
 ## How to
 
-* Change the values according to the need of the environment in the ``testing.tfvars`` file.
+* Change the values according to the need of the environment in the ``testing.tfvars`` and ``backend.tf`` files.
 
 * Validate the settings and create the environment with the following commands
 
@@ -63,13 +72,23 @@ Useful commands:
 * ``terraform output``   => Reads an output variable from a Terraform state file and prints the value.<br>
 * ``terraform show``     => Inspect Terraform state or plan<br>
 
+Access cluster with Kubectl.
+
+```bash
+aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_EKS_NAME --profile PROFILE_AWS_NAME
+
+kubectl get nodes -A
+
+kubectl get pods -A
+```
+
 # Documentation of Code Terraform
 
 
-* Generate docs with terraform-docs for project ``adsoft/mycluster-eks``.
+* Generate docs with terraform-docs for project ``adsoft/eks/mycluster-eks``.
 
 ```bash
-cd adsoft/mycluster-eks
+cd adsoft/eks/mycluster-eks
 
 terraform-docs markdown . > /tmp/doc.md
 
@@ -90,40 +109,37 @@ cat /tmp/doc.md
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | address\_allowed | IP or Net address allowed for remote access. | `any` | n/a | yes |
-| asg\_desired\_capacity | n/a | `any` | n/a | yes |
-| asg\_max\_size | n/a | `any` | n/a | yes |
-| asg\_min\_size | n/a | `any` | n/a | yes |
-| autoscaling\_enabled | n/a | `any` | n/a | yes |
-| aws\_key\_name | n/a | `any` | n/a | yes |
-| aws\_key\_private\_path | n/a | `any` | n/a | yes |
-| aws\_key\_public\_path | n/a | `any` | n/a | yes |
-| cluster\_enabled\_log\_types | n/a | `list(string)` | n/a | yes |
-| cluster\_endpoint\_private\_access | n/a | `any` | n/a | yes |
-| cluster\_endpoint\_private\_access\_cidrs | n/a | `list(string)` | n/a | yes |
-| cluster\_endpoint\_public\_access | n/a | `any` | n/a | yes |
-| cluster\_endpoint\_public\_access\_cidrs | n/a | `list(string)` | n/a | yes |
-| cluster\_log\_retention\_in\_days | n/a | `string` | `"7"` | no |
-| cluster\_name | EKS | `any` | n/a | yes |
-| cluster\_version | n/a | `any` | n/a | yes |
-| credentials\_file | Provider config | `string` | `"~/.aws/credentials"` | no |
-| cw\_retention\_in\_days | Kubernetes manifests | `number` | `7` | no |
-| environment | n/a | `any` | n/a | yes |
-| key\_name | n/a | `any` | n/a | yes |
-| lt\_name | n/a | `any` | n/a | yes |
-| map\_roles | n/a | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
-| map\_users | n/a | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
-| on\_demand\_percentage\_above\_base\_capacity | n/a | `any` | n/a | yes |
-| override\_instance\_types | n/a | `any` | n/a | yes |
-| profile | n/a | `any` | n/a | yes |
-| public\_ip | variable "kubelet\_extra\_args" {} | `any` | n/a | yes |
-| region | n/a | `any` | n/a | yes |
-| root\_volume\_size | n/a | `any` | n/a | yes |
-| subnets | Networking | `list(string)` | n/a | yes |
-| suspended\_processes | n/a | `any` | n/a | yes |
-| tags | General | `map` | `{}` | no |
-| vpc\_id | n/a | `any` | n/a | yes |
-| worker\_additional\_security\_group\_ids | n/a | `list(string)` | `[]` | no |
-| workers\_additional\_policies | n/a | `list(string)` | n/a | yes |
+| asg\_desired\_capacity | Number desired of nodes workers in cluster EKS. | `integer` | n/a | yes |
+| asg\_max\_size | Number maximal of nodes workers in cluster EKS. | `integer` | n/a | yes |
+| asg\_min\_size | Number minimal of nodes workers in cluster EKS. | `integer` | n/a | yes |
+| autoscaling\_enabled | Enable ou disable autoscaling. | `boolean` | `true` | no |
+| aws\_key\_name | Key pair RSA name. | `any` | n/a | yes |
+| cluster\_enabled\_log\_types | A list of the desired control plane logging to enable.<br> For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html) | `list(string)` | <pre>[<br>  "api",<br>  "audit"<br>]<br></pre> | no |
+| cluster\_endpoint\_private\_access | Indicates whether or not the Amazon EKS private API server endpoint is enabled. | `boolean` | `true` | no |
+| cluster\_endpoint\_private\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS private API server endpoint, when public access is disabled | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
+| cluster\_endpoint\_public\_access | Indicates whether or not the Amazon EKS public API server endpoint is enabled. | `boolean` | `true` | no |
+| cluster\_endpoint\_public\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS public API server endpoint. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
+| cluster\_log\_retention\_in\_days | Number of days to retain log events. | `integer` | `"7"` | no |
+| cluster\_name | Cluster EKS name. | `any` | n/a | yes |
+| cluster\_version | Kubernetes version supported by EKS. <br> Reference: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html | `any` | n/a | yes |
+| credentials\_file | PATH to credentials file | `string` | `"~/.aws/credentials"` | no |
+| cw\_retention\_in\_days | Fluentd retention in days. | `integer` | `7` | no |
+| environment | Name Terraform workspace. | `any` | n/a | yes |
+| lt\_name | Name of template worker group. | `any` | n/a | yes |
+| map\_roles | Additional IAM roles to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
+| map\_users | Additional IAM users to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
+| on\_demand\_percentage\_above\_base\_capacity | On demand percentage above base capacity. | `integer` | n/a | yes |
+| override\_instance\_types | Type instances for nodes workers. Reference: https://aws.amazon.com/ec2/pricing/on-demand/ | `list(string)` | n/a | yes |
+| profile | Profile of AWS credential. | `any` | n/a | yes |
+| public\_ip | Enable ou disable public IP in cluster EKS. | `boolean` | `false` | no |
+| region | AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `any` | n/a | yes |
+| root\_volume\_size | Size of disk in nodes of cluster EKS. | `integer` | n/a | yes |
+| subnets | List of IDs subnets public and/or private. | `list(string)` | n/a | yes |
+| suspended\_processes | Cluster EKS name. | `any` | n/a | yes |
+| tags | Maps of tags. | `map` | `{}` | no |
+| vpc\_id | ID of VPC. | `any` | n/a | yes |
+| worker\_additional\_security\_group\_ids | A list of additional security group ids to attach to worker instances. | `list(string)` | `[]` | no |
+| workers\_additional\_policies | Additional policies to be added to workers | `list(string)` | `[]` | no |
 
 ## Outputs
 
@@ -133,9 +149,7 @@ cat /tmp/doc.md
 | cluster\_security\_group\_id | Security group ids attached to the cluster control plane. |
 | config\_map\_aws\_auth | A kubernetes configuration to authenticate to this EKS cluster. |
 | kubectl\_config | kubectl config as generated by the module. |
-| node\_groups | Outputs from node groups |
 | region | AWS region. |
-| security\_group | Id of security Group |
 
 
 # Throubleshooting

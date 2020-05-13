@@ -23,13 +23,3 @@ output "region" {
   value       = var.region
 }
 
-output "node_groups" {
-  description = "Outputs from node groups"
-  value       = module.eks-cluster.node_groups
-}
-
-output "security_group" {
-  value       = aws_security_group.services.id
-  description = "Id of security Group"
-}
-

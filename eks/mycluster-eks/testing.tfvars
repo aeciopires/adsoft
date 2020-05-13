@@ -3,8 +3,8 @@ profile = "default"
 region  = "us-east-2"
 
 # Networking
-subnets = ["subnet-0a4b7385c229316b5", "subnet-04c53d847792caa21"]
-vpc_id  = "vpc-064282afe27af7cbc"
+subnets = ["subnet-02a529dd02055132f", "subnet-03a8c01b4ccc30513"]
+vpc_id  = "vpc-030b86877458b55a8"
 
 # EKS
 cluster_name                             = "mycluster-eks-testing"
@@ -17,22 +17,21 @@ asg_min_size                             = 2
 asg_max_size                             = 20
 asg_desired_capacity                     = 2
 root_volume_size                         = 50
-key_name                                 = "aws-teste"
+aws_key_name                             = "aws-teste"
 public_ip                                = false
 cluster_endpoint_public_access           = true
 cluster_endpoint_public_access_cidrs     = ["0.0.0.0/0"]
 cluster_endpoint_private_access          = true
-cluster_endpoint_private_access_cidrs    = ["10.0.0.0/16","10.0.1.0/24","10.0.50.0/24"]
+cluster_endpoint_private_access_cidrs    = ["10.0.0.0/16","10.0.1.0/24","10.0.3.0/24"]
 suspended_processes                      = ["AZRebalance"]
 cluster_enabled_log_types                = ["api", "audit"]
 workers_additional_policies              = [
-  "arn:aws:iam::660412058498:policy/aws-alb-ingress-controller",
   "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
   "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
   "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
   "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
 ]
-worker_additional_security_group_ids     = ["sg-09100409f6a9a4f51"]
+worker_additional_security_group_ids     = ["sg-052ac86bf8b50158d"]
 map_roles = [
   {
     rolearn  = "arn:aws:iam::255686512659:role/adsoft"
@@ -51,12 +50,11 @@ map_users = [
 
 # General
 tags = {
-  Scost = "testing"
+  Scost       = "testing",
+  Terraform   = "true",
+  Environment = "testing",
 }
 
-environment = "testing"
-
-aws_key_name         = "aws-teste"
-aws_key_private_path = "/home/aws-teste.pem"
-aws_key_public_path  = "/home/aws-teste.pub"
-address_allowed      = "179.159.238.22/32"
+environment     = "testing"
+# MyIPAddress
+address_allowed = "179.159.238.22/32"
