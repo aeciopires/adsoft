@@ -25,14 +25,30 @@ Install the follow packages.
 Debian/Ubuntu:
 
 ```bash
-sudo apt-get install -y vim traceroute telnet git tcpdump curl wget openssl netcat net-tools awscli
+sudo apt-get install -y vim traceroute telnet git tcpdump curl wget openssl netcat net-tools
 ```
 
 CentOS:
 
 ```bash
-sudo yum install -y vim traceroute telnet git tcpdump curl wget openssl netcat net-tools awscli
+sudo yum install -y vim traceroute telnet git tcpdump curl wget openssl netcat net-tools
 ```
+
+# AWS-CLI
+
+Install the ``aws``:
+
+```bash
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+
+unzip awscli-bundle.zip
+
+sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+aws --version
+```
+
+Reference: https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
 
 # Docker
 
