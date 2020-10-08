@@ -279,11 +279,16 @@ Install Terraform-Docs with the follow commands.
 
 ```bash
 cd $HOME/go
-
-GO111MODULE="off" go get github.com/segmentio/terraform-docs
-
-cd bin
-sudo mv terraform-docs /usr/bin/terraform-docs
+ 
+GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
+ 
+cd bin/bin/
+ 
+sudo mv terraform-docs /usr/local/bin/terraform-docs
+ 
+sudo chmod +x /usr/local/bin/terraform-docs
+ 
+terraform-docs --version
 ```
 
 For more information about Terraform-Docs visit:
