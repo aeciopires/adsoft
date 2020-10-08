@@ -171,8 +171,8 @@ Run the following shell function to install Terraform 0.12.
 ```bash
 sudo su
 
-TERRAFORM_ZIP_FILE=terraform_0.12.24_linux_amd64.zip
-TERRAFORM=https://releases.hashicorp.com/terraform/0.12.24
+TERRAFORM_ZIP_FILE=terraform_0.12.25_linux_amd64.zip
+TERRAFORM=https://releases.hashicorp.com/terraform/0.12.25
 TERRAFORM_BIN=terraform12
 
 function install_terraform12 {
@@ -241,15 +241,15 @@ For more information about Terraform visit:
 Install Go with the follow commands.
 
 ```bash
-VERSION=1.13.5
+VERSION=1.15
 mkdir -p $HOME/go
 
 curl https://dl.google.com/go/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
 
 sudo tar -C /usr/local -xzf go.tar.gz
 
-export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go/bin
+export PATH=$PATH:/usr/local/go/bin:$GOPATH
 
 go version
 ```
