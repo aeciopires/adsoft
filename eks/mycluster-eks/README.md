@@ -4,10 +4,10 @@
 - [Requirements](#requirements)
   - [How to](#how-to)
 - [Documentation of Code Terraform](#documentation-of-code-terraform)
+- [Throubleshooting](#throubleshooting)
   - [Providers](#providers)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
-- [Throubleshooting](#throubleshooting)
 
 <!-- TOC -->
 # About
@@ -28,17 +28,20 @@ NOTE: Developed using Terraform 0.12.x syntax.
 * Configure the AWS Credentials and install the general packages, Terraform, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
 * Create the following resources required for the functioning of the EKS cluster. Do this executing the Terraform code as instructed in the file [../networking-eks/README.md](../networking-eks/README.md). See the output of the ``terraform apply`` and change the values ​​of the subnets, vpc, security group in the [testing.tfvars](testing.tfvars) and [backend.tf](backend.tf) files according to the needs of your environment.
-  * bucket S3 and DynamoDB table for Terraform state remote;
-  * subnets public and private;
-  * vpc;
+  * Bucket S3 and DynamoDB table for Terraform state remote;
+  * Subnets public and private;
+  * VPC;
   * NAT gateway;
   * Internet Gateway;
-  * security group;
-  * route table;
+  * Security group;
+  * Route table;
+  * Policies.
 
-* Execute the commands.
+* Execute the commands:
 
-```
+```bash
+cd ~
+
 git clone https://github.com/aeciopires/adsoft
 
 cd adsoft/eks/mycluster-eks
@@ -48,13 +51,13 @@ cd adsoft/eks/mycluster-eks
 
 * Change the values according to the need of the environment in the ``testing.tfvars`` and ``backend.tf`` files.
 
-* Validate the settings and create the environment with the following commands
+* Validate the settings and create the environment with the following commands:
 
 ```bash
 terraform init
 terraform validate
-terraform workspace list
 terraform workspace new testing
+terraform workspace list
 terraform workspace select testing
 terraform plan -var-file testing.tfvars
 terraform apply -var-file testing.tfvars
@@ -75,7 +78,7 @@ Useful commands:
 Access cluster with Kubectl.
 
 ```bash
-aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_EKS_NAME --profile PROFILE_AWS_NAME
+aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_NAME --profile PROFILE_NAME_AWS
 
 kubectl get nodes -A
 
@@ -83,7 +86,6 @@ kubectl get pods -A
 ```
 
 # Documentation of Code Terraform
-
 
 * Generate docs with terraform-docs for project ``adsoft/eks/mycluster-eks``.
 
@@ -93,6 +95,75 @@ cd adsoft/eks/mycluster-eks
 terraform-docs markdown . > /tmp/doc.md
 
 cat /tmp/doc.md
+```
+
+# Throubleshooting
+
+Documentations:
+
+* https://docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html
+* https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
+* https://github.com/kubernetes/kubernetes/issues/75457
+* https://github.com/aws/containers-roadmap/issues/607
+* https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html
+* https://aws.amazon.com/pt/premiumsupport/knowledge-center/eks-cluster-autoscaler-setup/
+* https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html
+* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md
+* https://github.com/terraform-aws-modules/terraform-aws-eks
+* https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples
+
+Result of command ``terraform init``
+
+```bash
+Initializing modules...
+Downloading terraform-aws-modules/eks/aws 12.0.0 for eks-cluster...
+- eks-cluster in .terraform/modules/eks-cluster/terraform-aws-eks-12.0.0
+- eks-cluster.node_groups in .terraform/modules/eks-cluster/terraform-aws-eks-12.0.0/modules/node_groups
+
+Initializing the backend...
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Checking for available provider plugins...
+- Downloading plugin for provider "local" (hashicorp/local) 1.4.0...
+- Downloading plugin for provider "template" (hashicorp/template) 2.1.2...
+- Downloading plugin for provider "aws" (hashicorp/aws) 2.61.0...
+- Downloading plugin for provider "random" (hashicorp/random) 2.2.1...
+- Downloading plugin for provider "kubernetes" (hashicorp/kubernetes) 1.11.2...
+- Downloading plugin for provider "null" (hashicorp/null) 2.1.2...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.template: version = "~> 2.1"
+```
+
+Result of command ``terraform providers``
+
+```bash
+├── provider.aws >= 2.61.0
+├── provider.kubernetes >= 1.11.2
+├── provider.local >= 1.4.0
+├── provider.null >= 2.1.2
+├── provider.random >= 2.2.1
+├── provider.template >= 2.1.2
+└── module.eks-cluster
+    ├── provider.aws >= 2.55.0
+    ├── provider.kubernetes >= 1.11.1
+    ├── provider.local >= 1.4
+    ├── provider.null >= 2.1
+    ├── provider.random >= 2.1
+    ├── provider.template >= 2.1
+    └── module.node_groups
+        ├── provider.aws (inherited)
+        └── provider.random (inherited)
 ```
 
 ## Providers
@@ -150,74 +221,3 @@ cat /tmp/doc.md
 | config\_map\_aws\_auth | A kubernetes configuration to authenticate to this EKS cluster. |
 | kubectl\_config | kubectl config as generated by the module. |
 | region | AWS region. |
-
-
-# Throubleshooting
-
-Documentations:
-
-* https://docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html
-* https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/
-* https://github.com/kubernetes/kubernetes/issues/75457
-* https://github.com/aws/containers-roadmap/issues/607
-* https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html
-* https://aws.amazon.com/pt/premiumsupport/knowledge-center/eks-cluster-autoscaler-setup/
-* https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html
-* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/faq.md
-* https://github.com/terraform-aws-modules/terraform-aws-eks
-* https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples
-
-
-Result of command ``terraform init``
-
-```bash
-Initializing modules...
-Downloading terraform-aws-modules/eks/aws 12.0.0 for eks-cluster...
-- eks-cluster in .terraform/modules/eks-cluster/terraform-aws-eks-12.0.0
-- eks-cluster.node_groups in .terraform/modules/eks-cluster/terraform-aws-eks-12.0.0/modules/node_groups
-
-Initializing the backend...
-
-Successfully configured the backend "s3"! Terraform will automatically
-use this backend unless the backend configuration changes.
-
-Initializing provider plugins...
-- Checking for available provider plugins...
-- Downloading plugin for provider "local" (hashicorp/local) 1.4.0...
-- Downloading plugin for provider "template" (hashicorp/template) 2.1.2...
-- Downloading plugin for provider "aws" (hashicorp/aws) 2.61.0...
-- Downloading plugin for provider "random" (hashicorp/random) 2.2.1...
-- Downloading plugin for provider "kubernetes" (hashicorp/kubernetes) 1.11.2...
-- Downloading plugin for provider "null" (hashicorp/null) 2.1.2...
-
-The following providers do not have any version constraints in configuration,
-so the latest version was installed.
-
-To prevent automatic upgrades to new major versions that may contain breaking
-changes, it is recommended to add version = "..." constraints to the
-corresponding provider blocks in configuration, with the constraint strings
-suggested below.
-
-* provider.template: version = "~> 2.1"
-```
-
-
-Result of command ``terraform providers``
-
-```bash
-.
-├── provider.aws
-├── provider.kubernetes ~> 1.11.2
-├── provider.local
-├── provider.null
-├── provider.template
-└── module.eks-cluster
-    ├── provider.aws >= 2.52.0
-    ├── provider.kubernetes >= 1.11.1
-    ├── provider.local >= 1.4
-    ├── provider.null >= 2.1
-    ├── provider.random >= 2.1
-    └── module.node_groups
-        ├── provider.aws (inherited)
-        └── provider.random
-```

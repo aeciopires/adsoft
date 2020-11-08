@@ -62,7 +62,6 @@ rules:
     resourceNames: ["cluster-autoscaler"]
     resources: ["leases"]
     verbs: ["get", "update"]
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -139,7 +138,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/cluster-autoscaler:v1.14.7
+        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.17.3
           name: cluster-autoscaler
           resources:
             limits:
@@ -156,9 +155,6 @@ spec:
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/${cluster_name}
-          env:
-            - name: AWS_REGION
-              value: ${region}
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt

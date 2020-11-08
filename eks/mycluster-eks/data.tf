@@ -35,3 +35,11 @@ data "template_file" "autoscaler" {
   }
 }
 
+# Deploy AWS-CNI
+data "template_file" "aws_cni" {
+  template = file("${path.module}/templates/aws-k8s-cni.yaml.tpl")
+
+  vars = {
+    region = var.region
+  }
+}

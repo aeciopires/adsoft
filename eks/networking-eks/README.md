@@ -26,9 +26,21 @@ NOTE: Developed using Terraform 0.12.x syntax.
 
 * Configure the AWS Credentials and install the general packages, Terraform, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
-* Execute the commands.
+* Create the following resources required for the functioning of the EKS cluster:
+  * Bucket S3 and DynamoDB table for Terraform state remote;
+  * Subnets public and private;
+  * VPC;
+  * NAT gateway;
+  * Internet Gateway;
+  * Security group;
+  * Route table;
+  * Policies.
 
-```
+* Execute the commands:
+
+```bash
+cd ~
+
 git clone https://github.com/aeciopires/adsoft
 
 cd adsoft/eks/networking-eks
@@ -36,15 +48,15 @@ cd adsoft/eks/networking-eks
 
 ## How to
 
-* Change the values according to the need of the environment in the ``testing.tfvars`` file.
+* Change the values according to the need of the environment in the ``testing.tfvars`` and ``backend.tf`` files.
 
-* Validate the settings and create the environment with the following commands
+* Validate the settings and create the environment with the following commands:
 
 ```bash
 terraform init
 terraform validate
-terraform workspace list
 terraform workspace new testing
+terraform workspace list
 terraform workspace select testing
 terraform plan -var-file testing.tfvars
 terraform apply -var-file testing.tfvars
@@ -64,11 +76,10 @@ Useful commands:
 
 # Documentation of Code Terraform
 
-
-* Generate docs with terraform-docs for project ``adsoft/eks/networking-eks``.
+* Generate docs with terraform-docs for project ``adsoft/eks/mycluster-eks``.
 
 ```bash
-cd adsoft/eks/networking-eks
+cd adsoft/eks/mycluster-eks
 
 terraform-docs markdown . > /tmp/doc.md
 
@@ -80,6 +91,7 @@ cat /tmp/doc.md
 | Name | Version |
 |------|---------|
 | aws | >= 2.61.0 |
+| local | >= 1.4.0 |
 
 ## Inputs
 
@@ -93,7 +105,7 @@ cat /tmp/doc.md
 | dynamodb\_table\_name | DynamoDB Table name for lock Terraform tfstate remote. | `any` | n/a | yes |
 | environment | Name Terraform workspace. | `any` | n/a | yes |
 | profile | Profile of AWS credential. | `any` | n/a | yes |
-| region | AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `any` | n/a | yes |
+| region | AWS region. Reference: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions | `any` | n/a | yes |
 | subnet\_private1\_cidr\_block | CIDR block to subnet private1. | `any` | n/a | yes |
 | subnet\_public1\_cidr\_block | CIDR block to subnet public1. | `any` | n/a | yes |
 | tags | Maps of tags. | `map` | `{}` | no |
@@ -111,4 +123,3 @@ cat /tmp/doc.md
 | subnet\_private1 | Id of subnet private 1 |
 | subnet\_public1 | Id of subnet public 1 |
 | vpc1 | Id of VPC1 |
-

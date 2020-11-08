@@ -3,6 +3,12 @@
 # https://www.terraform.io/docs/providers/aws/d/vpc.html
 # https://www.terraform.io/docs/providers/aws/d/subnet.html
 
+# Check for correct workspace
+data "local_file" "workspace_check" {
+  count    = "${var.environment == terraform.workspace ? 0 : 1}"
+  filename = "ERROR: Workspace does not match given environment name!"
+}
+
 # Create VPC
 resource "aws_vpc" "vpc1" {
   cidr_block           = var.vpc1_cidr_block
@@ -27,7 +33,8 @@ resource "aws_subnet" "subnet_public1" {
 
   tags = merge(
     {
-      Name = "public1, subnet, aws",
+      Name                     = "public1, subnet, aws",
+      "kubernetes.io/role/elb" = "1"
     },
     var.tags,
   )
@@ -42,7 +49,8 @@ resource "aws_subnet" "subnet_private1" {
 
   tags = merge(
     {
-      Name = "private1, subnet, aws",
+      Name                              = "private1, subnet, aws",
+      "kubernetes.io/role/internal-elb" = "1"
     },
     var.tags,
   )
