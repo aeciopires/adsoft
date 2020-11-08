@@ -123,3 +123,4 @@ cat /tmp/doc.md
 | subnet\_private1 | Id of subnet private 1 |
 | subnet\_public1 | Id of subnet public 1 |
 | vpc1 | Id of VPC1 |
+

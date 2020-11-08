@@ -180,31 +180,32 @@ Result of command ``terraform providers``
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | address\_allowed | IP or Net address allowed for remote access. | `any` | n/a | yes |
-| asg\_desired\_capacity | Number desired of nodes workers in cluster EKS. | `integer` | n/a | yes |
-| asg\_max\_size | Number maximal of nodes workers in cluster EKS. | `integer` | n/a | yes |
-| asg\_min\_size | Number minimal of nodes workers in cluster EKS. | `integer` | n/a | yes |
-| autoscaling\_enabled | Enable ou disable autoscaling. | `boolean` | `true` | no |
+| asg\_desired\_capacity | Number desired of nodes workers in cluster EKS. | `number` | n/a | yes |
+| asg\_max\_size | Number maximal of nodes workers in cluster EKS. | `number` | n/a | yes |
+| asg\_min\_size | Number minimal of nodes workers in cluster EKS. | `number` | n/a | yes |
+| autoscaling\_enabled | Enable ou disable autoscaling. | `bool` | `true` | no |
 | aws\_key\_name | Key pair RSA name. | `any` | n/a | yes |
-| cluster\_enabled\_log\_types | A list of the desired control plane logging to enable.<br> For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html) | `list(string)` | <pre>[<br>  "api",<br>  "audit"<br>]<br></pre> | no |
-| cluster\_endpoint\_private\_access | Indicates whether or not the Amazon EKS private API server endpoint is enabled. | `boolean` | `true` | no |
-| cluster\_endpoint\_private\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS private API server endpoint, when public access is disabled | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
-| cluster\_endpoint\_public\_access | Indicates whether or not the Amazon EKS public API server endpoint is enabled. | `boolean` | `true` | no |
-| cluster\_endpoint\_public\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS public API server endpoint. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]<br></pre> | no |
-| cluster\_log\_retention\_in\_days | Number of days to retain log events. | `integer` | `"7"` | no |
+| cluster\_enabled\_log\_types | A list of the desired control plane logging to enable.<br> For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html) | `list(string)` | <code><pre>[<br>  "api",<br>  "audit"<br>]<br></pre></code> | no |
+| cluster\_endpoint\_private\_access | Indicates whether or not the Amazon EKS private API server endpoint is enabled. | `bool` | `true` | no |
+| cluster\_endpoint\_private\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS private API server endpoint, when public access is disabled | `list(string)` | <code><pre>[<br>  "0.0.0.0/0"<br>]<br></pre></code> | no |
+| cluster\_endpoint\_public\_access | Indicates whether or not the Amazon EKS public API server endpoint is enabled. | `bool` | `true` | no |
+| cluster\_endpoint\_public\_access\_cidrs | List of CIDR blocks which can access the Amazon EKS public API server endpoint. | `list(string)` | <code><pre>[<br>  "0.0.0.0/0"<br>]<br></pre></code> | no |
+| cluster\_log\_retention\_in\_days | Number of days to retain log events. | `number` | `"7"` | no |
 | cluster\_name | Cluster EKS name. | `any` | n/a | yes |
-| cluster\_version | Kubernetes version supported by EKS. <br> Reference: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html | `any` | n/a | yes |
+| cluster\_version | Kubernetes version supported by EKS.   Reference: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html | `any` | n/a | yes |
 | credentials\_file | PATH to credentials file | `string` | `"~/.aws/credentials"` | no |
-| cw\_retention\_in\_days | Fluentd retention in days. | `integer` | `7` | no |
+| cw\_retention\_in\_days | Fluentd retention in days. | `number` | `7` | no |
 | environment | Name Terraform workspace. | `any` | n/a | yes |
+| kubelet\_extra\_args | Extra arguments for EKS. | `string` | `"--node-labels=node.kubernetes.io/lifecycle=spot"` | no |
 | lt\_name | Name of template worker group. | `any` | n/a | yes |
-| map\_roles | Additional IAM roles to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
-| map\_users | Additional IAM users to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre> | `[]` | no |
-| on\_demand\_percentage\_above\_base\_capacity | On demand percentage above base capacity. | `integer` | n/a | yes |
+| map\_roles | Additional IAM roles to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <code><pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre></code> | `[]` | no |
+| map\_users | Additional IAM users to add to the aws-auth configmap.<br> See https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/basic/variables.tf for example format. | <code><pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))<br></pre></code> | `[]` | no |
+| on\_demand\_percentage\_above\_base\_capacity | On demand percentage above base capacity. | `number` | n/a | yes |
 | override\_instance\_types | Type instances for nodes workers. Reference: https://aws.amazon.com/ec2/pricing/on-demand/ | `list(string)` | n/a | yes |
 | profile | Profile of AWS credential. | `any` | n/a | yes |
-| public\_ip | Enable ou disable public IP in cluster EKS. | `boolean` | `false` | no |
-| region | AWS region. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `any` | n/a | yes |
-| root\_volume\_size | Size of disk in nodes of cluster EKS. | `integer` | n/a | yes |
+| public\_ip | Enable ou disable public IP in cluster EKS. | `bool` | `false` | no |
+| region | AWS region. Reference: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions | `any` | n/a | yes |
+| root\_volume\_size | Size of disk in nodes of cluster EKS. | `number` | n/a | yes |
 | subnets | List of IDs subnets public and/or private. | `list(string)` | n/a | yes |
 | suspended\_processes | Cluster EKS name. | `any` | n/a | yes |
 | tags | Maps of tags. | `map` | `{}` | no |
