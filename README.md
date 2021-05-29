@@ -3,7 +3,7 @@
 
 <!-- TOC -->
 
-- [adsoft_files](#adsoftfiles)
+- [adsoft_files](#adsoft_files)
 - [English](#english)
   - [Contributing](#contributing)
   - [Developers](#developers)
@@ -15,7 +15,7 @@
 
 # English
 
-Examples of infrastructure as code in enterprise ADSoft - Aécio and Déo Software :-).
+Examples of infrastructure as code on ADSoft - Aécio and Déo Software :-).
 
 ## Contributing
 
