@@ -74,7 +74,6 @@ helm list -n redirect
 
 Access Nginx in http://IP-LOADBALANCER:80.
 
-
 Delete Nginx using Helm.
 
 ```bash
@@ -142,7 +141,7 @@ Delete nginx using Kubectl.
 kubectl delete -f ~/adsoft/helm_apps/nginx/deployment_basic_auth.yaml -n redirect
 ```
 
-References: 
+References:
 
 * https://bitnami.com/stack/nginx/helm
 * https://github.com/bitnami/charts/tree/master/bitnami/nginx
@@ -158,7 +157,6 @@ References:
 * https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
 * https://aws.amazon.com/premiumsupport/knowledge-center/eks-cidr-ip-address-loadbalancer/
 * https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
-
 
 # How to deploy Nginx with Kubectl for enable oauth2 authentication on Google
 
@@ -229,7 +227,7 @@ Delete vouch using helm.
 helm delete vouch -n redirect
 ```
 
-References: 
+References:
 
 * https://halkeye.github.io/helm-charts/
 * https://hub.helm.sh/charts/halkeye/vouch
@@ -251,8 +249,6 @@ References:
 * https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
 * https://aws.amazon.com/premiumsupport/knowledge-center/eks-cidr-ip-address-loadbalancer/
 * https://medium.com/faun/how-to-assign-external-ip-address-static-to-a-gcp-kubernetes-engine-service-c5be91cdcfd5
-
-
 
 # Command utils for troubleshooting
 
