@@ -6,7 +6,7 @@ remote_state {
     region                  = "us-east-2"
     encrypt                 = true
     dynamodb_table          = "terraform"
-    shared_credentials_file = "../../.aws/credentials"
+    shared_credentials_file = "~/.aws/credentials"
   }
 }
 

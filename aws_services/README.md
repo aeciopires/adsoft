@@ -105,7 +105,6 @@ sudo systemctl restart docker
 Reference:
 https://docs.docker.com/registry/insecure/
 
-
 # Documentation of Code Terraform
 
 * Generate docs with terraform-docs for project ``adsoft/aws_services``.
@@ -172,4 +171,3 @@ cat /tmp/doc.md
 | registry\_ip\_private | Private IP instance |
 | registry\_ip\_public | Public IP instance |
 | security\_group | Id of security Group |
-

@@ -651,7 +651,7 @@ sudo ln -s ~/.tgenv/bin/* /usr/local/bin
 Install Terragrunt version using ``tgenv`` command:
 
 ```bash
-tgenv install 0.29.2
+tgenv install 0.29.7
 ```
 
 List Terragrunt versions to install:
@@ -685,5 +685,5 @@ Create the ``.terragrunt-version`` file at the root of the project with the desi
 Example:
 
 ```bash
-echo "0.29.2" > .terragrunt-version
+echo "0.29.7" > .terragrunt-version
 ```

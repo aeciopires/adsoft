@@ -5,7 +5,7 @@ sudo sh get-docker.sh;
 sudo usermod -aG docker ubuntu;
 
 # Install Docker Compose
-COMPOSE_VERSION=1.25.0
+COMPOSE_VERSION=1.29.2
 sudo curl -L https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
 sudo chmod 777 /usr/bin/docker-compose
 

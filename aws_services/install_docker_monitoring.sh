@@ -52,8 +52,8 @@ docker run -d --name mysql-zabbix \
 # Wait 1 minute for create database
 sleep 60
 # Zabbix Server
-VERSAO_MAIOR_ZABBIX=4.4
-export VERSAO_MAIOR_ZABBIX
+ZABBIX_VERSION=5.4
+export ZABBIX_VERSION
 docker run -d --name zabbix-server \
  --restart always \
  -p 10051:10051 \
@@ -63,7 +63,7 @@ docker run -d --name zabbix-server \
  -e MYSQL_USER="zabbix" \
  -e MYSQL_PASSWORD="zabbix" \
  -e MYSQL_DATABASE="zabbix" \
-zabbix/zabbix-server-mysql:ubuntu-$VERSAO_MAIOR_ZABBIX-latest
+zabbix/zabbix-server-mysql:ubuntu-$ZABBIX_VERSION-latest
 # Wait 1 minute for populate database
 sleep 60
 # Zabbix Web
@@ -77,7 +77,7 @@ docker run -d --name zabbix-web \
  -e MYSQL_DATABASE="zabbix" \
  -e ZBX_SERVER_HOST="172.17.0.1" \
  -e PHP_TZ="America/Sao_Paulo" \
- zabbix/zabbix-web-apache-mysql:ubuntu-$VERSAO_MAIOR_ZABBIX-latest
+ zabbix/zabbix-web-apache-mysql:ubuntu-$ZABBIX_VERSION-latest
 # Zabbix Agent
 docker run -d --name zabbix-agent \
  --net=host \
@@ -89,5 +89,5 @@ docker run -d --name zabbix-agent \
  -p 10050:10050 \
  -e ZBX_HOSTNAME="$(hostname)" \
  -e ZBX_SERVER_HOST="172.17.0.1" \
- zabbix/zabbix-agent:ubuntu-$VERSAO_MAIOR_ZABBIX-latest
+ zabbix/zabbix-agent:ubuntu-$ZABBIX_VERSION-latest
 
