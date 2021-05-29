@@ -6,6 +6,7 @@
 - [Requirements](#requirements)
 - [Clearing the Terragrunt cache](#clearing-the-terragrunt-cache)
 - [How to Install](#how-to-install)
+  - [Stage 0: Create bucket, table and policies](#stage-0-create-bucket-table-and-policies)
   - [Stage 1: Create AWS CloudTrail and S3 bucket](#stage-1-create-aws-cloudtrail-and-s3-bucket)
   - [Stage 2: Create key pair RSA for each environment](#stage-2-create-key-pair-rsa-for-each-environment)
   - [Stage 3: Define parameters of VPC configuration](#stage-3-define-parameters-of-vpc-configuration)
@@ -89,12 +90,53 @@ find . -type f | grep .yaml | grep -v terragrunt-cache
 
 * In each directory validate the settings and analysis the changes before apply in testing.
 
-## Stage 1: Create AWS CloudTrail and S3 bucket
+## Stage 0: Create bucket, table and policies
 
-* For create S3 to store logs on AWS account (testing)
+* For create s3 to store tfstate remote on AWS:
 
 ```bash
-cd ~/git/adsoft/eks/global/bucket
+aws s3api create-bucket --bucket my-terraform-remote-state-02 --region us-east-2 --profile default --create-bucket-configuration LocationConstraint=us-east-2
+```
+
+Reference: https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html
+
+* For create DynamoDB table for lock of resources managed by Terraform/Terragrunt:
+
+```bash
+aws dynamodb create-table \
+  --table-name my-terraform-state-lock-dynamo \
+  --attribute-definitions AttributeName=LockID,AttributeType=S \
+  --key-schema AttributeName=LockID,KeyType=HASH \
+  --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+  --profile default \
+  --region us-east-2
+```
+
+* Change the bucket name and DynamoDB table in ``~/git/adsoft/eks/testing/environment.hcl``.
+
+* For create policy of autoscaler on AWS account (testing):
+
+```bash
+cd ~/git/adsoft/eks/testing/global/policies/autoscaler/
+```
+
+* Change the values according to the need in ``terragrunt.hcl``.
+
+Execute the ``terragrunt`` commands.
+
+```bash
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt output
+```
+
+## Stage 1: Create AWS CloudTrail and S3 bucket
+
+* For create S3 to store logs on AWS account (testing):
+
+```bash
+cd ~/git/adsoft/eks/global/buckets
 ```
 
 * Change the values according to the need in ``terragrunt.hcl``.
@@ -299,7 +341,7 @@ terragrunt destroy
 * For create S3 bucket
 
 ```bash
-cd ~/git/adsoft/eks/global/bucket
+cd ~/git/adsoft/eks/global/buckets
 ```
 
 Execute the ``terragrunt`` command.

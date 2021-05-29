@@ -2,7 +2,7 @@
 profile         = "default"   # AWS profile https://amzn.to/2IgHGCs
 region          = "us-east-1" # See regions of AWS https://amzn.to/3khGP21
 environment     = "testing"
-address_allowed = "201.82.34.213/32" # My house public IP Address
+address_allowed = "X.X.X.X/32" # My house public IP Address
 
 # Get AWS ACCOUNT-ID with command:
 # aws sts get-caller-identity --query Account --output text --profile PROFILE_NAME_AWS
