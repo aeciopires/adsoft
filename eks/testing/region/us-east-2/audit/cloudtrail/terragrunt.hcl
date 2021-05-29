@@ -26,7 +26,7 @@ terraform {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
   
-  namespace                     = "pci"
+  namespace                     = "myS3"
   stage                         = local.environment
   name                          = "audit"
   enable_logging                = true
@@ -34,7 +34,7 @@ inputs = {
   include_global_service_events = true
   is_multi_region_trail         = true
   is_organization_trail         = false
-  s3_bucket_name                = "bucket-cloudtrail"
+  s3_bucket_name                = dependency.s3.outputs.bucket_id
 
   tags = {
     "Terraform"   = "true"

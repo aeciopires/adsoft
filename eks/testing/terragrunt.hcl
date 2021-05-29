@@ -37,41 +37,39 @@ generate "provider" {
   if_exists = "overwrite"
   contents  = <<EOF
 # Providers config
-# Providers config
 provider "aws" {
+  region                  = "${local.region_bucket}"
   shared_credentials_file = "~/.aws/credentials"
   profile                 = "${local.profile_remote_tfstate}"
-  region                  = "${local.region_bucket}"
 }
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 3.42.0"
-      configuration_aliases = [ aws.alternate ]
-    }
-    randon = {
-      source  = "hashicorp/aws"
-      version = ">= 3.1.0"
-    }
-    template = {
-      source  = "hashicorp/aws"
-      version = ">= 2.2.0"
-    }
-    null = {
-      source  = "hashicorp/aws"
-      version = ">= 3.1.0"
-    }
-    kubernetes = {
-      source  = "hashicorp/aws"
-      version = ">= 2.2.0"
-    }
-    local = {
-      source  = "hashicorp/aws"
-      version = ">= 3.1.0"
-    }
-  }
-}
+#terraform {
+#  required_providers {
+#    aws = {
+#      source  = "hashicorp/aws"
+#      version = ">= 3.42.0"
+#    }
+#    randon = {
+#      source  = "hashicorp/aws"
+#      version = ">= 3.1.0"
+#    }
+#    template = {
+#      source  = "hashicorp/aws"
+#      version = ">= 2.2.0"
+#    }
+#    null = {
+#      source  = "hashicorp/aws"
+#      version = ">= 3.1.0"
+#    }
+#    kubernetes = {
+#      source  = "hashicorp/aws"
+#      version = ">= 2.2.0"
+#    }
+#    local = {
+#      source  = "hashicorp/aws"
+#      version = ">= 3.1.0"
+#    }
+#  }
+#}
 EOF
 }

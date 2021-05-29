@@ -34,6 +34,12 @@ Terragrunt is a thin wrapper that provides extra tools for keeping your configur
 
 Terragrunt will forward almost all commands, arguments, and options directly to Terraform, but based on the settings in your ``terragrunt.hcl`` file.
 
+```diff
+- ATTENTION!!!
+- Bug possible: https://github.com/hashicorp/terraform-provider-aws/issues/14917
++ Fix: ``export AWS_DEFAULT_REGION=region_name``.
+```
+
 # Clearing the Terragrunt cache
 
 Terragrunt creates a ``.terragrunt-cache`` folder in the current working directory as its scratch directory. It downloads your remote Terraform configurations into this folder, runs your Terraform commands in this folder, and any modules and providers those commands download also get stored in this folder. You can safely delete this folder any time and Terragrunt will recreate it as necessary.
@@ -131,12 +137,29 @@ terragrunt apply
 terragrunt output
 ```
 
+* For create policy of loadbalancer on AWS account (testing):
+
+```bash
+cd ~/git/adsoft/eks/testing/global/policies/loadbalancer/
+```
+
+* Change the values according to the need in ``terragrunt.hcl``.
+
+Execute the ``terragrunt`` commands.
+
+```bash
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt output
+```
+
 ## Stage 1: Create AWS CloudTrail and S3 bucket
 
 * For create S3 to store logs on AWS account (testing):
 
 ```bash
-cd ~/git/adsoft/eks/global/buckets
+cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
 ```
 
 * Change the values according to the need in ``terragrunt.hcl``.
@@ -153,7 +176,7 @@ terragrunt output
 * For create CloudTrail on AWS account (testing)
 
 ```bash
-cd ~/git/adsoft/eks/global/cloudtrail
+cd ~/git/adsoft/eks/testing/region/us-east-2/audit/cloudtrail
 ```
 
 * Change the values according to the need in ``terragrunt.hcl``.
@@ -329,7 +352,7 @@ terragrunt destroy
 * For remove CloudTrail:
 
 ```bash
-cd ~/git/adsoft/eks/global/cloudtrail
+cd ~/git/adsoft/eks/testing/region/us-east-2/audit/cloudtrail
 ```
 
 Execute the ``terragrunt`` command.
@@ -341,7 +364,7 @@ terragrunt destroy
 * For create S3 bucket
 
 ```bash
-cd ~/git/adsoft/eks/global/buckets
+cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
 ```
 
 Execute the ``terragrunt`` command.
