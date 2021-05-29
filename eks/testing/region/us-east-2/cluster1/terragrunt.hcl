@@ -77,7 +77,7 @@ inputs = {
 #  ]
   worker_groups_launch_template                  = [
     {
-      name                                     = "pci"
+      name                                     = "lt"
       override_instance_types                  = ["t3.micro", "t3a.micro"]
       on_demand_percentage_above_base_capacity = 50
       asg_min_size                             = 2

@@ -14,8 +14,6 @@ locals {
   #----------------------------
   # VPC Configurations
   #----------------------------
-  # Page with documentation of VPC and subnets for each customer
-  # https://sensedia.atlassian.net/wiki/spaces/CLARK/pages/746324071/AWS+-+Network+Block+Control
   # http://jodies.de/ipcalc?host=172.31.240.0&mask1=20&mask2=22
   cidr = "172.31.240.0/20"
 

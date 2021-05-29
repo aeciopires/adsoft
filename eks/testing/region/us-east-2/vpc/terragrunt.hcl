@@ -28,7 +28,7 @@ terraform {
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  name                   = "pci-${local.customer_id}-dataplane"
+  name                   = "${local.customer_id}-dataplane"
   cidr                   = "${local.cidr}"
   azs                    = "${local.azs}"
   public_subnets         = "${local.public_subnets}"
