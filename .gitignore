@@ -11,3 +11,4 @@ terragrunt.iml
 vendor
 .terraform
 *.out
+.terraform.lock.hcl
