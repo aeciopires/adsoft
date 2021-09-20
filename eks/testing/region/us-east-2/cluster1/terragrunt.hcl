@@ -34,7 +34,7 @@ dependency "vpc" {
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git//?ref=v17.0.3"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git//?ref=v17.20.0"
 
   # Issue: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911#issuecomment-761715025
   # Reference: https://github.com/terraform-aws-modules/terraform-aws-eks#important-note
@@ -53,7 +53,7 @@ inputs = {
   vpc_id                                         = dependency.vpc.outputs.vpc_id
   subnets                                        = dependency.vpc.outputs.private_subnets
   cluster_name                                   = "${local.cluster_name}"
-  cluster_version                                = "1.20"
+  cluster_version                                = "1.21"
   cluster_enabled_log_types                      = ["api", "audit"]
   cluster_log_retention_in_days                  = "365"
   config_output_path                             = "./kube/${local.environment}/"

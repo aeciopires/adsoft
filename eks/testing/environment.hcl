@@ -24,7 +24,7 @@ locals {
   # EKS Configurations
   #----------------------------
   cluster_endpoint_public_access_cidrs = [
-    "201.82.34.213/32",
+    "201.82.34.195/32",
   ]
 
   workers_additional_policies = [

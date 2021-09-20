@@ -13,16 +13,18 @@
   - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
   - [Stage 5: Install manifests in EKS cluster](#stage-5-install-manifests-in-eks-cluster)
 - [How to Uninstall](#how-to-uninstall)
-  - [Stage 1: Remove Kubernetes cluster](#stage-1-remove-kubernetes-cluster)
-  - [Stage 2: Remove subnets, NAT Gatewat and VPC](#stage-2-remove-subnets-nat-gatewat-and-vpc)
-  - [Stage 3: Remove key pair RSA](#stage-3-remove-key-pair-rsa)
-  - [Stage 4: Remove AWS CloudTrail and S3 bucket](#stage-4-remove-aws-cloudtrail-and-s3-bucket)
+  - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
+  - [Remove subnets, NAT Gatewat and VPC](#remove-subnets-nat-gatewat-and-vpc)
+  - [Remove key pair RSA](#remove-key-pair-rsa)
+  - [Remove AWS CloudTrail and S3 bucket](#remove-aws-cloudtrail-and-s3-bucket)
+  - [Remove AWS S3 Bucket](#remove-aws-s3-bucket)
+  - [Remove DynamoDB Table](#remove-dynamodb-table)
 
 <!-- TOC -->
 
 # About
 
-Create EKS cluster using Terragrunt and Terraform code.
+Create EKS Kubernetes cluster 1.21 using Terragrunt and Terraform code.
 
 # Requirements
 
@@ -89,8 +91,10 @@ git checkout -b BRANCH_NAME
 * Change values in files ``*.hcl`` and ``*.yaml`` files. Locate all files ``*.hcl`` and ``*.yaml`` for change.
 
 ```bash
-~/git/adsoft/eks/
+cd ~/git/adsoft/eks/
+
 find . -type f | grep .hcl | grep -v terragrunt-cache
+
 find . -type f | grep .yaml | grep -v terragrunt-cache
 ```
 
@@ -101,7 +105,11 @@ find . -type f | grep .yaml | grep -v terragrunt-cache
 * For create s3 to store tfstate remote on AWS:
 
 ```bash
-aws s3api create-bucket --bucket my-terraform-remote-state-02 --region us-east-2 --profile default --create-bucket-configuration LocationConstraint=us-east-2
+aws s3api create-bucket \
+  --bucket my-terraform-remote-state-02 \
+  --create-bucket-configuration LocationConstraint=us-east-2 \
+  --region us-east-2 \
+  --profile default
 ```
 
 Reference: https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html
@@ -114,8 +122,8 @@ aws dynamodb create-table \
   --attribute-definitions AttributeName=LockID,AttributeType=S \
   --key-schema AttributeName=LockID,KeyType=HASH \
   --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
-  --profile default \
-  --region us-east-2
+  --region us-east-2 \
+  --profile default
 ```
 
 * Change the bucket name and DynamoDB table in ``~/git/adsoft/eks/testing/environment.hcl``.
@@ -128,7 +136,7 @@ cd ~/git/adsoft/eks/testing/global/policies/autoscaler/
 
 * Change the values according to the need in ``terragrunt.hcl``.
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -145,7 +153,7 @@ cd ~/git/adsoft/eks/testing/global/policies/loadbalancer/
 
 * Change the values according to the need in ``terragrunt.hcl``.
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -164,7 +172,7 @@ cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
 
 * Change the values according to the need in ``terragrunt.hcl``.
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -181,7 +189,7 @@ cd ~/git/adsoft/eks/testing/region/us-east-2/audit/cloudtrail
 
 * Change the values according to the need in ``terragrunt.hcl``.
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -197,28 +205,30 @@ terragrunt output
 Example:
 
 ```bash
-ssh-keygen -t rsa -b 2048 -v -f ~/key-NAME-REGION.pem
+NAME_REGION=us-east-2
+
+ssh-keygen -t rsa -b 4096 -v -f ~/key-$NAME_REGION.pem
 ```
 
 * Copy content public key without USER and HOST.
 
 ```bash
-cat ~/key-NAME-REGION.pem | cut -d " " -f1,2
+cat ~/key-$NAME_REGION.pem.pub | cut -d " " -f1,2
 ```
 
 * Example:
 
 ```
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGNdBRiGajewqwSvEVuv/rRKLQxUWmNqUGnq2Ik8c+BSvP070+Q8i0bC6oKKj4FJ87FcF9GiDI/i8Th6koH39PHVJbNR2qSgOTqk33WulzSdRU1ucUEEplvaBVT5YKjtomC4YY9YGRWPBZlQ1pwKfxGQuL7tbfuVRDu6KbAj1aIoCivivTWvREkQKZgwe4ReeFVR3hBHzWRQtkEA79lsSbPBtQ5k1NTb3+E+7Oknkl6gY5rMuJqWNz9MosD8ITmEzEsOQRX5tmsmGzNmFgaIB7bG0H7iXk16rav4tAOu5v9SQOZHhZTjFcMsFXGYhSVYBph23FCXdiLziNXiiyAZ0N
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX
 ```
 
-* Change the values according to the need of the region in ``region.hcl``.
+* Change the values according to the need of the region in ``~/git/adsoft/eks/testing/region/us-east-2/region.hcl``.
 
 ```bash
 cd ~/git/adsoft/eks/testing/region/us-east-2/keypair
 ```
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -232,8 +242,10 @@ terragrunt output
 * Change values in files ``environment.hcl`` and ``*.yaml`` files. Locate all files ``*.hcl`` and ``*.yaml`` for change.
 
 ```bash
-~/git/adsoft/eks/
+cd ~/git/adsoft/eks/
+
 find . -type f | grep .hcl | grep -v terragrunt-cache
+
 find . -type f | grep .yaml | grep -v terragrunt-cache
 ```
 
@@ -245,7 +257,7 @@ find . -type f | grep .yaml | grep -v terragrunt-cache
 cd ~/git/adsoft/eks/testing/region/us-east-2/vpc
 ```
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -262,7 +274,7 @@ terragrunt output
 cd ~/git/adsoft/eks/testing/region/us-east-2/cluster1
 ```
 
-Execute the ``terragrunt`` commands.
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
@@ -276,7 +288,7 @@ terragrunt output
 * Authenticate to the EKS cluster with the follow command.
 
 ```bash
-aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_EKS_NAME --profile AWS_PROFILE
+aws eks update-kubeconfig --name mycluster-eks-testing --region us-east-2 --profile default
 ```
 
 * Create namespace ``manifests-eks`` in Kubernetes cluster.
@@ -285,7 +297,7 @@ aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_EKS_NAME --profile
 kubectl create namespace manifests-eks
 ```
 
-* In Kubernetes 1.19, install CRD (Custom Resource Definitions) of cert-manager with command.
+* In Kubernetes 1.21, install CRD (Custom Resource Definitions) of cert-manager with command.
 
 ```bash
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.crds.yaml
@@ -299,7 +311,7 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3
 
 # How to Uninstall
 
-## Stage 1: Remove Kubernetes cluster
+## Remove Kubernetes cluster
 
 * For remove EKS for especific in especific region of testing environment:
 
@@ -310,16 +322,16 @@ cd ~/git/adsoft/eks/testing/region/us-east-2/cluster1
 Authenticate in cluster of customer with follow command.
 
 ```bash
-aws eks --region REGION_NAME update-kubeconfig --name CLUSTER_EKS_NAME --profile AWS_PROFILE
+aws eks update-kubeconfig --name mycluster-eks-testing --region us-east-2 --profile default
 ```
 
-Execute the ``terragrunt`` command.
+Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
 ```
 
-## Stage 2: Remove subnets, NAT Gatewat and VPC
+## Remove subnets, NAT Gatewat and VPC
 
 * For remove network resources for especific in especific region of testing environment:
 
@@ -327,13 +339,13 @@ terragrunt destroy
 cd ~/git/adsoft/eks/testing/region/us-east-2/vpc
 ```
 
-Execute the ``terragrunt`` command.
+Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
 ```
 
-## Stage 3: Remove key pair RSA
+## Remove key pair RSA
 
 * For remove key par RSA in especific region of testing environment:
 
@@ -341,13 +353,13 @@ terragrunt destroy
 cd ~/git/adsoft/eks/testing/region/us-east-2/keypair
 ```
 
-Execute the ``terragrunt`` command.
+Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
 ```
 
-## Stage 4: Remove AWS CloudTrail and S3 bucket
+## Remove AWS CloudTrail and S3 bucket
 
 * For remove CloudTrail:
 
@@ -355,7 +367,7 @@ terragrunt destroy
 cd ~/git/adsoft/eks/testing/region/us-east-2/audit/cloudtrail
 ```
 
-Execute the ``terragrunt`` command.
+Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
@@ -367,8 +379,46 @@ terragrunt destroy
 cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
 ```
 
-Execute the ``terragrunt`` command.
+Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
 ```
+
+## Remove AWS S3 Bucket
+
+Run the command:
+
+```bash
+aws s3 rb s3://my-terraform-remote-state-02 \
+  --force \
+  --region us-east-2 \
+  --profile default
+
+# or
+
+aws s3api delete-bucket \
+  --bucket my-terraform-remote-state-02 \
+  --region us-east-2 \
+  --profile default
+```
+
+References:
+
+* https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html
+* https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
+
+## Remove DynamoDB Table
+
+Run the command:
+
+```bash
+aws dynamodb delete-table \
+  --table-name my-terraform-state-lock-dynamo \
+  --region us-east-2 \
+  --profile default
+```
+
+References:
+
+* https://docs.aws.amazon.com/cli/latest/reference/dynamodb/delete-table.html

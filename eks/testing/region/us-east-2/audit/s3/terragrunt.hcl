@@ -17,7 +17,7 @@ locals {
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
-  source = "git::https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket.git?ref=tags/0.17.2"
+  source = "git::https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket.git//?ref=tags/0.17.2"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
