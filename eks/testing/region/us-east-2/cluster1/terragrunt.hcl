@@ -5,22 +5,22 @@ include {
 
 locals {
   environment_vars                     = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+  region_vars                          = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   environment                          = local.environment_vars.locals.environment
   scost                                = local.environment_vars.locals.scost
   monitoring                           = local.environment_vars.locals.monitoring
   map_roles                            = local.environment_vars.locals.map_roles
   map_users                            = local.environment_vars.locals.map_users
   workers_additional_policies          = local.environment_vars.locals.workers_additional_policies
-  cluster_endpoint_public_access_cidrs = local.environment_vars.locals.cluster_endpoint_public_access_cidrs
   aws_profile                          = local.environment_vars.locals.profile_remote_tfstate
   region_bucket                        = local.environment_vars.locals.region_bucket
   profile_remote_tfstate               = local.environment_vars.locals.profile_remote_tfstate
-  customer_id                          = local.environment_vars.locals.customer_id
-  customer_name                        = local.environment_vars.locals.customer_name
-  customer_region                      = local.environment_vars.locals.region
-  key_name                             = local.environment_vars.locals.key_name
-  additional_userdata                  = local.environment_vars.locals.additional_userdata
-  cluster1_name                        = "mycluster-eks-testing"
+  cluster_endpoint_public_access_cidrs = local.region_vars.locals.cluster_endpoint_public_access_cidrs
+  customer_id                          = local.region_vars.locals.customer_id
+  customer_name                        = local.region_vars.locals.customer_name
+  customer_region                      = local.region_vars.locals.region
+  key_name                             = local.region_vars.locals.key_name
+  cluster_name                         = local.region_vars.locals.cluster1_name
 }
 
 dependency "key_pair" {
@@ -94,13 +94,13 @@ inputs = {
   ]
 
   tags = {
-    "Terraform"                                        = "true"
-    "environment"                                      = "${local.environment}"
-    "Scost"                                            = "${local.customer_id}"
-    "monitoring"                                       = "${local.monitoring}"
-    "Customer"                                         = "${local.customer_name}"
-    "customer_id"                                      = "${local.customer_id}"
-    "k8s.io/cluster-autoscaler/enabled"                = "true"
-    "k8s.io/cluster-autoscaler/${local.cluster1_name}" = "true"
+    "Terraform"                                       = "true"
+    "environment"                                     = "${local.environment}"
+    "Scost"                                           = "${local.customer_id}"
+    "monitoring"                                      = "${local.monitoring}"
+    "Customer"                                        = "${local.customer_name}"
+    "customer_id"                                     = "${local.customer_id}"
+    "k8s.io/cluster-autoscaler/enabled"               = "true"
+    "k8s.io/cluster-autoscaler/${local.cluster_name}" = "true"
   }
 }

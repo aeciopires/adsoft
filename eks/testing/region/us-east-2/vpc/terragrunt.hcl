@@ -8,16 +8,16 @@ locals {
   region_vars         = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   environment         = local.environment_vars.locals.environment
   scost               = local.environment_vars.locals.scost
-  cidr                = local.environment_vars.locals.cidr
+  cidr                = local.region_vars.locals.cidr
   azs                 = local.region_vars.locals.azs
   public_subnets      = local.region_vars.locals.public_subnets
   private_subnets     = local.region_vars.locals.private_subnets
   vpc_tags            = local.region_vars.locals.vpc_tags
   public_subnet_tags  = local.region_vars.locals.public_subnet_tags
   private_subnet_tags = local.region_vars.locals.private_subnet_tags
-  customer_id         = local.environment_vars.locals.customer_id
-  customer_name       = local.environment_vars.locals.customer_name
-  cluster1_name       = "mycluster-eks-testing"
+  customer_id         = local.region_vars.locals.customer_id
+  customer_name       = local.region_vars.locals.customer_name
+  cluster1_name       = local.region_vars.locals.cluster1_name
 }
 
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
@@ -43,11 +43,11 @@ inputs = {
   one_nat_gateway_per_az = true
 
   tags = {
-    "Terraform"                                      = "true"
-    "environment"                                    = "${local.environment}"
-    "Scost"                                          = "${local.customer_id}"
-    "Customer"                                       = "${local.customer_name}"
-    "customer_id"                                    = "${local.customer_id}"
-    "kubernetes.io/cluster/${local.cluster1_name}"   = "shared"
+    "Terraform"                                    = "true"
+    "environment"                                  = "${local.environment}"
+    "Scost"                                        = "${local.customer_id}"
+    "Customer"                                     = "${local.customer_name}"
+    "customer_id"                                  = "${local.customer_id}"
+    "kubernetes.io/cluster/${local.cluster1_name}" = "shared"
   }
 }

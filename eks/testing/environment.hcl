@@ -14,19 +14,6 @@ locals {
   dynamodb_remote_tfstate = "my-terraform-state-lock-dynamo"
   profile_remote_tfstate  = "default"
 
-  # To generate customer_id, execute:
-  # cat /dev/urandom | tr -dc "a-z0-9" | fold -w  10 | head -n 1 | tr -d "\n"
-  # Example: cdk17o7adl (mycustomer)
-  customer_id   = "cdk17o7adl"
-  customer_name = "mycustomer"
-
-  #----------------------------
-  # EKS Configurations
-  #----------------------------
-  cluster_endpoint_public_access_cidrs = [
-    "201.82.34.195/32",
-  ]
-
   workers_additional_policies = [
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
     "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
@@ -43,7 +30,7 @@ locals {
       groups   = ["system:masters"]
     },
   ]
-  
+
   map_users = [
     {
       userarn  = "arn:aws:iam::255686512659:user/aeciopires"

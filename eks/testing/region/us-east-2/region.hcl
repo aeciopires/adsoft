@@ -11,6 +11,22 @@ locals {
   key_name           = "aws-testing"
   public_key_content = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX"
 
+  # To generate customer_id, execute:
+  # cat /dev/urandom | tr -dc "a-z0-9" | fold -w  10 | head -n 1 | tr -d "\n"
+  # Example: cdk17o7adl (mycustomer)
+  customer_id   = "cdk17o7adl"
+  customer_name = "mycustomer"
+
+  #----------------------------
+  # EKS Configurations
+  #----------------------------
+  cluster1_name = "mycluster-eks-testing"
+
+  # IP Address that can access the Kubernetes cluster
+  cluster_endpoint_public_access_cidrs = [
+    "201.82.34.195/32",
+  ]
+
   #----------------------------
   # VPC Configurations
   #----------------------------
@@ -23,12 +39,12 @@ locals {
   private_subnets = ["172.31.248.0/22", "172.31.252.0/22", ]
 
   vpc_tags = {
-    "kubernetes.io/cluster/mycluster-eks-testing" = "shared"
+    "kubernetes.io/cluster/${local.cluster1_name}" = "shared"
   }
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/mycluster-eks-testing" = "shared"
-    "kubernetes.io/role/elb"                      = "1"
+    "kubernetes.io/cluster/${local.cluster1_name}" = "shared"
+    "kubernetes.io/role/elb"                       = "1"
   }
 
   private_subnet_tags = {
