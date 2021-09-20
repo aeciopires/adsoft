@@ -62,9 +62,14 @@ inputs = {
   cluster_endpoint_private_access_cidrs          = [ "0.0.0.0/0", ]
   manage_aws_auth                                = true
   kubeconfig_output_path                         = "./kube/${local.environment}/"
-  kubeconfig_aws_authenticator_command           = "aws eks"
-  kubeconfig_aws_authenticator_command_args      = [ "--region ${local.customer_region} update-kubeconfig --name ${local.cluster_name} --profile ${local.aws_profile}", ]
-  write_kubeconfig                               = true
+  kubeconfig_aws_authenticator_command           = "aws"
+  kubeconfig_aws_authenticator_command_args      = ["eks", "get-token"]
+  kubeconfig_aws_authenticator_additional_args   = ["--cluster-name", "${local.cluster_name}", "--region", "${local.customer_region}"]
+  kubeconfig_aws_authenticator_env_variables     = {
+    AWS_PROFILE        = "${local.aws_profile}"
+    AWS_DEFAULT_REGION = "${local.customer_region}"
+  }
+  write_kubeconfig                               = false
   cluster_create_endpoint_private_access_sg_rule = false
   worker_additional_security_group_ids           = [ dependency.vpc.outputs.default_security_group_id, ]
   workers_additional_policies                    = "${local.workers_additional_policies}"
