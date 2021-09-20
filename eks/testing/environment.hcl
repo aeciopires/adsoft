@@ -37,6 +37,11 @@ locals {
       username = "aeciopires"
       groups   = ["system:masters"]
     },
+    {
+      userarn  = "arn:aws:iam::255686512659:root"
+      username = "root"
+      groups   = ["system:masters"]
+    },
   ]
 
 }
