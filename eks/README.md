@@ -17,6 +17,7 @@
   - [Remove subnets, NAT Gatewat and VPC](#remove-subnets-nat-gatewat-and-vpc)
   - [Remove key pair RSA](#remove-key-pair-rsa)
   - [Remove AWS CloudTrail and S3 bucket](#remove-aws-cloudtrail-and-s3-bucket)
+  - [Remove IAM policies](#remove-iam-policies)
   - [Remove AWS S3 Bucket](#remove-aws-s3-bucket)
   - [Remove DynamoDB Table](#remove-dynamodb-table)
 
@@ -382,6 +383,20 @@ cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
 Run the ``terragrunt`` command.
 
 ```bash
+terragrunt destroy
+```
+
+## Remove IAM policies
+
+Run the follow commands:
+
+```bash
+cd ~/git/adsoft/eks/testing/global/policies/autoscaler/
+
+terragrunt destroy
+
+cd ~/git/adsoft/eks/testing/global/policies/loadbalancer/
+
 terragrunt destroy
 ```
 

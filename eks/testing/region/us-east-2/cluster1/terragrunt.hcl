@@ -89,7 +89,7 @@ inputs = {
       suspended_processes                      = ["AZRebalance"]
       cluster_enabled_log_types                = ["api", "audit"]
       root_volume_size                         = 20
-      key_name                                 = dependency.key_pair.outputs.this_key_pair_key_name
+      key_name                                 = dependency.key_pair.outputs.key_pair_key_name
     }
   ]
 
