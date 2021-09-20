@@ -19,7 +19,7 @@ locals {
     "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
     "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-    "arn:aws:iam::255686512659:policy/eks_cluster_autoscaler",
+    "arn:aws:iam::255686512659:policy/eks-cluster-autoscaler",
     "arn:aws:iam::255686512659:policy/aws_lb_controller",
   ]
 
