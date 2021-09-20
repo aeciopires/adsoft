@@ -22,6 +22,7 @@
   - [Kubefwd](#kubefwd)
   - [Kubepug](#kubepug)
   - [Kubent](#kubent)
+  - [Node-shell](#node-shell)
   - [Other Kubetools](#other-kubetools)
 - [Lens](#lens)
 - [Script of customized prompt](#script-of-customized-prompt)
@@ -30,6 +31,7 @@
 - [Terraform: Install tfenv for management of Terraform versions](#terraform-install-tfenv-for-management-of-terraform-versions)
 - [Terraform-Docs](#terraform-docs)
 - [Terragrunt: Install tgenv for management of Terragrunt versions](#terragrunt-install-tgenv-for-management-of-terragrunt-versions)
+- [Aliases](#aliases)
 
 <!-- TOC -->
 
@@ -459,6 +461,14 @@ kubent --help
 
 Documentation: https://github.com/swade1987/deprek8ion
 
+## Node-shell
+
+```bash
+kubectl krew install node-shell
+```
+
+Documentation: https://github.com/kvaps/kubectl-node-shell
+
 ## Other Kubetools
 
 * http://dockerlabs.collabnix.com/kubernetes/kubetools/
@@ -696,4 +706,27 @@ Example:
 
 ```bash
 echo "0.32.3" > .terragrunt-version
+```
+
+# Aliases
+
+Useful aliases to be registered in the ``$HOME/.bashrc`` file.
+
+```bash
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias k='kubectl'
+alias kmongo='kubectl run --rm -it mongoshell --image=mongo:latest -n default -- bash'
+alias kmysql='kubectl run --rm -it mysql --image=mysql:5.7 -n default -- bash'
+alias kredis='kubectl run --rm -it redis-cli --image=redis:latest -n default -- bash'
+alias kssh='kubectl run ssh-client -it --rm --image=kroniak/ssh-client -n default -- bash'
+alias nettools='kubectl run --rm -it nettools --image=travelping/nettools:latest -n default -- bash'
+alias live='curl parrot.live'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
+alias gitlog='git log -p'
 ```
