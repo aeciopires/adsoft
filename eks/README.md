@@ -26,7 +26,7 @@ Create EKS cluster using Terragrunt and Terraform code.
 
 # Requirements
 
-* Configure the AWS Credentials and install ``git``, ``tgenv``, ``tfenv``, ``aws-cli``, ``kubectl`` and ``helm``  following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
+* Configure the AWS Credentials and install ``git``, ``tgenv``, ``tfenv``, ``aws-cli``, ``kubectl`` and ``helm``  following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
 
 Access https://terragrunt.gruntwork.io/docs/#getting-started for more informations about Terragrunt commands.
 

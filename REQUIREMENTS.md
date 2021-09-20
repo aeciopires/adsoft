@@ -185,7 +185,7 @@ For more informations:
 Run the following commands to install Go.
 
 ```bash
-VERSION=1.16.4
+VERSION=1.17.1
 
 mkdir -p $HOME/go/bin
 
@@ -231,7 +231,7 @@ Install Helm 3 with the follow commands.
 ```bash
 sudo su
 
-HELM_TAR_FILE=helm-v3.4.0-linux-amd64.tar.gz
+HELM_TAR_FILE=helm-v3.7.0-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh
 HELM_BIN=helm3
 
@@ -289,7 +289,7 @@ Documentation: https://github.com/roboll/helmfile
 ```bash
 sudo su
 
-HELMFILE_VERSION=v0.138.7
+HELMFILE_VERSION=v0.140.1
 HELMFILE_DOWNLOADED_FILENAME=helmfile_linux_amd64
 HURL=https://github.com/roboll/helmfile/releases/download
 HELMFILE_URL=${HURL}/${HELMFILE_VERSION}/${HELMFILE_DOWNLOADED_FILENAME}
@@ -346,7 +346,7 @@ Run the following commands to install ``kubectl``.
 ```bash
 sudo su
 
-VERSION=v1.20.7
+VERSION=v1.22.2
 KUBECTL_BIN=kubectl
 
 function install_kubectl {
@@ -392,6 +392,12 @@ Documentation:
 )
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+cat << FOE >> ~/.bashrc
+
+#krew
+export PATH="\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH"
+FOE
 ```
 
 ## kubectx e kubens
@@ -573,7 +579,7 @@ sudo ln -s ~/.tfenv/bin/* /usr/local/bin
 Install Terraform version using ``tfenv`` command:
 
 ```bash
-tfenv install 0.15.4
+tfenv install 1.0.7
 ```
 
 More information about ``tfenv``: https://github.com/tfutils/tfenv
@@ -609,7 +615,7 @@ Create the ``.terraform-version`` file at the root of the project with the desir
 Example:
 
 ```bash
-echo "0.15.4" > .terraform-version
+echo "1.0.7" > .terraform-version
 ```
 
 # Terraform-Docs
@@ -617,16 +623,20 @@ echo "0.15.4" > .terraform-version
 Install Terraform-Docs with the follow commands.
 
 ```bash
-cd $HOME/go
- 
-GO111MODULE="on" go get github.com/segmentio/terraform-docs@v0.9.1
- 
-cd bin/bin/
- 
-sudo mv terraform-docs /usr/local/bin/terraform-docs
- 
-sudo chmod +x /usr/local/bin/terraform-docs
- 
+cd /tmp
+
+VERSION=v0.15.0
+
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
+
+tar -xzf terraform-docs.tar.gz
+
+chmod +x terraform-docs
+
+mv terraform-docs /usr/local/bin/terraform-docs
+
+rm terraform-docs.tar.gz
+
 terraform-docs --version
 ```
 
@@ -651,7 +661,7 @@ sudo ln -s ~/.tgenv/bin/* /usr/local/bin
 Install Terragrunt version using ``tgenv`` command:
 
 ```bash
-tgenv install 0.29.7
+tgenv install 0.32.3
 ```
 
 List Terragrunt versions to install:
@@ -685,5 +695,5 @@ Create the ``.terragrunt-version`` file at the root of the project with the desi
 Example:
 
 ```bash
-echo "0.29.7" > .terragrunt-version
+echo "0.32.3" > .terragrunt-version
 ```
