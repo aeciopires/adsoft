@@ -61,6 +61,7 @@ inputs = {
   cluster_endpoint_public_access_cidrs           = "${local.cluster_endpoint_public_access_cidrs}"
   cluster_endpoint_private_access                = true
   cluster_endpoint_private_access_cidrs          = [ "0.0.0.0/0", ]
+  manage_aws_auth                                = true
   kubeconfig_aws_authenticator_command           = "aws eks"
   kubeconfig_aws_authenticator_command_args      = [ "--region ${local.customer_region} update-kubeconfig --name ${local.cluster_name} --profile ${local.aws_profile}", ]
   write_kubeconfig                               = true
