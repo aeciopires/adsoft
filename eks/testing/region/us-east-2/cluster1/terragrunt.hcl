@@ -36,7 +36,7 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  config_path            = "/tmp/kubeconfig_${local.environment}"
+  config_path = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
 }
 
 EOF
@@ -81,7 +81,7 @@ inputs = {
   cluster_endpoint_private_access_cidrs          = [ "0.0.0.0/0", ]
   manage_aws_auth                                = true
   write_kubeconfig                               = true
-  kubeconfig_output_path                         = "/tmp/kubeconfig_${local.environment}"
+  kubeconfig_output_path                         = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
   kubeconfig_aws_authenticator_command           = "aws"
   kubeconfig_aws_authenticator_command_args      = ["eks", "get-token"]
   kubeconfig_aws_authenticator_additional_args   = ["--cluster-name", "${local.cluster_name}", "--region", "${local.customer_region}"]
