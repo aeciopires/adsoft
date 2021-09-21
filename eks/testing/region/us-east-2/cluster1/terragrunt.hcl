@@ -23,6 +23,28 @@ locals {
   cluster_name                         = local.region_vars.locals.cluster1_name
 }
 
+# Generate an AWS provider block
+generate "provider" {
+  path      = "provider.tf"
+  if_exists = "overwrite"
+  contents  = <<EOF
+# Providers config
+provider "aws" {
+  region                  = "${local.region_bucket}"
+  shared_credentials_file = "~/.aws/credentials"
+  profile                 = "${local.profile_remote_tfstate}"
+}
+
+provider "kubernetes" {
+  #host                   = data.aws_eks_cluster.cluster.endpoint
+  #cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  #token                  = data.aws_eks_cluster_auth.cluster.token
+  config_path            = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
+}
+
+EOF
+}
+
 dependency "key_pair" {
   config_path = "../keypair"
 }
