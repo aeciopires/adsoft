@@ -12,3 +12,4 @@ vendor
 .terraform
 *.out
 .terraform.lock.hcl
+*kubeconfig_*
