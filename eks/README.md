@@ -407,10 +407,18 @@ Run the ``terragrunt`` command.
 terragrunt destroy
 ```
 
-* For create S3 bucket
+* For remove S3 bucket
+
+Remove all versions of objects in bucket with the script:
+
+Reference: 
+* https://docs.aws.amazon.com/AmazonS3/latest/userguide/DeletingObjectVersions.html
+* https://gist.github.com/weavenet/f40b09847ac17dd99d16#gistcomment-3666051
 
 ```bash
 cd ~/git/adsoft/eks/testing/region/us-east-2/audit/s3
+chmod +x remove_all_version_objects.sh
+./remove_all_version_objects.sh mys3-testing-audit
 ```
 
 Run the ``terragrunt`` command.
