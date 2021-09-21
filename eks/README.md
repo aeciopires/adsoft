@@ -105,6 +105,12 @@ find . -type f | grep .yaml | grep -v terragrunt-cache
 
 * For create s3 to store tfstate remote on AWS:
 
+```diff
+- ATTENTION!!!
+- The bucket name is global and unique. This means that even if you don't have a bucket with a certain name, it may conflict with another bucket created under another AWS customer's account. 
++ If this is the case, you need to change the bucket name ``my-terraform-remote-state-02`` in the following commands and also in the ``*.hcl`` files.
+```
+
 ```bash
 aws s3api create-bucket \
   --bucket my-terraform-remote-state-02 \

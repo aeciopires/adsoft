@@ -38,9 +38,9 @@ terraform {
 
   # Issue: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911#issuecomment-761715025
   # Reference: https://github.com/terraform-aws-modules/terraform-aws-eks#important-note
-  before_hook "connect_eks" {
-    commands = ["apply","plan"]
-    execute = ["aws", "eks", "update-kubeconfig",
+  after_hook "connect_eks" {
+    commands = ["apply"]
+    execute  = ["aws", "eks", "update-kubeconfig",
       "--name", "${local.cluster_name}",
       "--region", "${local.customer_region}",
       "--profile", "${local.aws_profile}"
@@ -61,7 +61,7 @@ inputs = {
   cluster_endpoint_private_access                = true
   cluster_endpoint_private_access_cidrs          = [ "0.0.0.0/0", ]
   manage_aws_auth                                = true
-  kubeconfig_output_path                         = "./kube/${local.environment}/"
+  kubeconfig_output_path                         = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
   kubeconfig_aws_authenticator_command           = "aws"
   kubeconfig_aws_authenticator_command_args      = ["eks", "get-token"]
   kubeconfig_aws_authenticator_additional_args   = ["--cluster-name", "${local.cluster_name}", "--region", "${local.customer_region}"]
@@ -69,7 +69,7 @@ inputs = {
     AWS_PROFILE        = "${local.aws_profile}"
     AWS_DEFAULT_REGION = "${local.customer_region}"
   }
-  write_kubeconfig                               = false
+  write_kubeconfig                               = true
   cluster_create_endpoint_private_access_sg_rule = false
   worker_additional_security_group_ids           = [ dependency.vpc.outputs.default_security_group_id, ]
   workers_additional_policies                    = "${local.workers_additional_policies}"
