@@ -36,10 +36,7 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  #host                   = data.aws_eks_cluster.cluster.endpoint
-  #cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
-  #token                  = data.aws_eks_cluster_auth.cluster.token
-  config_path            = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
+  config_path            = "/tmp/kubeconfig_${local.environment}"
 }
 
 EOF
@@ -83,7 +80,8 @@ inputs = {
   cluster_endpoint_private_access                = true
   cluster_endpoint_private_access_cidrs          = [ "0.0.0.0/0", ]
   manage_aws_auth                                = true
-  kubeconfig_output_path                         = "${get_terragrunt_dir()}/kubeconfig_${local.environment}"
+  write_kubeconfig                               = false
+  kubeconfig_output_path                         = "/tmp/kubeconfig_${local.environment}"
   kubeconfig_aws_authenticator_command           = "aws"
   kubeconfig_aws_authenticator_command_args      = ["eks", "get-token"]
   kubeconfig_aws_authenticator_additional_args   = ["--cluster-name", "${local.cluster_name}", "--region", "${local.customer_region}"]
@@ -91,7 +89,6 @@ inputs = {
     AWS_PROFILE        = "${local.aws_profile}"
     AWS_DEFAULT_REGION = "${local.customer_region}"
   }
-  write_kubeconfig                               = true
   cluster_create_endpoint_private_access_sg_rule = false
   worker_additional_security_group_ids           = [ dependency.vpc.outputs.default_security_group_id, ]
   workers_additional_policies                    = "${local.workers_additional_policies}"
