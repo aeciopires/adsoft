@@ -2,7 +2,7 @@
 
 - [Requirements](#requirements)
   - [General Packages](#general-packages)
-- [AWC-CLI](#awc-cli)
+- [AWS-CLI](#aws-cli)
 - [Configure AWS Credentials](#configure-aws-credentials)
 - [Docker](#docker)
 - [Docker Compose](#docker-compose)
@@ -55,7 +55,7 @@ sudo yum install -y vim traceroute telnet git tcpdump elinks curl wget openssl n
 
 Install Python 3 in CentOS: https://linuxize.com/post/how-to-install-python-3-on-centos-7
 
-# AWC-CLI
+# AWS-CLI
 
 Run the following commands to install ``awscli`` package.
 
@@ -70,6 +70,13 @@ aws --version
 
 rm -rf awscli-bundle.zip awscli-bundle
 ```
+
+Or in Ubuntu:
+
+```bash
+sudo snap install aws-cli --classic
+```
+
 
 More information about ``aws-cli``: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
