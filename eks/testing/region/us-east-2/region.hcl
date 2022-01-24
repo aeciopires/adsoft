@@ -7,9 +7,11 @@
 //# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
+  environment_vars   = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+  environment        = local.environment_vars.locals.environment
   region             = "us-east-2"
   key_name           = "aws-testing"
-  public_key_content = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX"
+  public_key_content = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDi+Wel2qL9OR541sPZLXczj/wEzDjRblXgya/y40E1xYSQDGXkMikndWywKGB0uoV1P1oGXQqFGHKn0lewiwuNAKsg5vGqIJ8miVqfMQ+qpiAU2Byt0cAz14eb2adJmRAlo5hQpj+xTGvi4xnde8ud1v0FHLABNtNdTn7VpPpGmvpXff68kj6ebV9IrRQ1kVkD8hlZTEixYAGnVHQScjfsrId68H0uNFYghgzdKlWWbP21b4WKNWZNQZc4U7gQ405vRRHqXfM/YIcUuDskT+T1+r0aBYkrtvPbxQLy5CHV46YAeYOs0TushrjwaGl3PLNopFC3duBUMaHnaRN/5ikD"
 
   # To generate customer_id, execute:
   # cat /dev/urandom | tr -dc "a-z0-9" | fold -w  10 | head -n 1 | tr -d "\n"
@@ -20,11 +22,11 @@ locals {
   #----------------------------
   # EKS Configurations
   #----------------------------
-  cluster1_name = "mycluster-eks-testing"
+  cluster1_name = "mycluster-${local.customer_id}"
 
   # IP Address that can access the Kubernetes cluster
   cluster_endpoint_public_access_cidrs = [
-    "201.82.34.195/32",
+    "187.106.34.5/32",
   ]
 
   #----------------------------
@@ -40,6 +42,11 @@ locals {
 
   vpc_tags = {
     "kubernetes.io/cluster/${local.cluster1_name}" = "shared"
+    "Terraform"                                    = "true"
+    "environment"                                  = "${local.environment}"
+    "Scost"                                        = "${local.customer_id}"
+    "Customer"                                     = "${local.customer_name}"
+    "customer_id"                                  = "${local.customer_id}"
   }
 
   public_subnet_tags = {
@@ -51,4 +58,3 @@ locals {
     "kubernetes.io/role/internal-elb" = "1"
   }
 }
-

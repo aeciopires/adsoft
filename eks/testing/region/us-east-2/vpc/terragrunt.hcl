@@ -23,12 +23,13 @@ locals {
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git//?ref=v3.7.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git//?ref=v3.11.3"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
   name                   = "${local.customer_id}-dataplane"
+  create_vpc             = true
   cidr                   = "${local.cidr}"
   azs                    = "${local.azs}"
   public_subnets         = "${local.public_subnets}"
@@ -42,12 +43,7 @@ inputs = {
   single_nat_gateway     = false
   one_nat_gateway_per_az = true
 
-  tags = {
-    "Terraform"                                    = "true"
-    "environment"                                  = "${local.environment}"
-    "Scost"                                        = "${local.customer_id}"
-    "Customer"                                     = "${local.customer_name}"
-    "customer_id"                                  = "${local.customer_id}"
-    "kubernetes.io/cluster/${local.cluster1_name}" = "shared"
-  }
+  tags = merge(
+    local.vpc_tags
+  )
 }

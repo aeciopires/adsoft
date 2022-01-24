@@ -18,7 +18,7 @@ locals {
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-key-pair.git//?ref=v1.0.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-key-pair.git//?ref=v1.0.1"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

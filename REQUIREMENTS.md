@@ -240,7 +240,7 @@ Install Helm 3 with the follow commands.
 ```bash
 sudo su
 
-HELM_TAR_FILE=helm-v3.7.0-linux-amd64.tar.gz
+HELM_TAR_FILE=helm-v3.7.1-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh
 HELM_BIN=helm3
 
@@ -298,7 +298,7 @@ Documentation: https://github.com/roboll/helmfile
 ```bash
 sudo su
 
-HELMFILE_VERSION=v0.140.1
+HELMFILE_VERSION=v0.143.0
 HELMFILE_DOWNLOADED_FILENAME=helmfile_linux_amd64
 HURL=https://github.com/roboll/helmfile/releases/download
 HELMFILE_URL=${HURL}/${HELMFILE_VERSION}/${HELMFILE_DOWNLOADED_FILENAME}
@@ -334,7 +334,7 @@ Documentation: https://github.com/databus23/helm-diff
 
 ```bash
 helm repo update
-helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/databus23/helm-diff --version v3.1.3
 ```
 
 ## Helm-Secrets
@@ -596,7 +596,7 @@ sudo ln -s ~/.tfenv/bin/* /usr/local/bin
 Install Terraform version using ``tfenv`` command:
 
 ```bash
-tfenv install 1.0.7
+tfenv install 1.1.4
 ```
 
 More information about ``tfenv``: https://github.com/tfutils/tfenv
@@ -632,7 +632,7 @@ Create the ``.terraform-version`` file at the root of the project with the desir
 Example:
 
 ```bash
-echo "1.0.7" > .terraform-version
+echo "1.1.4" > .terraform-version
 ```
 
 # Terraform-Docs
@@ -642,7 +642,7 @@ Install Terraform-Docs with the follow commands.
 ```bash
 cd /tmp
 
-VERSION=v0.15.0
+VERSION=v0.16.0
 
 curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
 
@@ -650,7 +650,7 @@ tar -xzf terraform-docs.tar.gz
 
 chmod +x terraform-docs
 
-mv terraform-docs /usr/local/bin/terraform-docs
+sudo mv terraform-docs /usr/local/bin/terraform-docs
 
 rm terraform-docs.tar.gz
 
@@ -678,7 +678,7 @@ sudo ln -s ~/.tgenv/bin/* /usr/local/bin
 Install Terragrunt version using ``tgenv`` command:
 
 ```bash
-tgenv install 0.32.3
+tgenv install 0.36.0
 ```
 
 List Terragrunt versions to install:
@@ -712,7 +712,7 @@ Create the ``.terragrunt-version`` file at the root of the project with the desi
 Example:
 
 ```bash
-echo "0.32.3" > .terragrunt-version
+echo "0.36.0" > .terragrunt-version
 ```
 
 # Aliases
@@ -736,4 +736,7 @@ alias ll='ls -alF'
 alias ls='ls --color=auto'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias gitlog='git log -p'
+alias conect-eks='aws eks --region NOME_REGIAO update-kubeconfig --name NOME_CLUSTER_EKS --profile NOME_PERFIL_AWS'
+alias limitselb='aws elbv2 describe-account-limits --region us-east-1'
+alias cerebro='helm install cerebro stable/cerebro -n default'
 ```

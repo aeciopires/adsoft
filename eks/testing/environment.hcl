@@ -43,5 +43,4 @@ locals {
       groups   = ["system:masters"]
     },
   ]
-
 }

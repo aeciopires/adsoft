@@ -49,25 +49,25 @@ provider "aws" {
 #      source  = "hashicorp/aws"
 #      version = ">= 3.42.0"
 #    }
-#    randon = {
-#      source  = "hashicorp/aws"
+#    random = {
+#      source  = "hashicorp/random"
 #      version = ">= 3.1.0"
 #    }
 #    template = {
-#      source  = "hashicorp/aws"
+#      source  = "hashicorp/template"
 #      version = ">= 2.2.0"
 #    }
 #    null = {
-#      source  = "hashicorp/aws"
+#      source  = "hashicorp/null"
 #      version = ">= 3.1.0"
 #    }
 #    kubernetes = {
-#      source  = "hashicorp/aws"
-#      version = ">= 2.2.0"
+#      source  = "hashicorp/kubernetes"
+#      version = ">= 2.0.1"
 #    }
 #    local = {
-#      source  = "hashicorp/aws"
-#      version = ">= 3.1.0"
+#      source  = "hashicorp/local"
+#      version = ">= 2.1.0"
 #    }
 #  }
 #}

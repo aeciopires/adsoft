@@ -11,7 +11,6 @@
   - [Stage 2: Create key pair RSA for each environment](#stage-2-create-key-pair-rsa-for-each-environment)
   - [Stage 3: Define parameters of VPC configuration](#stage-3-define-parameters-of-vpc-configuration)
   - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
-  - [Stage 5: Install manifests in EKS cluster](#stage-5-install-manifests-in-eks-cluster)
 - [How to Uninstall](#how-to-uninstall)
   - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
   - [Remove subnets, NAT Gatewat and VPC](#remove-subnets-nat-gatewat-and-vpc)
@@ -278,7 +277,9 @@ terragrunt output
 * For create EKS in especific region of testing environment:
 
 ```bash
-cd ~/git/adsoft/eks/testing/region/us-east-2/cluster1
+cd ~/git/adsoft/eks/testing/region/us-east-2/eks/cluster1/main
+cd ~/git/adsoft/eks/testing/region/us-east-2/eks/cluster1/aws-auth
+cd ~/git/adsoft/eks/testing/region/us-east-2/eks/cluster1/addons
 ```
 
 Run the ``terragrunt`` commands.
@@ -288,6 +289,12 @@ terragrunt validate
 terragrunt plan
 terragrunt apply
 terragrunt output
+```
+
+Authenticate in cluster of customer with follow command.
+
+```bash
+aws eks update-kubeconfig --name mycluster-cdk17o7adl --region us-east-2 --profile default
 ```
 
 ```diff
@@ -317,32 +324,6 @@ References:
 * https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
 * https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
 
-## Stage 5: Install manifests in EKS cluster
-
-* Authenticate to the EKS cluster with the follow command.
-
-```bash
-aws eks update-kubeconfig --name mycluster-eks-testing --region us-east-2 --profile default
-```
-
-* Create namespace ``manifests-eks`` in Kubernetes cluster.
-
-```bash
-kubectl create namespace manifests-eks
-```
-
-* In Kubernetes 1.21, install CRD (Custom Resource Definitions) of cert-manager with command.
-
-```bash
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.crds.yaml
-```
-
-* Install manifests default in EKS cluster with follow commands:
-
-```bash
-
-```
-
 # How to Uninstall
 
 ## Remove Kubernetes cluster
@@ -350,13 +331,13 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3
 * For remove EKS for especific in especific region of testing environment:
 
 ```bash
-cd ~/git/adsoft/eks/testing/region/us-east-2/cluster1
+cd ~/git/adsoft/eks/testing/region/us-east-2/eks/cluster1/main
 ```
 
 Authenticate in cluster of customer with follow command.
 
 ```bash
-aws eks update-kubeconfig --name mycluster-eks-testing --region us-east-2 --profile default
+aws eks update-kubeconfig --name mycluster-cdk17o7adl --region us-east-2 --profile default
 ```
 
 Run the ``terragrunt`` command.
