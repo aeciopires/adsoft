@@ -114,9 +114,9 @@ Reference: https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-key
 
 Install Docker CE (Community Edition) following the instructions of the pages below, according to your GNU/Linux distribution.
 
-* CentOS: https://docs.docker.com/install/linux/docker-ce/centos/
-* Debian: https://docs.docker.com/install/linux/docker-ce/debian/
-* Ubuntu: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+* CentOS: https://docs.docker.com/engine/install/centos/
+* Debian: https://docs.docker.com/engine/install/debian/
+* Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 Start the ``docker`` service, configure Docker to boot up with the OS and add your user to the ``docker`` group.
 
@@ -194,12 +194,12 @@ For more informations:
 Run the following commands to install Go.
 
 ```bash
-VERSION=1.17.1
+VERSION=1.19.5
 
 mkdir -p $HOME/go/bin
 
 cd /tmp
-curl https://dl.google.com/go/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
+curl -L https://go.dev/dl/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
 
 sudo rm -rf /usr/local/go 
 sudo tar -C /usr/local -xzf go.tar.gz
@@ -279,7 +279,7 @@ Install ``helm-docs`` with the follow commands.
 Documentation: https://github.com/norwoodj/helm-docs 
 
 ```bash
-HELM_DOCS_VERSION=1.5.0
+HELM_DOCS_VERSION=1.11.0
 HELM_DOCS_PACKAGE=helm-docs_``$HELM_DOCS_VERSION``_linux_x86_64.tar.gz
 cd /tmp
 wget https://github.com/norwoodj/helm-docs/releases/download/v$HELM_DOCS_VERSION/$HELM_DOCS_PACKAGE
@@ -293,33 +293,37 @@ helm-docs --version
 
 Install ``helmfile`` with the follow commands.
 
-Documentation: https://github.com/roboll/helmfile
+Documentation: https://github.com/helmfile/helmfile
 
 ```bash
 sudo su
 
-HELMFILE_VERSION=v0.143.0
-HELMFILE_DOWNLOADED_FILENAME=helmfile_linux_amd64
-HURL=https://github.com/roboll/helmfile/releases/download
-HELMFILE_URL=${HURL}/${HELMFILE_VERSION}/${HELMFILE_DOWNLOADED_FILENAME}
 HELMFILE_BIN=helmfile
+HELMFILE_VERSION="0.150.0"
+HELMFILE_DOWNLOADED_DIR="helmfile_${HELMFILE_VERSION}_linux_amd64"
+HELMFILE_DOWNLOADED_PACKAGE="${HELMFILE_DOWNLOADED_DIR}.tar.gz"
+HURL=https://github.com/helmfile/helmfile/releases/download
+HELMFILE_URL=${HURL}/v${HELMFILE_VERSION}/${HELMFILE_DOWNLOADED_PACKAGE}
 
 function install_helmfile {
 
 if [ -z $(which $HELMFILE_BIN) ]; then
+    cd /tmp
     wget ${HELMFILE_URL}
-    chmod +x ${HELMFILE_DOWNLOADED_FILENAME}
-    sudo mv ${HELMFILE_DOWNLOADED_FILENAME} /usr/local/bin/${HELMFILE_BIN}
+    tar xzvf ${HELMFILE_DOWNLOADED_PACKAGE}
+    chmod +x ${HELMFILE_BIN}
+    sudo mv ${HELMFILE_BIN} /usr/local/bin/${HELMFILE_BIN}
     echo -e "\nexecuting: which ${HELMFILE_BIN}"
     which ${HELMFILE_BIN}
+    ${HELMFILE_BIN} --version
+    rm ${HELMFILE_DOWNLOADED_PACKAGE}
 else
-    echo"Helmfile is most likely installed"
+    echo "Helmfile is most likely installed"
+    ${HELMFILE_BIN} --version
 fi
 }
 
 install_helmfile
-which ${HELMFILE_BIN}
-${HELMFILE_BIN} --version
 
 exit
 ```
@@ -517,7 +521,7 @@ For bash:
 bash_prompt:
 
 ```bash
-curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/c43ed73a523a203220091d35d1e5ae2bec9877b2/.bash_prompt
+curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
 chmod +x ~/.bash_prompt
 echo "source ~/.bash_prompt" >> ~/.bashrc 
 source ~/.bashrc
@@ -720,23 +724,28 @@ echo "0.36.0" > .terragrunt-version
 Useful aliases to be registered in the ``$HOME/.bashrc`` file.
 
 ```bash
+alias gitlog='git log -p'
+alias limitselb='aws elbv2 describe-account-limits --region us-east-1'
+alias cerebro='helm install cerebro stable/cerebro -n default'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias bat='bat --theme ansi'
+alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias k='kubectl'
-alias kmongo='kubectl run --rm -it mongoshell --image=mongo:latest -n default -- bash'
+alias kmongo='kubectl run --rm -it mongoshell --image=mongo:4 -n default -- bash'
 alias kmysql='kubectl run --rm -it mysql --image=mysql:5.7 -n default -- bash'
 alias kredis='kubectl run --rm -it redis-cli --image=redis:latest -n default -- bash'
 alias kssh='kubectl run ssh-client -it --rm --image=kroniak/ssh-client -n default -- bash'
-alias nettools='kubectl run --rm -it nettools --image=travelping/nettools:latest -n default -- bash'
-alias live='curl parrot.live'
 alias l='ls -CF'
 alias la='ls -A'
+alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
+alias nettools='kubectl run --rm -it nettools --image=travelping/nettools:latest -n default -- bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
-alias gitlog='git log -p'
-alias conect-eks='aws eks --region NOME_REGIAO update-kubeconfig --name NOME_CLUSTER_EKS --profile NOME_PERFIL_AWS'
-alias limitselb='aws elbv2 describe-account-limits --region us-east-1'
-alias cerebro='helm install cerebro stable/cerebro -n default'
+alias show-hidden-files='du -sch .[!.]* * |sort -h'
+alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION --profile CHANGE_PROFILE'
+alias terradocs='terraform-docs markdown table . > README.md'
 ```
