@@ -1,11 +1,13 @@
 <!-- TOC -->
 
 - [Requirements](#requirements)
-  - [General Packages](#general-packages)
+- [General Packages](#general-packages)
+- [Updating many git repositories](#updating-many-git-repositories)
 - [AWS-CLI](#aws-cli)
 - [Configure AWS Credentials](#configure-aws-credentials)
 - [Docker](#docker)
 - [Docker Compose](#docker-compose)
+- [Ec2-instance-selector](#ec2-instance-selector)
 - [GCloud](#gcloud)
 - [Go](#go)
 - [Helm 3](#helm-3)
@@ -15,15 +17,12 @@
   - [Helm-Diff](#helm-diff)
   - [Helm-Secrets](#helm-secrets)
 - [Kubectl](#kubectl)
+- [Kind](#kind)
 - [Plugins for Kubectl](#plugins-for-kubectl)
   - [Krew](#krew)
   - [kubectx e kubens](#kubectx-e-kubens)
-  - [Kubetree](#kubetree)
   - [Kubefwd](#kubefwd)
-  - [Kubepug](#kubepug)
-  - [Kubent](#kubent)
-  - [Node-shell](#node-shell)
-  - [Other Kubetools](#other-kubetools)
+- [Kubeshark (old Mizu)](#kubeshark-old-mizu)
 - [Lens](#lens)
 - [Script of customized prompt](#script-of-customized-prompt)
 - [Shellcheck](#shellcheck)
@@ -37,23 +36,49 @@
 
 # Requirements
 
-## General Packages
+# General Packages
 
 Install the follow packages.
 
-Debian/Ubuntu:
+Ubuntu 20.04/22.04:
 
 ```bash
-sudo apt-get install -y vim traceroute telnet git tcpdump elinks curl wget openssl netcat net-tools python3 python3-pip python3-venv
+sudo apt install -y vim telnet git curl wget openssl netcat net-tools python3 python3-pip meld python3-venv default-jdk jq make
 ```
 
-CentOS:
+On Ubuntu 20.04 64 bits with Python 3.8.1, run the following command to create the symbolic link:
 
 ```bash
-sudo yum install -y vim traceroute telnet git tcpdump elinks curl wget openssl netcat net-tools
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 ```
 
-Install Python 3 in CentOS: https://linuxize.com/post/how-to-install-python-3-on-centos-7
+# Updating many git repositories
+
+Create the ``~/git`` directory.
+
+```bash
+mkdir ~/git
+```
+
+Download the ``updateGit.sh`` script
+
+```bash
+cd ~
+
+wget https://gist.githubusercontent.com/aeciopires/2457cccebb9f30fe66ba1d67ae617ee9/raw/8d088c6fadb8a4397b5ff2c7d6a36980f46d40ae/updateGit.sh
+
+chmod +x ~/updateGit.sh
+```
+
+Now you can clone all the git repositories and save it inside ``~/git`` directory.
+
+To update all git repositories run the commands.
+
+```bash
+cd ~
+
+./updateGit.sh git/
+```
 
 # AWS-CLI
 
@@ -71,20 +96,11 @@ aws --version
 rm -rf awscli-bundle.zip awscli-bundle
 ```
 
-Or in Ubuntu:
-
-```bash
-sudo snap install aws-cli --classic
-```
-
-
 More information about ``aws-cli``: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
 Reference: https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
 
 # Configure AWS Credentials
-
-[OPTIONAL] You will need to create an Amazon AWS account. Create a **Free Tier** account at Amazon https://aws.amazon.com/ follow the instructions on the pages: https://docs.aws.amazon.com/chime/latest/ag/aws-account.html and https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-limits.html. When creating the account you will need to register a credit card, but since you will create instances using the features offered by the **Free Tier** plan, nothing will be charged if you do not exceed the limit for the use of the features and time offered and described in the previous link.
 
 After creating the account in AWS, access the Amazon CLI interface at: https://aws.amazon.com/cli/
 
@@ -101,6 +117,7 @@ touch $HOME/.aws/credentials
 ```
 
 Open ``$HOME/.aws/credentials`` file and add the following content and change the access key and secret access key.
+
 ```
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_HERE
@@ -110,12 +127,11 @@ aws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE
 In this case, the profile name AWS is **default**.
 
 Reference: https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html
+
 # Docker
 
 Install Docker CE (Community Edition) following the instructions of the pages below, according to your GNU/Linux distribution.
 
-* CentOS: https://docs.docker.com/engine/install/centos/
-* Debian: https://docs.docker.com/engine/install/debian/
 * Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 Start the ``docker`` service, configure Docker to boot up with the OS and add your user to the ``docker`` group.
@@ -128,7 +144,10 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # Add your user to the Docker group
+sudo apt install -y acl
+
 sudo usermod -aG docker $USER
+
 sudo setfacl -m user:$USER:rw /var/run/docker.sock
 ```
 
@@ -163,6 +182,26 @@ For more information about Docker Compose visit:
 * https://docs.docker.com/compose/compose-file
 * https://docs.docker.com/engine/reference/builder
 
+# Ec2-instance-selector
+
+A CLI tool that recommends instance types based on resource criteria such as vCPUs and memory.
+
+References:
+
+* https://github.com/aws/amazon-ec2-instance-selector 
+
+Install ``ec2-instance-selector`` with the commands:
+
+```bash
+VERSION=v2.4.0
+
+sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
+
+sudo chmod +x /usr/local/bin/ec2-instance-selector
+
+ec2-instance-selector --help
+```
+
 # GCloud
 
 You will need to create an Google Cloud Platform account: https://console.cloud.google.com
@@ -170,11 +209,16 @@ You will need to create an Google Cloud Platform account: https://console.cloud.
 Install and configure the ``gcloud`` following the instructions on tutorials.
 
 ```bash
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-sudo apt-get install apt-transport-https ca-certificates gnupg
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk 
+main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+sudo apt install -y apt-transport-https ca-certificates gnupg
+
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-sudo apt-get update && sudo apt-get install google-cloud-sdk
-gcloud init
+
+sudo apt update && sudo apt install -y google-cloud-sdk
+
+gcloud init (alternativamente, gcloud init --console-only)
 ```
 
 For more informations:
@@ -194,23 +238,28 @@ For more informations:
 Run the following commands to install Go.
 
 ```bash
-VERSION=1.19.5
+VERSION=1.20.3
 
 mkdir -p $HOME/go/bin
 
 cd /tmp
+
 curl -L https://go.dev/dl/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
 
 sudo rm -rf /usr/local/go 
+
 sudo tar -C /usr/local -xzf go.tar.gz
+
 rm /tmp/go.tar.gz
 
 export GOPATH=$HOME/go
+
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 go version
 
 echo "GOPATH=$HOME/go" >> ~/.bashrc
+
 echo "PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" >> ~/.bashrc
 ```
 
@@ -261,7 +310,9 @@ fi
 }
 
 install_helm3
+
 which $HELM_BIN
+
 $HELM_BIN version
 
 exit
@@ -281,11 +332,17 @@ Documentation: https://github.com/norwoodj/helm-docs
 ```bash
 HELM_DOCS_VERSION=1.11.0
 HELM_DOCS_PACKAGE=helm-docs_``$HELM_DOCS_VERSION``_linux_x86_64.tar.gz
-cd /tmp
+
 wget https://github.com/norwoodj/helm-docs/releases/download/v$HELM_DOCS_VERSION/$HELM_DOCS_PACKAGE
-tar xzvf $HELM_DOCS_PACKAGE
-sudo mv helm-docs /usr/local/bin/
-sudo chmod +rx /usr/local/bin/helm-docs
+
+tar xzvf $HELM_DOCS_PACKAGE helm-docs
+
+sudo mv helm-docs /usr/local/bin/helm-docs
+
+sudo chmod +x /usr/local/bin/helm-docs
+
+rm $HELM_DOCS_PACKAGE
+
 helm-docs --version
 ```
 
@@ -299,7 +356,7 @@ Documentation: https://github.com/helmfile/helmfile
 sudo su
 
 HELMFILE_BIN=helmfile
-HELMFILE_VERSION="0.150.0"
+HELMFILE_VERSION="0.152.0"
 HELMFILE_DOWNLOADED_DIR="helmfile_${HELMFILE_VERSION}_linux_amd64"
 HELMFILE_DOWNLOADED_PACKAGE="${HELMFILE_DOWNLOADED_DIR}.tar.gz"
 HURL=https://github.com/helmfile/helmfile/releases/download
@@ -337,8 +394,7 @@ Install the plugin with the follow commands.
 Documentation: https://github.com/databus23/helm-diff
 
 ```bash
-helm repo update
-helm plugin install https://github.com/databus23/helm-diff --version v3.1.3
+helm plugin install https://github.com/databus23/helm-diff --version v3.4.1
 ```
 
 ## Helm-Secrets
@@ -348,7 +404,6 @@ Install the plugin with the follow commands.
 Documentation: https://github.com/jkroepke/helm-secrets
 
 ```bash
-helm repo update
 helm plugin install https://github.com/jkroepke/helm-secrets --version v3.5.0
 ```
 
@@ -359,15 +414,15 @@ Run the following commands to install ``kubectl``.
 ```bash
 sudo su
 
-VERSION=v1.22.2
+VERSION=v1.23.6
 KUBECTL_BIN=kubectl
 
 function install_kubectl {
 if [ -z $(which $KUBECTL_BIN) ]; then
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/$KUBECTL_BIN
     chmod +x ${KUBECTL_BIN}
-    sudo mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
-    sudo ln -sf /usr/local/bin/${KUBECTL_BIN} /usr/bin/${KUBECTL_BIN}
+    mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
+    ln -sf /usr/local/bin/${KUBECTL_BIN} /usr/bin/${KUBECTL_BIN}
 else
     echo "Kubectl is most likely installed"
 fi
@@ -386,6 +441,25 @@ More information about ``kubectl``: https://kubernetes.io/docs/reference/kubectl
 
 Reference: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
+# Kind
+
+Run the following commands to install kind.
+
+```bash
+
+VERSION=v0.17.0
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/$VERSION/kind-$(uname)-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+
+More information about kind:
+
+* https://kind.sigs.k8s.io
+* https://kind.sigs.k8s.io/docs/user/quick-start/
+* https://github.com/kubernetes-sigs/kind/releases
+* https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/#kind-kubernetes-made-easy-in-a-container
+
 # Plugins for Kubectl
 
 ## Krew
@@ -398,10 +472,12 @@ Documentation:
 ```bash
 (
   set -x; cd "$(mktemp -d)" &&
-  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
-  tar zxvf krew.tar.gz &&
-  KREW=./krew-"$(uname | tr '[:upper:]' '[:lower:]')_amd64" &&
-  "$KREW" install krew
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
 )
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
@@ -429,67 +505,33 @@ export PATH=~/.kubectx:\$PATH
 FOE
 ```
 
-## Kubetree
-
-Documentation: https://github.com/ahmetb/kubectl-tree
-
-```bash
-kubectl krew install tree
-```
-
 ## Kubefwd
 
 Documentation: https://github.com/txn2/kubefwd
 
 ```bash
-cd /tmp
-wget https://github.com/txn2/kubefwd/releases/download/1.14.0/kubefwd_amd64.deb
+VERSION=1.22.5
+wget https://github.com/txn2/kubefwd/releases/download/$VERSION/kubefwd_amd64.deb
 sudo dpkg -i kubefwd_amd64.deb 
 kubefwd 
-rm kubefwd_amd64.deb 
-source <(kubectl completion bash)
+rm kubefwd_amd64.deb
 ```
 
-## Kubepug
+# Kubeshark (old Mizu)
 
-Documentation: https://github.com/rikatz/kubepug
+Kubeshark is a tool for real-time K8s protocol-level visibility, capturing and monitoring all traffic and payloads going in, out and across containers, pods, nodes and clusters.
+
+Is recommend choosing the right binary to download directly from the [latest release](https://github.com/kubeshark/kubeshark/releases/latest).
+
+Alternatively you can use a shell script to download the right binary for your operating system and CPU architecture:
 
 ```bash
-VERSION=v1.1.3
-cd /tmp
-wget https://github.com/rikatz/kubepug/releases/download/$VERSION/kubepug_linux_amd64.tar.gz
-tar xzvf kubepug_linux_amd64.tar.gz
-sudo mv kubepug /usr/local/bin/
-kubepug --version
+sh <(curl -Ls https://kubeshark.co/install)
 ```
 
-## Kubent
+References:
 
-```bash
-sh -c "$(curl -sSL https://git.io/install-kubent)"
-kubent --help
-```
-
-Documentation: https://github.com/swade1987/deprek8ion
-
-## Node-shell
-
-```bash
-kubectl krew install node-shell
-```
-
-Documentation: https://github.com/kvaps/kubectl-node-shell
-
-## Other Kubetools
-
-* http://dockerlabs.collabnix.com/kubernetes/kubetools/
-* https://caylent.com/50-useful-kubernetes-tools
-* https://caylent.com/50+-useful-kubernetes-tools-list-part-2
-* https://developer.sh/posts/kubernetes-client-tools-overview
-* https://github.com/kubernetes-sigs/kind
-* https://github.com/rancher/k3d
-* https://microk8s.io/
-* https://argoproj.github.io/argo-cd/
+* https://docs.kubeshark.co/en/install
 
 # Lens
 
@@ -503,6 +545,8 @@ Documentation:
 
 * https://k8slens.dev/
 * https://snapcraft.io/kontena-lens
+
+
 
 # Script of customized prompt
 
@@ -521,28 +565,40 @@ For bash:
 bash_prompt:
 
 ```bash
-curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
+curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/c43ed73a523a203220091d35d1e5ae2bec9877b2/.bash_prompt
+
 chmod +x ~/.bash_prompt
+
 echo "source ~/.bash_prompt" >> ~/.bashrc 
+
 source ~/.bashrc
+
 exec bash
 ```
 
 # Shellcheck
 
-It is possible to install ``shellcheck`` from the standard Ubuntu 18.04 repository, but it installs version 0.4.6. There are newer versions in the maintainer repository on Github that integrate better with the VSCode plugin.
+It is possible to install ``shellcheck`` from the standard Ubuntu 18.04 repository, but it installs version 0.4.6. There are newer versions in the maintainer repository on GitHub that integrate better with the VSCode plugin.
 
 Run the following commands:
 
 ```bash
 cd /tmp
+
 VERSION=$(curl -s https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep tag_name | cut -d '"' -f 4)
+
 curl -LO https://github.com/koalaman/shellcheck/releases/download/$VERSION/shellcheck-$VERSION.linux.x86_64.tar.xz
+
 tar xJvf shellcheck-$VERSION.linux.x86_64.tar.xz
+
 sudo mv shellcheck-$VERSION/shellcheck /usr/bin/shellcheck
+
 rm -rf /tmp/shellcheck-$VERSION/
+
 rm /tmp/shellcheck-$VERSION.linux.x86_64.tar.xz
+
 shellcheck --version
+
 cd -
 ```
 
@@ -577,8 +633,8 @@ Example of config file ``~/.sops.yaml``:
 
 ```yaml
 creation_rules:
-    - kms: 'arn:aws:kms:AWS_REGION:AWS_ACCOUNT_ID:PATH_ARN_KEY_SYMMETRIC'
-      aws_profile: default
+  - kms: 'arn:aws:kms:AWS_REGION:AWS_ACCOUNT_ID:PATH_ARN_KEY_SYMMETRIC'
+    aws_profile: default
 ```
 
 Where:
@@ -593,14 +649,16 @@ Run the following commands to install ``tfenv``.
 
 ```bash
 cd $HOME
+
 git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+
 sudo ln -s ~/.tfenv/bin/* /usr/local/bin
 ```
 
 Install Terraform version using ``tfenv`` command:
 
 ```bash
-tfenv install 1.1.4
+tfenv install 1.3.9
 ```
 
 More information about ``tfenv``: https://github.com/tfutils/tfenv
@@ -636,7 +694,7 @@ Create the ``.terraform-version`` file at the root of the project with the desir
 Example:
 
 ```bash
-echo "1.1.4" > .terraform-version
+echo "1.3.9" > .terraform-version
 ```
 
 # Terraform-Docs
@@ -675,14 +733,16 @@ https://blog.gruntwork.io/how-to-manage-multiple-versions-of-terragrunt-and-terr
 
 ```bash
 cd $HOME
+
 git clone https://github.com/cunymatthieu/tgenv.git ~/.tgenv
+
 sudo ln -s ~/.tgenv/bin/* /usr/local/bin
 ```
 
 Install Terragrunt version using ``tgenv`` command:
 
 ```bash
-tgenv install 0.36.0
+tgenv install 0.44.5
 ```
 
 List Terragrunt versions to install:
@@ -716,7 +776,57 @@ Create the ``.terragrunt-version`` file at the root of the project with the desi
 Example:
 
 ```bash
-echo "0.36.0" > .terragrunt-version
+echo "0.44.5" > .terragrunt-version
+```
+
+There is a problem in ``tgenv`` versions where very old terragrunt versions are not remotely installed/listed. This is due to a query used in the code [that uses the GitHub API](https://github.com/cunymatthieu/tgenv/blob/master/libexec/tgenv-list-remote#L12). For this, we have a possible workaround
+
+Fix proposed and revised in open PR: https://github.com/cunymatthieu/tgenv/pull/15/files
+
+Change the ``~/.tgenv/libexec/tgenv-list-remote`` file to look exactly like this:
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+[ -n "${TGENV_DEBUG}" ] && set -x
+source "${TGENV_ROOT}/libexec/helpers"
+
+if [ ${#} -ne 0 ];then
+  echo "usage: tgenv list-remote" 1>&2
+  exit 1
+fi
+
+GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
+
+temp=`basename $0`
+TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
+
+function rest_call {
+    curl --tlsv1.2 -sf $1 -H "${GITHUB_API_HEADER_ACCEPT}" | sed -e 's/^\[$//g' -e 's/^\]$/,/g' >> $TMPFILE
+}
+
+# single page result-s (no pagination), have no Link: section, the grep result is empty
+last_page=`curl -I --tlsv1.2 -s "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100" -H "${GITHUB_API_HEADER_ACCEPT}" | grep '^link:' | sed -e 's/^link:.*page=//g' -e 's/>.*$//g'`
+
+# does this result use pagination?
+if [ -z "$last_page" ]; then
+    # no - this result has only one page
+    rest_call "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100"
+else
+    # yes - this result is on multiple pages
+    for p in `seq 1 $last_page`; do
+        rest_call "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100&page=$p"
+    done
+fi
+
+return_code=$?
+if [ $return_code -eq 22 ];then
+  warn_and_continue "Failed to get list verion on $link_release"
+  print=`cat ${TGENV_ROOT}/list_all_versions_offline`
+fi
+
+cat $TMPFILE | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+(-(rc|beta)[0-9]+)?" | uniq
 ```
 
 # Aliases
@@ -745,7 +855,7 @@ alias ll='ls -alF'
 alias ls='ls --color=auto'
 alias nettools='kubectl run --rm -it nettools --image=travelping/nettools:latest -n default -- bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
+alias sc="source ~/.bashrc"
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
-alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION --profile CHANGE_PROFILE'
 alias terradocs='terraform-docs markdown table . > README.md'
 ```

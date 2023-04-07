@@ -3,7 +3,7 @@
 
 <!-- TOC -->
 
-- [adsoft_files](#adsoft_files)
+- [adsoft\_files](#adsoft_files)
 - [English](#english)
   - [Contributing](#contributing)
   - [Developers](#developers)
@@ -30,7 +30,6 @@ mail: http://blog.aeciopires.com/contato
 developer: André Luis Boni Déo<br>
 mail: andredeo at gmail dot com
 
-
 ## License
 
-GPL-3.0 2020 Aécio dos Santos Pires and André Luis Boni Déo
+GPL-3.0 2023 Aécio dos Santos Pires and André Luis Boni Déo
