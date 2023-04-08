@@ -10,6 +10,7 @@ locals {
   environment_name = local.environment_vars.locals.environment_name
   aws_profile      = local.environment_vars.locals.aws_profile
   account_id       = local.environment_vars.locals.account_id
+  dns_domain_name  = local.environment_vars.locals.dns_domain_name
   region           = local.region_vars.locals.region
 
   customer_id   = local.customer_vars.locals.customer_id
@@ -33,20 +34,30 @@ terraform {
   source = "../../../../../../../modules//kubernetes-1-25/"
 }
 
+dependencies {
+  paths = [
+    "../../vpc/net-${local.cluster_suffix}/",
+    "../../keypair/key-${local.cluster_suffix}",
+    "../../kms/kms-${local.cluster_suffix}",
+    #"../../certificates/wildcard-${local.dns_domain_name}/",
+  ]
+}
+
+
 dependency "vpc" {
-  config_path = "../../vpc/net-gyr4/"
+  config_path = "../../vpc/net-${local.cluster_suffix}/"
 }
 
 #dependency "certificate" {
-#  config_path = "../../certificates/wildcard-mydomain-com/"
+#  config_path = "../../certificates/wildcard-${local.dns_domain_name}/"
 #}
 
 dependency "kms" {
-  config_path = "../../kms/kms-gyr4"
+  config_path = "../../kms/kms-${local.cluster_suffix}/"
 }
 
 dependency "keypair" {
-  config_path = "../../keypair/key-gyr4"
+  config_path = "../../keypair/key-${local.cluster_suffix}/"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -97,9 +108,9 @@ inputs = {
   cluster_endpoint_public_access_cidrs = local.cluster_endpoint_public_access_cidrs
   cluster_endpoint_private_access      = true
 
-  create_kms_key            = false
+  create_kms_key            = true
   cluster_encryption_config = {
-    provider_key_arn = dependency.kms.outputs.key_arn
+    provider_key_arn = dependency.kms.outputs.key_arn,
     resources        = ["secrets"]
   }
 

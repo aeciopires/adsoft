@@ -4,6 +4,7 @@
 
 - [About](#about)
 - [Requirements](#requirements)
+- [Structure of directories](#structure-of-directories)
 - [Clearing the Terragrunt cache](#clearing-the-terragrunt-cache)
 - [How to Install](#how-to-install)
   - [Stage 0: Change the configurations](#stage-0-change-the-configurations)
@@ -39,6 +40,42 @@ Terragrunt will forward almost all commands, arguments, and options directly to 
 - ATTENTION!!!
 - Bug possible: https://github.com/hashicorp/terraform-provider-aws/issues/14917
 + Fix: ``export AWS_DEFAULT_REGION=region_name``.
+```
+
+# Structure of directories
+
+```bash
+├── live # Directory with Terragrunt code
+│   ├── default.hcl
+│   ├── empty.yaml
+│   └── testing # Directory with environment code
+│       ├── environment.hcl # Environment configurations for Terragrunt code
+│       ├── regions # Directory with regions code
+│       │   └── us-east-2 # Directory with specific region code
+│       │       ├── mycustomer # Directory with specific resources code of customer
+│       │       │   ├── certificates
+│       │       │   │   ├── validation-wildcard-mydomain-com
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create DNS record to validate certificate
+│       │       │   │   └── wildcard-mydomain-com
+│       │       │   │       └── terragrunt.hcl # Terragrunt for create certificate
+│       │       │   ├── customer.hcl  # Customer configurations for Terragrunt code
+│       │       │   ├── eks
+│       │       │   │   └── cluster1-gyr4
+│       │       │   │       └── terragrunt.hcl # Terragrunt for create EKS cluster
+│       │       │   ├── keypair
+│       │       │   │   └── key-gyr4
+│       │       │   │       └── terragrunt.hcl # Terragrunt for create Key pair
+│       │       │   ├── kms
+│       │       │   │   └── kms-gyr4
+│       │       │   │       └── terragrunt.hcl # Terragrunt for create KMS
+│       │       │   └── vpc
+│       │       │       └── net-gyr4
+│       │       │           └── terragrunt.hcl # Terragrunt for create VPC
+│       │       └── region.hcl # Region configurations for Terragrunt code
+│       └── terragrunt.hcl # General Terragrunt code for manage state in S3 e lockID in DynamoDB
+├── modules # Directory with Terraform modules
+│   └── kubernetes-1-25 # Terraform module for create EKS cluster
+└── README.md # This documentation
 ```
 
 # Clearing the Terragrunt cache

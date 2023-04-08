@@ -17,7 +17,7 @@ My Helm Charts for Kubernetes.
 
 ## Kubernetes cluster
 
-* Read [aws_services/README.md](../aws_services/README.md), [gcp_services/README.md](../gcp_services/README.md) or [kind/README.md](kind/README.md) files to learn create a Kubernetes cluster.
+* Read [aws_services/README.md](../aws_services/README.md) or [kind/README.md](kind/README.md) files to learn create a Kubernetes cluster.
 
 # Install kube-pires helm chart
 

@@ -1,5 +1,0 @@
-project_id: "adsoft-gcp-services"
-service_account: "~/gcp-service-accounts/service-account_adsoft-gcp-services.json"
-
-environment: "testing"
-tier: "t0"
