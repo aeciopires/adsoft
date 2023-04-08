@@ -4,7 +4,6 @@ FROM node:lts-alpine
 # Image Information
 LABEL maintener="AD Soft" \
       author="Aécio Pires and Andre Déo" \
-      mail="aeciopires@gmail.com and andredeo@gmail.com" \
       create="2019/12/21" \
       version="1.0.0" \
       description="Especify the image Docker of app" \

@@ -2,172 +2,304 @@
 
 <!-- TOC -->
 
-- [English](#english)
-- [How to](#how-to)
-- [About Terraform commands](#about-terraform-commands)
-- [About Terragrunt commands](#about-terragrunt-commands)
-  - [Using a registry without SSL](#using-a-registry-without-ssl)
-- [Documentation of Code Terraform](#documentation-of-code-terraform)
-  - [Providers](#providers)
-  - [Inputs](#inputs)
-  - [Outputs](#outputs)
+- [About](#about)
+- [Requirements](#requirements)
+- [Clearing the Terragrunt cache](#clearing-the-terragrunt-cache)
+- [How to Install](#how-to-install)
+  - [Stage 0: Change the configurations](#stage-0-change-the-configurations)
+  - [Stage 1: Create VPC](#stage-1-create-vpc)
+  - [Stage 2: Create key pair RSA](#stage-2-create-key-pair-rsa)
+  - [Stage 3: Create KMS](#stage-3-create-kms)
+  - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
+- [How to Uninstall](#how-to-uninstall)
+  - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
+  - [Remove KMS](#remove-kms)
+  - [Remove subnets, NAT Gateway and VPC](#remove-subnets-nat-gateway-and-vpc)
+  - [Remove key pair RSA](#remove-key-pair-rsa)
+  - [Remove AWS S3 Bucket](#remove-aws-s3-bucket)
+  - [Remove DynamoDB Table](#remove-dynamodb-table)
 
-<!-- /TOC -->
+<!-- TOC -->
 
-# English
+# About
 
-NOTE: Developed using Terraform 0.12.x syntax.
+Create EKS Kubernetes cluster 1.25 using Terragrunt and Terraform code.
 
-* Configure the AWS Credentials and install the general packages, Terraform, Terragrunt, Go and Terraform-Docs following the instructions on the [REQUIREMENTS.md](REQUIREMENTS.md) file.
+# Requirements
 
-* Clone this repository.
+* Configure the AWS Credentials and all install all packages and binaries following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
 
-```bash
-git clone https://github.com/aeciopires/adsoft
+Access https://terragrunt.gruntwork.io/docs/#getting-started for more informations about Terragrunt commands.
 
-cd adsoft/aws_services
+Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple Terraform modules, and managing remote state.
+
+Terragrunt will forward almost all commands, arguments, and options directly to Terraform, but based on the settings in your ``terragrunt.hcl`` file.
+
+```diff
+- ATTENTION!!!
+- Bug possible: https://github.com/hashicorp/terraform-provider-aws/issues/14917
++ Fix: ``export AWS_DEFAULT_REGION=region_name``.
 ```
 
-1. This directory contains the files:<br>
-  * ``terraform_prod.tfvars``  => where you can define the values of the variables for environment *production* used by ``main.tf``. See [Inputs](#inputs)
-  * ``variables.tf``      => The default values of the variables
-used by ``main.tf``, if you not define values in to ``terraform_prod.tfvars`` file. See [Inputs](#inputs)
-2. The goal is to install Docker Registry, Prometheus, Zabbix, Grafana and Apps.
+# Clearing the Terragrunt cache
 
-# How to
+Terragrunt creates a ``.terragrunt-cache`` folder in the current working directory as its scratch directory. It downloads your remote Terraform configurations into this folder, runs your Terraform commands in this folder, and any modules and providers those commands download also get stored in this folder. You can safely delete this folder any time and Terragrunt will recreate it as necessary.
 
-* Change the values according to the need of the environment in the ``terraform_prod.tfvars`` file.
+If you need to clean up a lot of these folders (e.g., after ``terragrunt apply``), you can use the following commands on Mac and Linux:
 
-* Validate the settings and create the environment with the following commands
+Recursively find all the ``.terragrunt-cache`` folders that are children of the current folder:
+
+```bash
+find . -type d -name ".terragrunt-cache" | xargs rm -rf
+```
+
+Reference: https://terragrunt.gruntwork.io/docs/features/caching/
+
+# How to Install
+
+* Clone repository.
+
+```bash
+mkdir ~/git
+
+cd ~/git
+
+git clone https://github.com/aeciopires/adsoft.git
+```
+
+> **WARNING:** Before start to contribute, run the command: `git pull origin master` to fetch the newest content of the main branch and avoid conflicts that can make you waste time.
+
+* Create a branch. Example:
+
+```bash
+git checkout -b BRANCH_NAME
+```
+
+## Stage 0: Change the configurations
+
+* Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
+
+```bash
+cd ~/git/adsoft/eks/
+
+find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terragrunt-cache
+```
+
+## Stage 1: Create VPC
+
+* For create VPC for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/vpc/net-gyr4
+```
+
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt validate
 terragrunt plan
 terragrunt apply
-terragrunt show
+terragrunt output
 ```
 
-Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple Terraform modules, and managing remote state.
+## Stage 2: Create key pair RSA
 
-Terragrunt will forward almost all commands, arguments, and options directly to Terraform, but based on the settings in your ``terragrunt.hcl`` file
+* For create key pair RSA for specific customer:
 
-# About Terraform commands
-
-Useful commands:
-
-* ``terraform --help``    => Show help of command terraform<br>
-* ``terraform providers`` => Prints a tree of the providers used in the configuration<br>
-* ``terraform init``      => Initialize a Terraform working directory<br>
-* ``terraform validate``  => Validates the Terraform files<br>
-* ``terraform plan``      => Generate and show an execution plan<br>
-* ``terraform apply``     => Builds or changes infrastructure<br>
-* ``terraform show``      => Inspect Terraform state or plan<br>
-* ``terraform destroy``   => Destroy Terraform-managed infrastructure<br>
-* ``terraform output``    => Show informations output.
-* ``terraform graph | dot -Tsvg > graph.svg`` => Show graph with resources relationaments.
-
-No destroy some resource:
-
-* list all resources
-  ```
-  terraform state list
-  ```
-* remove that resource you don't want to destroy, you can add more to be excluded if required
-  ```
-  terraform state rm <resource_to_be_deleted>
-  ```
-* destroy the whole stack except above resource(s)
-  ```
-  terraform destroy
-  ```
-
-# About Terragrunt commands
-
-Access: https://terragrunt.gruntwork.io/docs/getting-started/cli-options/
-
-## Using a registry without SSL
-
-In the your notebook or computer, edit or create the daemon.json file, whose default location is /etc/docker/daemon. Add the follow content:
-
-```
-{
-  "insecure-registries" : ["myregistrydomain.com:5000"]
-}
-
-```
-
-Change ``myregistrydomain.com`` for IP Address server of according your environment.
-
-```
-sudo systemctl restart docker
-```
-
-Reference:
-https://docs.docker.com/registry/insecure/
-
-# Documentation of Code Terraform
-
-* Generate docs with terraform-docs for project ``adsoft/aws_services``.
+Example:
 
 ```bash
-cd adsoft/aws_services
+SUFFIX=gyr4
 
-terraform-docs markdown . > /tmp/doc.md
-
-cat /tmp/doc.md
+ssh-keygen -t rsa -b 4096 -v -f ~/key-$SUFFIX.pem
 ```
 
-## Providers
+* Copy content public key without USER and HOST.
 
-| Name | Version |
-|------|---------|
-| aws | n/a |
+```bash
+cat ~/key-$SUFFIX.pem.pub | cut -d " " -f1,2
+```
 
-## Inputs
+* Example:
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
-| address\_allowed | IP or Net address allowed for remote access. | `string` | `"179.159.236.209/32"` | no |
-| aws\_instance\_user | Instance user for remote connection. | `string` | `"ubuntu"` | no |
-| aws\_key\_name | Key name. | `string` | `"aws-teste"` | no |
-| aws\_key\_private\_path | Private Key Private path. | `string` | `"/home/aws-teste.pem"` | no |
-| aws\_key\_public\_path | Private Key Public path. | `string` | `"/home/aws-teste.pub"` | no |
-| aws\_zone | The zone to operate under, if not specified by a given resource. Reference: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html | `string` | `"us-east-2"` | no |
-| disk\_size | AWS EBS disk size in GB | `number` | `300` | no |
-| disk\_type | AWS EBS disk type. Reference: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html | `string` | `"gp2"` | no |
-| port\_apps\_crud\_api | Port Apps Crud API. | `number` | `9000` | no |
-| port\_apps\_nodejs | Port Apps NodeJS. | `number` | `8080` | no |
-| port\_apps\_python\_external\_01 | Port Apps Python external. | `number` | `8001` | no |
-| port\_apps\_python\_external\_02 | Port Apps Python external. | `number` | `8002` | no |
-| port\_grafana\_external | Port Grafana external. | `number` | `3000` | no |
-| port\_loki\_external | Port Loki external. | `number` | `3100` | no |
-| port\_prometheus\_external | Port Prometheus external. | `number` | `9090` | no |
-| port\_protocol | Protocol of container ports. | `string` | `"TCP"` | no |
-| port\_registry\_external | Port Registry external. | `number` | `5000` | no |
-| port\_ssh\_external | Port SSH external. | `number` | `22` | no |
-| port\_zabbix\_server\_external | Port Zabbix Server external. | `number` | `10051` | no |
-| port\_zabbix\_web\_external | Port Prometheus external. | `number` | `80` | no |
-| s3\_bucket\_name | S3 bucket name | `string` | `"adsoft_bucket"` | no |
-| vpc\_cidr\_block | Range of IPv4 address for the VPC. | `string` | `"10.0.0.0/16"` | no |
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX
+```
 
-## Outputs
+* Change the values according to the need of the customer in ``~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
 
-| Name | Description |
-|------|-------------|
-| apps\_instance\_id | ID instance |
-| apps\_instance\_name | Name instance |
-| apps\_ip\_private | Private IP instance |
-| apps\_ip\_public | Public IP instance |
-| loki\_instance\_id | ID instance |
-| loki\_instance\_name | Name instance |
-| loki\_ip\_private | Private IP instance |
-| loki\_ip\_public | Public IP instance |
-| monitoring\_instance\_id | ID instance |
-| monitoring\_instance\_name | Name instance |
-| monitoring\_ip\_private | Private IP instance |
-| monitoring\_ip\_public | Public IP instance |
-| registry\_instance\_id | ID instance |
-| registry\_instance\_name | Name instance |
-| registry\_ip\_private | Private IP instance |
-| registry\_ip\_public | Public IP instance |
-| security\_group | Id of security Group |
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/keypair/key-gyr4/
+```
+
+Run the ``terragrunt`` commands.
+
+```bash
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt output
+```
+
+## Stage 3: Create KMS
+
+* For create KMS for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/kms/kms-gyr4/
+```
+
+Run the ``terragrunt`` commands.
+
+```bash
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt output
+```
+
+## Stage 4: Create Kubernetes cluster
+
+* For create EKS in specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/eks/cluster1-gyr4/
+```
+
+Run the ``terragrunt`` commands.
+
+```bash
+terragrunt validate
+terragrunt plan
+terragrunt apply
+terragrunt output
+```
+
+Authenticate in cluster with follow command.
+
+```bash
+aws eks update-kubeconfig --name cdk17o7adl-cluster1-gyr4 --region us-east-2 --profile my-account
+```
+
+```diff
+- ATTENTION!!!
+- Problems with aws-auth configmap or kubeconfig?
++ Solutions:
+```
+
+```bash
+terragrunt state list
+terragrunt state rm kubernetes_config_map.aws_auth[0]
+terragrunt state rm local_file.kubeconfig[0]
+terragrunt import kubernetes_config_map.aws_auth[0] kube-system/aws-auth
+terragrunt apply -auto-approve
+```
+
+References:
+
+* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/699
+* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/852
+* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911
+* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1280
+* https://medium.com/@ssorcnafets/terraform-k8s-provider-auth-issue-eb98814e673c
+* https://github.com/aws/containers-roadmap/issues/654
+* https://github.com/terraform-aws-modules/terraform-aws-eks
+* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/launch_templates/main.tf
+* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
+* https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
+
+# How to Uninstall
+
+## Remove Kubernetes cluster
+
+* For remove EKS for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/eks/cluster1-gyr4/
+```
+
+Run the command:
+
+```bash
+terragrunt destroy
+```
+
+## Remove KMS
+
+* For remove EKS for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/kms/kms-gyr4/
+```
+
+Run the command:
+
+```bash
+terragrunt destroy
+```
+
+## Remove subnets, NAT Gateway and VPC
+
+* For remove network resources for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/vpc/net-gyr4
+```
+
+Run the command:
+
+```bash
+terragrunt destroy
+```
+
+## Remove key pair RSA
+
+* For remove key par RSA for specific customer:
+
+```bash
+cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/keypair/key-gyr4/
+```
+
+Run the ``terragrunt`` command.
+
+```bash
+terragrunt destroy
+```
+
+## Remove AWS S3 Bucket
+
+Run the command:
+
+```bash
+aws s3 rb s3://terragrunt-remote-state-255686512659 \
+  --force \
+  --region us-east-2 \
+  --profile my-account
+
+# or
+
+aws s3api delete-bucket \
+  --bucket terragrunt-remote-state-255686512659 \
+  --region us-east-2 \
+  --profile my-account
+```
+
+References:
+
+* https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html
+* https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
+
+## Remove DynamoDB Table
+
+Run the command:
+
+```bash
+aws dynamodb delete-table \
+  --table-name terragrunt-state-lock-dynamo-255686512659 \
+  --region us-east-2 \
+  --profile my-account
+```
+
+References:
+
+* https://docs.aws.amazon.com/cli/latest/reference/dynamodb/delete-table.html

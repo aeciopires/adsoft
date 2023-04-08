@@ -10,7 +10,7 @@ Attention:
 
 3) Start the containers.
 
-```sh
+```bash
 sudo mkdir -p /docker/adsoft/mongo
 
 cd adsoft/app_python
@@ -22,6 +22,6 @@ docker-compose up --build
 
 5) Stop the containers.
 
-```sh
+```bash
 docker-compose down
 ```

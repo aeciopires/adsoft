@@ -8,7 +8,6 @@ FROM python:3
 # Image Information
 LABEL maintener="AD Soft" \
       author="Aécio Pires, Andre Déo and Andreyev Melo" \
-      mail="aeciopires@gmail.com and andredeo@gmail.com" \
       create="2020/01/03" \
       version="1.0.0" \
       description="Especify the image Docker of app" \
