@@ -6,7 +6,7 @@ include {
 locals {
   region_vars         = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   customer_vars       = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  azs                 = local.region_vars.locals.azs
+  az_id_list          = local.region_vars.locals.az_id_list
   customer_tags       = local.customer_vars.locals.customer_tags
   cidr                = local.customer_vars.locals.cidr
   public_subnets      = local.customer_vars.locals.public_subnets
@@ -19,6 +19,7 @@ locals {
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
+  # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
   source = "tfr:///terraform-aws-modules/vpc/aws//?version=4.0.1"
 }
 
@@ -27,7 +28,7 @@ inputs = {
   name            = local.vpc_name
   create_vpc      = true
   cidr            = local.cidr
-  azs             = local.azs
+  azs             = local.az_id_list
   public_subnets  = local.public_subnets
   private_subnets = local.private_subnets
 

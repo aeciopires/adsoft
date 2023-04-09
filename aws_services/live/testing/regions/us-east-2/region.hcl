@@ -24,9 +24,14 @@ locals {
   # In case of a new account without resources provisioned in the VPC, you can open a ticket in AWS 
   # to change the AZ-ID mapping and have different accounts with the same mapping.
   # In the future this facilitates the use of private-link cross accounts.
-  azs = [
+  az_id_list = [
     "use2-az1",
     "use2-az2"
+  ]
+
+  az_name_list = [
+    "${local.region}a",
+    "${local.region}b"
   ]
 
 }

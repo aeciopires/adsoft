@@ -17,7 +17,7 @@ locals {
   customer_name = local.customer_vars.locals.customer_name
   customer_tags = local.customer_vars.locals.customer_tags
 
-  cluster_suffix    = local.customer_vars.locals.suffix1
+  suffix            = local.customer_vars.locals.suffix1
   cluster_name      = local.customer_vars.locals.cluster1_name
   cluster_shortname = local.customer_vars.locals.cluster1_short_name
 
@@ -36,16 +36,16 @@ terraform {
 
 dependencies {
   paths = [
-    "../../vpc/net-${local.cluster_suffix}/",
-    "../../keypair/key-${local.cluster_suffix}",
-    "../../kms/kms-${local.cluster_suffix}",
+    "../../vpc/net-${local.suffix}/",
+    "../../keypair/key-${local.suffix}",
+    "../../kms/kms-${local.suffix}",
     #"../../certificates/wildcard-${local.dns_domain_name}/",
   ]
 }
 
 
 dependency "vpc" {
-  config_path = "../../vpc/net-${local.cluster_suffix}/"
+  config_path = "../../vpc/net-${local.suffix}/"
 }
 
 #dependency "certificate" {
@@ -53,11 +53,11 @@ dependency "vpc" {
 #}
 
 dependency "kms" {
-  config_path = "../../kms/kms-${local.cluster_suffix}/"
+  config_path = "../../kms/kms-${local.suffix}/"
 }
 
 dependency "keypair" {
-  config_path = "../../keypair/key-${local.cluster_suffix}/"
+  config_path = "../../keypair/key-${local.suffix}/"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

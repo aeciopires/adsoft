@@ -59,6 +59,9 @@ Terragrunt will forward almost all commands, arguments, and options directly to 
 │       │       │   │   └── wildcard-mydomain-com
 │       │       │   │       └── terragrunt.hcl # Terragrunt for create certificate
 │       │       │   ├── customer.hcl  # Customer configurations for Terragrunt code
+│       │       │   ├── ec2
+│       │       │   │   └── apps
+│       │       │   │       └── terragrunt.hcl # Terragrunt for create EC2 instance
 │       │       │   ├── eks
 │       │       │   │   └── cluster1-gyr4
 │       │       │   │       └── terragrunt.hcl # Terragrunt for create EKS cluster
