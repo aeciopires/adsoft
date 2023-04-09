@@ -1,0 +1,21 @@
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-redis-exporter/
+fullnameOverride: redis-exporter
+
+replicaCount: 1
+
+image:
+  repository: oliver006/redis_exporter
+  tag: v1.49.0
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 300Mi
+  requests:
+    cpu: 30m
+    memory: 50Mi

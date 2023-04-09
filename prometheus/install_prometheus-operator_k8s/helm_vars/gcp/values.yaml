@@ -1,0 +1,10 @@
+coreDns:
+  enabled: false
+
+kubeDns:
+  enabled: true
+
+prometheus:
+  prometheusSpec:
+    externalLabels:
+      cloud: GCP

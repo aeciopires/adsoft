@@ -1,0 +1,14 @@
+prometheus:
+  prometheusSpec:
+    resources:
+      limits:
+        cpu: "1"
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 500Mi
+    externalLabels:
+      cluster: mycluster1
+      region: us-east-2
+
+

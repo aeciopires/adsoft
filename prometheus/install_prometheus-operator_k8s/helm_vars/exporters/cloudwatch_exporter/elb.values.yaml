@@ -1,0 +1,43 @@
+# https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-cloudwatch-exporter
+replicaCount: 1
+
+image:
+  repository: prom/cloudwatch-exporter
+  tag: v0.15.3
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+serviceAccount:
+  create: false
+
+rbac:
+  create: true
+
+# Examples: https://hub.docker.com/r/prom/cloudwatch-exporter
+config: |-
+  region: us-east-2
+  period_seconds: 240
+  delay_seconds: 300
+  metrics:
+  # ELB Metrics
+  - aws_namespace: AWS/ELB
+    aws_metric_name: HealthyHostCount
+    aws_dimensions: [LoadBalancerName]
+    aws_statistics: [Average]
+
+  # ALB Metrics
+  - aws_namespace: AWS/ApplicationELB
+    aws_metric_name: HealthyHostCount
+    aws_dimensions: [TargetGroup, LoadBalancer]
+    aws_statistics: [Average]
+
+serviceMonitor:
+  enabled: true
+  interval: 5m
+  timeout: 30s
