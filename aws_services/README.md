@@ -104,7 +104,7 @@ mkdir ~/git
 
 cd ~/git
 
-git clone https://github.com/aeciopires/adsoft.git
+git clone https://github.com/aeciopires/adsoft
 ```
 
 > **WARNING:** Before start to contribute, run the command: `git pull origin master` to fetch the newest content of the main branch and avoid conflicts that can make you waste time.
@@ -120,7 +120,7 @@ git checkout -b BRANCH_NAME
 * Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
 
 ```bash
-cd ~/git/adsoft/aws_services/
+cd ~/git/open-tools/aws_services/
 
 find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terragrunt-cache
 ```
@@ -130,7 +130,10 @@ find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terr
 * For create VPC for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/vpc/net-gyr4
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-${SUFFIX}"
 ```
 
 Run the ``terragrunt`` commands.
@@ -166,10 +169,13 @@ cat ~/key-$SUFFIX.pem.pub | cut -d " " -f1,2
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX
 ```
 
-* Change the values according to the need of the customer in ``~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
+* Change the values according to the need of the customer in ``~/git/open-tools/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/keypair/key-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -186,7 +192,10 @@ terragrunt output
 * For create KMS for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/kms/kms-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -203,7 +212,11 @@ terragrunt output
 * For create EKS in specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/eks/cluster1-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+CLUSTER_NAME='cluster1'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -218,7 +231,12 @@ terragrunt output
 Authenticate in cluster with follow command.
 
 ```bash
-aws eks update-kubeconfig --name cdk17o7adl-cluster1-gyr4 --region us-east-2 --profile my-account
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+CUSTOMER_ID='cdk17o7adl'
+CLUSTER_NAME="${CUSTOMER_ID}-cluster1-${SUFFIX}"
+
+aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profile my-account
 ```
 
 ```diff
@@ -255,7 +273,11 @@ References:
 * For remove EKS for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/eks/cluster1-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+CLUSTER_NAME='cluster1'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-$SUFFIX/"
 ```
 
 Run the command:
@@ -269,7 +291,10 @@ terragrunt destroy
 * For remove EKS for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/kms/kms-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-$SUFFIX/"
 ```
 
 Run the command:
@@ -283,7 +308,10 @@ terragrunt destroy
 * For remove network resources for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/vpc/net-gyr4
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
 ```
 
 Run the command:
@@ -297,7 +325,10 @@ terragrunt destroy
 * For remove key par RSA for specific customer:
 
 ```bash
-cd ~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/keypair/key-gyr4/
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-$SUFFIX/"
 ```
 
 Run the ``terragrunt`` command.
@@ -311,16 +342,19 @@ terragrunt destroy
 Run the command:
 
 ```bash
-aws s3 rb s3://terragrunt-remote-state-255686512659 \
+AWS_ACCOUNT_ID='255686512659'
+AWS_REGION='us-east-2'
+
+aws s3 rb "s3://terragrunt-remote-state-${AWS_ACCOUNT_ID}" \
   --force \
-  --region us-east-2 \
+  --region "$AWS_REGION" \
   --profile my-account
 
 # or
 
 aws s3api delete-bucket \
-  --bucket terragrunt-remote-state-255686512659 \
-  --region us-east-2 \
+  --bucket "terragrunt-remote-state-${AWS_ACCOUNT_ID}" \
+  --region "$AWS_REGION" \
   --profile my-account
 ```
 
@@ -334,9 +368,12 @@ References:
 Run the command:
 
 ```bash
+AWS_ACCOUNT_ID='255686512659'
+AWS_REGION='us-east-2'
+
 aws dynamodb delete-table \
-  --table-name terragrunt-state-lock-dynamo-255686512659 \
-  --region us-east-2 \
+  --table-name "terragrunt-state-lock-dynamo-${AWS_ACCOUNT_ID}" \
+  --region "$AWS_REGION" \
   --profile my-account
 ```
 
