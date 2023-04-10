@@ -120,7 +120,7 @@ git checkout -b BRANCH_NAME
 * Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
 
 ```bash
-cd ~/git/adsoft/eks/
+cd ~/git/adsoft/aws_services/
 
 find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terragrunt-cache
 ```
