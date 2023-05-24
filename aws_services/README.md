@@ -24,7 +24,7 @@
 
 # About
 
-Create EKS Kubernetes cluster 1.25 using Terragrunt and Terraform code.
+Create EKS Kubernetes cluster 1.26 using Terragrunt and Terraform code.
 
 # Requirements
 
@@ -120,7 +120,7 @@ git checkout -b BRANCH_NAME
 * Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
 
 ```bash
-cd ~/git/open-tools/aws_services/
+cd ~/git/adsoft/aws_services/
 
 find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terragrunt-cache
 ```
@@ -133,7 +133,7 @@ find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terr
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-${SUFFIX}"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-${SUFFIX}"
 ```
 
 Run the ``terragrunt`` commands.
@@ -169,13 +169,13 @@ cat ~/key-$SUFFIX.pem.pub | cut -d " " -f1,2
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX
 ```
 
-* Change the values according to the need of the customer in ``~/git/open-tools/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
+* Change the values according to the need of the customer in ``~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
 
 ```bash
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-${SUFFIX}/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -195,7 +195,7 @@ terragrunt output
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-${SUFFIX}/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -216,7 +216,7 @@ SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 CLUSTER_NAME='cluster1'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-${SUFFIX}/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-${SUFFIX}/"
 ```
 
 Run the ``terragrunt`` commands.
@@ -277,7 +277,7 @@ SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 CLUSTER_NAME='cluster1'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-$SUFFIX/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${CLUSTER_NAME}-$SUFFIX/"
 ```
 
 Run the command:
@@ -294,7 +294,7 @@ terragrunt destroy
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-$SUFFIX/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/kms-$SUFFIX/"
 ```
 
 Run the command:
@@ -311,7 +311,7 @@ terragrunt destroy
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
 ```
 
 Run the command:
@@ -328,7 +328,7 @@ terragrunt destroy
 SUFFIX='gyr4'
 AWS_REGION='us-east-2'
 
-cd "~/git/open-tools/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-$SUFFIX/"
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-$SUFFIX/"
 ```
 
 Run the ``terragrunt`` command.

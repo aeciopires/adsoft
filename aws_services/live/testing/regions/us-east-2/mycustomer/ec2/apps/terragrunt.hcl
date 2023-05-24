@@ -17,7 +17,7 @@ locals {
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///terraform-aws-modules/ec2-instance/aws//?version=4.3.0"
+  source = "tfr:///terraform-aws-modules/ec2-instance/aws//?version=5.0.0"
 }
 
 dependencies {
