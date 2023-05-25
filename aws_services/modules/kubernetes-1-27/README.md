@@ -2,13 +2,13 @@
 
 - [About](#about)
 - [Requirements](#requirements)
-  - [How to use](#how-to-use)
+- [How to](#how-to-use)
 - [Documentation of Code Terraform](#documentation-of-code-terraform)
-  - [Providers](#providers)
-  - [Modules](#modules)
-  - [Resources](#resources)
-  - [Inputs](#inputs)
-  - [Outputs](#outputs)
+- [Providers](#providers)
+- [Modules](#modules)
+- [Resources](#resources)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
 
 <!-- TOC -->
 
