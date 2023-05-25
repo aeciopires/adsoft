@@ -2,19 +2,19 @@
 
 - [About](#about)
 - [Requirements](#requirements)
-- [How to](#how-to-use)
+  - [How to use](#how-to-use)
 - [Documentation of Code Terraform](#documentation-of-code-terraform)
-- [Providers](#providers)
-- [Modules](#modules)
-- [Resources](#resources)
-- [Inputs](#inputs)
-- [Outputs](#outputs)
+  - [Providers](#providers)
+  - [Modules](#modules)
+  - [Resources](#resources)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
 
 <!-- TOC -->
 
 # About
 
-Terraform module to create Kubernetes cluster in AWS-EKS 1.26 with self managed nodes, AWS managed nodes and Karpenter nodes.
+Terraform module to create Kubernetes cluster in AWS-EKS 1.27 with self managed nodes, AWS managed nodes and Karpenter nodes.
 
 1. This directory contains the files:<br>
 * ``variables.tf`` => where you can define the values of the variables used by ``main.tf``.<br>
@@ -234,7 +234,7 @@ terragrunt destroy
 | <a name="input_cluster_service_ipv4_cidr"></a> [cluster\_service\_ipv4\_cidr](#input\_cluster\_service\_ipv4\_cidr) | The CIDR block to assign Kubernetes service IP addresses from. If you don't specify a block, Kubernetes assigns addresses from either the 10.100.0.0/16 or 172.20.0.0/16 CIDR blocks. | `string` | `null` | no |
 | <a name="input_cluster_tags"></a> [cluster\_tags](#input\_cluster\_tags) | A map of additional tags to add to the cluster. | `map(string)` | `{}` | no |
 | <a name="input_cluster_timeouts"></a> [cluster\_timeouts](#input\_cluster\_timeouts) | Create, update, and delete timeout configurations for the cluster. | `map(string)` | `{}` | no |
-| <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | Kubernetes `<major>.<minor>` version to use for the EKS cluster (i.e.: `1.26`). | `string` | `"1.26"` | no |
+| <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | Kubernetes `<major>.<minor>` version to use for the EKS cluster (i.e.: `1.27`). | `string` | `"1.27"` | no |
 | <a name="input_control_plane_subnet_ids"></a> [control\_plane\_subnet\_ids](#input\_control\_plane\_subnet\_ids) | A list of subnet IDs where the EKS cluster control plane (ENIs) will be provisioned. Used for expanding the pool of subnets used by nodes/node groups without replacing the EKS control plane. | `list(string)` | `[]` | no |
 | <a name="input_coredns_fargate"></a> [coredns\_fargate](#input\_coredns\_fargate) | If enabled, deploy coreDNS on Fargate nodes to demonstrate this scenario. | `bool` | `false` | no |
 | <a name="input_coredns_time_wait"></a> [coredns\_time\_wait](#input\_coredns\_time\_wait) | Time wait after cluster creation for access API Server for resource deploy. | `string` | `"30s"` | no |
