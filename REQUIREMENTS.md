@@ -193,7 +193,7 @@ References:
 Install ``ec2-instance-selector`` with the commands:
 
 ```bash
-VERSION=v2.4.0
+VERSION=v2.4.1
 
 sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
 
@@ -238,7 +238,7 @@ For more informations:
 Run the following commands to install Go.
 
 ```bash
-VERSION=1.20.3
+VERSION=1.20.5
 
 mkdir -p $HOME/go/bin
 
@@ -289,7 +289,7 @@ Install Helm 3 with the follow commands.
 ```bash
 sudo su
 
-HELM_TAR_FILE=helm-v3.7.1-linux-amd64.tar.gz
+HELM_TAR_FILE=helm-v3.12.0-linux-amd64.tar.gz
 HELM_URL=https://get.helm.sh
 HELM_BIN=helm3
 
@@ -356,7 +356,7 @@ Documentation: https://github.com/helmfile/helmfile
 sudo su
 
 HELMFILE_BIN=helmfile
-HELMFILE_VERSION="0.152.0"
+HELMFILE_VERSION="0.154.0"
 HELMFILE_DOWNLOADED_DIR="helmfile_${HELMFILE_VERSION}_linux_amd64"
 HELMFILE_DOWNLOADED_PACKAGE="${HELMFILE_DOWNLOADED_DIR}.tar.gz"
 HURL=https://github.com/helmfile/helmfile/releases/download
@@ -414,7 +414,7 @@ Run the following commands to install ``kubectl``.
 ```bash
 sudo su
 
-VERSION=v1.23.6
+VERSION=v1.27.2
 KUBECTL_BIN=kubectl
 
 function install_kubectl {
@@ -447,7 +447,7 @@ Run the following commands to install kind.
 
 ```bash
 
-VERSION=v0.17.0
+VERSION=v0.19.0
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/$VERSION/kind-$(uname)-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
@@ -742,7 +742,7 @@ sudo ln -s ~/.tgenv/bin/* /usr/local/bin
 Install Terragrunt version using ``tgenv`` command:
 
 ```bash
-tgenv install 0.45.15
+tgenv install 0.45.18
 ```
 
 List Terragrunt versions to install:
@@ -776,7 +776,7 @@ Create the ``.terragrunt-version`` file at the root of the project with the desi
 Example:
 
 ```bash
-echo "0.45.15" > .terragrunt-version
+echo "0.45.18" > .terragrunt-version
 ```
 
 There is a problem in ``tgenv`` versions where very old terragrunt versions are not remotely installed/listed. This is due to a query used in the code [that uses the GitHub API](https://github.com/cunymatthieu/tgenv/blob/master/libexec/tgenv-list-remote#L12). For this, we have a possible workaround
@@ -858,4 +858,5 @@ alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias sc="source ~/.bashrc"
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
 alias terradocs='terraform-docs markdown table . > README.md'
+export EDITOR=/usr/bin/vim
 ```
