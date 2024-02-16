@@ -3,11 +3,10 @@
 - [Requirements](#requirements)
 - [General Packages](#general-packages)
 - [Updating many git repositories](#updating-many-git-repositories)
+- [asdf](#asdf)
 - [AWS-CLI](#aws-cli)
-- [Configure AWS Credentials](#configure-aws-credentials)
 - [Docker](#docker)
 - [Docker Compose](#docker-compose)
-- [Ec2-instance-selector](#ec2-instance-selector)
 - [GCloud](#gcloud)
 - [Go](#go)
 - [Helm 3](#helm-3)
@@ -40,16 +39,11 @@
 
 Install the follow packages.
 
-Ubuntu 20.04/22.04:
+Ubuntu 22.04:
 
 ```bash
-sudo apt install -y vim telnet git curl wget openssl netcat net-tools python3 python3-pip meld python3-venv default-jdk jq make
-```
-
-On Ubuntu 20.04 64 bits with Python 3.8.1, run the following command to create the symbolic link:
-
-```bash
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+sudo apt update
+sudo apt install -y vim telnet git curl wget openssl netcat net-tools python3 python3-pip meld python3-venv default-jdk jq make traceroute wireshark elinks redis-tools mysql-client gnupg
 ```
 
 # Updating many git repositories
@@ -80,78 +74,67 @@ cd ~
 ./updateGit.sh git/
 ```
 
+# asdf
+
+> ATTENTION!!!
+> To update asdf, ONLY use the following command. If you try to reinstall or update by changing the version in the following commands, you will need to reinstall all plugins/commands installed before, so it is very important to back up the ``$HOME/.asdf`` directory.
+
+```bash
+asdf update
+```
+
+To install ``asdf`` run the following commands:
+
+```bash
+ASDF_VERSION="v0.14.0"
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch $ASDF_VERSION
+
+# Adicionando no $HOME/.bashrc
+echo ". \"\$HOME/.asdf/asdf.sh\"" >> ~/.bashrc
+echo ". \"\$HOME/.asdf/completions/asdf.bash\"" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Reference: https://asdf-vm.com/guide/introduction.html
+
 # AWS-CLI
 
 Run the following commands to install ``awscli`` package.
 
 ```bash
-curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+AWS_CLI_V1="1.32.42"
+AWS_CLI_V2="2.15.20"
 
-unzip awscli-bundle.zip
+asdf plugin list all | grep aws
+asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
+asdf latest awscli
 
-sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+asdf install awscli $AWS_CLI_V1
+asdf install awscli $AWS_CLI_V2
+asdf list awscli
 
-aws --version
-
-rm -rf awscli-bundle.zip awscli-bundle
+# Definindo a versão padrão
+asdf global awscli $AWS_CLI_V2
+asdf list awscli
 ```
 
 More information about ``aws-cli``: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
 Reference: https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
 
-# Configure AWS Credentials
-
-After creating the account in AWS, access the Amazon CLI interface at: https://aws.amazon.com/cli/
-
-Click on the username (upper right corner) and choose the **Security Credentials** option. Then click on the **Access Key and Secret Access Key** option and click the **New Access Key** button to create and view the ID and Secret of the key.
-
-Create the directory below.
-
-```bash
-echo $HOME
-
-mkdir -p $HOME/.aws/
-
-touch $HOME/.aws/credentials
-```
-
-Open ``$HOME/.aws/credentials`` file and add the following content and change the access key and secret access key.
-
-```
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_HERE
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE
-```
-
-In this case, the profile name AWS is **default**.
-
-Reference: https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html
+Configure AWS Credentials manually or using SSO
 
 # Docker
 
-Install Docker CE (Community Edition) following the instructions of the pages below, according to your GNU/Linux distribution.
-
-* Ubuntu: https://docs.docker.com/engine/install/ubuntu/
-
-Start the ``docker`` service, configure Docker to boot up with the OS and add your user to the ``docker`` group.
+Install Docker CE (Community Edition):
 
 ```bash
-# Start the Docker service
-sudo systemctl start docker
-
-# Configure Docker to boot up with the OS
-sudo systemctl enable docker
-
-# Add your user to the Docker group
-sudo apt install -y acl
-
-sudo usermod -aG docker $USER
-
+curl -fsSL https://get.docker.com -o get-docker.sh;
+sudo sh get-docker.sh;
+# Utilizando docker sem sudo
+sudo usermod -aG docker $USER;
 sudo setfacl -m user:$USER:rw /var/run/docker.sock
 ```
-
-Reference: https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
 
 For more information about Docker Compose visit:
 
@@ -182,26 +165,6 @@ For more information about Docker Compose visit:
 * https://docs.docker.com/compose/compose-file
 * https://docs.docker.com/engine/reference/builder
 
-# Ec2-instance-selector
-
-A CLI tool that recommends instance types based on resource criteria such as vCPUs and memory.
-
-References:
-
-* https://github.com/aws/amazon-ec2-instance-selector 
-
-Install ``ec2-instance-selector`` with the commands:
-
-```bash
-VERSION=v2.4.1
-
-sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
-
-sudo chmod +x /usr/local/bin/ec2-instance-selector
-
-ec2-instance-selector --help
-```
-
 # GCloud
 
 You will need to create an Google Cloud Platform account: https://console.cloud.google.com
@@ -209,14 +172,18 @@ You will need to create an Google Cloud Platform account: https://console.cloud.
 Install and configure the ``gcloud`` following the instructions on tutorials.
 
 ```bash
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk 
-main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+VERSION="464.0.0"
 
-sudo apt install -y apt-transport-https ca-certificates gnupg
+asdf plugin list all | grep gcloud
+asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
+asdf latest gcloud
 
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+asdf install gcloud $VERSION
+asdf list gcloud
 
-sudo apt update && sudo apt install -y google-cloud-sdk
+# Definindo a versão padrão
+asdf global gcloud $VERSION
+asdf list gcloud
 
 gcloud init (alternativamente, gcloud init --console-only)
 ```
@@ -238,28 +205,22 @@ For more informations:
 Run the following commands to install Go.
 
 ```bash
-VERSION=1.20.5
+VERSION=1.22.0
 
 mkdir -p $HOME/go/bin
-
 cd /tmp
 
 curl -L https://go.dev/dl/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
-
 sudo rm -rf /usr/local/go 
-
 sudo tar -C /usr/local -xzf go.tar.gz
-
 rm /tmp/go.tar.gz
 
 export GOPATH=$HOME/go
-
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 go version
 
 echo "GOPATH=$HOME/go" >> ~/.bashrc
-
 echo "PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" >> ~/.bashrc
 ```
 
@@ -287,41 +248,23 @@ For more informations:
 Install Helm 3 with the follow commands.
 
 ```bash
-sudo su
+VERSION="3.14.0"
 
-HELM_TAR_FILE=helm-v3.12.0-linux-amd64.tar.gz
-HELM_URL=https://get.helm.sh
-HELM_BIN=helm3
+asdf plugin list all | grep helm
+asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
+asdf latest helm
 
-function install_helm3 {
+asdf install helm $VERSION
+asdf list helm
 
-if [ -z $(which $HELM_BIN) ]; then
-    wget ${HELM_URL}/${HELM_TAR_FILE}
-    tar -xvzf ${HELM_TAR_FILE}
-    chmod +x linux-amd64/helm
-    sudo cp linux-amd64/helm /usr/local/bin/$HELM_BIN
-    sudo ln -sfn /usr/local/bin/$HELM_BIN /usr/local/bin/helm
-    rm -rf ${HELM_TAR_FILE} linux-amd64
-    echo -e "\nwhich ${HELM_BIN}"
-    which ${HELM_BIN}
-else
-    echo "Helm 3 is most likely installed"
-fi
-}
-
-install_helm3
-
-which $HELM_BIN
-
-$HELM_BIN version
-
-exit
+# Definindo a versão padrão
+asdf global helm $VERSION
+asdf list helm
 ```
 
 For more information about Helm visit:
 
 * https://helm.sh/docs/
-
 
 # Helm-docs
 
@@ -330,20 +273,18 @@ Install ``helm-docs`` with the follow commands.
 Documentation: https://github.com/norwoodj/helm-docs 
 
 ```bash
-HELM_DOCS_VERSION=1.11.0
-HELM_DOCS_PACKAGE=helm-docs_``$HELM_DOCS_VERSION``_linux_x86_64.tar.gz
+VERSION="1.12.0"
 
-wget https://github.com/norwoodj/helm-docs/releases/download/v$HELM_DOCS_VERSION/$HELM_DOCS_PACKAGE
+asdf plugin list all | grep helm-docs
+asdf plugin add helm-docs https://github.com/sudermanjr/asdf-helm-docs.git
+asdf latest helm-docs
 
-tar xzvf $HELM_DOCS_PACKAGE helm-docs
+asdf install helm-docs $VERSION
+asdf list helm-docs
 
-sudo mv helm-docs /usr/local/bin/helm-docs
-
-sudo chmod +x /usr/local/bin/helm-docs
-
-rm $HELM_DOCS_PACKAGE
-
-helm-docs --version
+# Definindo a versão padrão
+asdf global helm-docs $VERSION
+asdf list helm-docs
 ```
 
 # Helmfile
@@ -353,36 +294,18 @@ Install ``helmfile`` with the follow commands.
 Documentation: https://github.com/helmfile/helmfile
 
 ```bash
-sudo su
+VERSION="0.161.0"
 
-HELMFILE_BIN=helmfile
-HELMFILE_VERSION="0.154.0"
-HELMFILE_DOWNLOADED_DIR="helmfile_${HELMFILE_VERSION}_linux_amd64"
-HELMFILE_DOWNLOADED_PACKAGE="${HELMFILE_DOWNLOADED_DIR}.tar.gz"
-HURL=https://github.com/helmfile/helmfile/releases/download
-HELMFILE_URL=${HURL}/v${HELMFILE_VERSION}/${HELMFILE_DOWNLOADED_PACKAGE}
+asdf plugin list all | grep helmfile
+asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
+asdf latest helmfile
 
-function install_helmfile {
+asdf install helmfile $VERSION
+asdf list helmfile
 
-if [ -z $(which $HELMFILE_BIN) ]; then
-    cd /tmp
-    wget ${HELMFILE_URL}
-    tar xzvf ${HELMFILE_DOWNLOADED_PACKAGE}
-    chmod +x ${HELMFILE_BIN}
-    sudo mv ${HELMFILE_BIN} /usr/local/bin/${HELMFILE_BIN}
-    echo -e "\nexecuting: which ${HELMFILE_BIN}"
-    which ${HELMFILE_BIN}
-    ${HELMFILE_BIN} --version
-    rm ${HELMFILE_DOWNLOADED_PACKAGE}
-else
-    echo "Helmfile is most likely installed"
-    ${HELMFILE_BIN} --version
-fi
-}
-
-install_helmfile
-
-exit
+# Definindo a versão padrão
+asdf global helmfile $VERSION
+asdf list helmfile
 ```
 
 # Plugin for Helm
@@ -412,29 +335,18 @@ helm plugin install https://github.com/jkroepke/helm-secrets --version v3.5.0
 Run the following commands to install ``kubectl``.
 
 ```bash
-sudo su
+VERSION_OPTION_1="1.29.2"
 
-VERSION=v1.27.2
-KUBECTL_BIN=kubectl
+asdf plugin list all | grep kubectl
+asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
+asdf latest kubectl
 
-function install_kubectl {
-if [ -z $(which $KUBECTL_BIN) ]; then
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/$KUBECTL_BIN
-    chmod +x ${KUBECTL_BIN}
-    mv ${KUBECTL_BIN} /usr/local/bin/${KUBECTL_BIN}
-    ln -sf /usr/local/bin/${KUBECTL_BIN} /usr/bin/${KUBECTL_BIN}
-else
-    echo "Kubectl is most likely installed"
-fi
-}
+asdf install kubectl $VERSION_OPTION_1
+asdf list kubectl
 
-install_kubectl
-
-which kubectl
-
-kubectl version --client
-
-exit
+# Definindo a versão padrão
+asdf global kubectl $VERSION_OPTION_1
+asdf list kubectl
 ```
 
 More information about ``kubectl``: https://kubernetes.io/docs/reference/kubectl/overview/
@@ -446,11 +358,14 @@ Reference: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 Run the following commands to install kind.
 
 ```bash
-
-VERSION=v0.19.0
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/$VERSION/kind-$(uname)-amd64
-chmod +x ./kind
-sudo mv ./kind /usr/local/bin/kind
+VERSION="0.22.0"
+asdf plugin list all | grep kind
+asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
+asdf latest kind
+asdf install kind $VERSION
+asdf list kind
+# Definindo a versão padrão
+asdf global kind $VERSION
 ```
 
 More information about kind:
@@ -546,8 +461,6 @@ Documentation:
 * https://k8slens.dev/
 * https://snapcraft.io/kontena-lens
 
-
-
 # Script of customized prompt
 
 To show the branch name, current directory, authenticated k8s cluster and namespace in use, there are several open source projects that provide this and you can choose the one that suits you best.
@@ -565,11 +478,11 @@ For bash:
 bash_prompt:
 
 ```bash
-curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/c43ed73a523a203220091d35d1e5ae2bec9877b2/.bash_prompt
+curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
 
 chmod +x ~/.bash_prompt
 
-echo "source ~/.bash_prompt" >> ~/.bashrc 
+echo "source ~/.bash_prompt" >> ~/.bashrc
 
 source ~/.bashrc
 
@@ -583,23 +496,14 @@ It is possible to install ``shellcheck`` from the standard Ubuntu 18.04 reposito
 Run the following commands:
 
 ```bash
-cd /tmp
-
-VERSION=$(curl -s https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep tag_name | cut -d '"' -f 4)
-
-curl -LO https://github.com/koalaman/shellcheck/releases/download/$VERSION/shellcheck-$VERSION.linux.x86_64.tar.xz
-
-tar xJvf shellcheck-$VERSION.linux.x86_64.tar.xz
-
-sudo mv shellcheck-$VERSION/shellcheck /usr/bin/shellcheck
-
-rm -rf /tmp/shellcheck-$VERSION/
-
-rm /tmp/shellcheck-$VERSION.linux.x86_64.tar.xz
-
-shellcheck --version
-
-cd -
+VERSION="0.9.0"
+asdf plugin list all | grep shellcheck
+asdf plugin add shellcheck https://github.com/luizm/asdf-shellcheck.git
+asdf latest shellcheck
+asdf install shellcheck $VERSION
+asdf list shellcheck
+# Definindo a versão padrão
+asdf global shellcheck $VERSION
 ```
 
 Documentation: https://github.com/koalaman/shellcheck/
@@ -609,24 +513,19 @@ Documentation: https://github.com/koalaman/shellcheck/
 Documentation: https://github.com/mozilla/sops
 
 ```bash
-sudo su
+VERSION="3.8.1"
 
-function install_sops {
-if [ -z $(which sops) ]; then
-    VERSION_SOPS=$(curl -s https://api.github.com/repos/mozilla/sops/releases/latest | grep tag_name | cut -d '"' -f 4)
-    curl -LO https://github.com/mozilla/sops/releases/download/$VERSION_SOPS/sops-$VERSION_SOPS.linux
-    sudo mv sops-$VERSION_SOPS.linux /usr/local/bin/sops
-    sudo chmod +x /usr/local/bin/sops
-else
-    echo "sops is most likely installed"
-fi
-}
+asdf plugin list all | grep sops
+asdf plugin add sops https://github.com/feniix/asdf-sops.git
+asdf latest sops
 
-install_sops
-which sops
+asdf install sops $VERSION
+asdf list sops
+
+# Definindo a versão padrão
+asdf global sops $VERSION
+asdf list sops
 sops --version
-
-exit
 ```
 
 Example of config file ``~/.sops.yaml``:
@@ -704,7 +603,7 @@ Install Terraform-Docs with the follow commands.
 ```bash
 cd /tmp
 
-VERSION=v0.16.0
+VERSION=v0.17.0
 
 curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
 
@@ -834,6 +733,8 @@ cat $TMPFILE | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+(-(rc|beta)[0-9]+)?" | uniq
 Useful aliases to be registered in the ``$HOME/.bashrc`` file.
 
 ```bash
+alias awsv1='docker run --rm -ti -v ~/.aws:/root/.aws gcr.io/production-main-268117/tools:v3.4.0'
+alias awsv2='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.15.20'
 alias gitlog='git log -p'
 alias limitselb='aws elbv2 describe-account-limits --region us-east-1'
 alias cerebro='helm install cerebro stable/cerebro -n default'
@@ -844,16 +745,17 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias k='kubectl'
-alias kmongo='kubectl run --rm -it mongoshell --image=mongo:4 -n default -- bash'
-alias kmysql='kubectl run --rm -it mysql --image=mysql:5.7 -n default -- bash'
-alias kredis='kubectl run --rm -it redis-cli --image=redis:latest -n default -- bash'
-alias kssh='kubectl run ssh-client -it --rm --image=kroniak/ssh-client -n default -- bash'
+alias kmongo='kubectl run --rm -it mongoshell-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mongo:4.0.28 -n default -- bash'
+alias kmysql5='kubectl run --rm -it mysql5-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mysql:5.7 -n default -- bash'
+alias kmysql8='kubectl run --rm -it mysql8-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mysql:8.0 -n default -- bash'
+alias kredis='kubectl run --rm -it redis-cli-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=redis:latest -n default -- bash'
+alias kssh='kubectl run --rm -it ssh-agent-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=kroniak/ssh-client -n default -- bash'
 alias l='ls -CF'
 alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools --image=travelping/nettools:latest -n default -- bash'
+alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:1.0.0 -n default -- bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias sc="source ~/.bashrc"
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
