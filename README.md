@@ -32,4 +32,4 @@ mail: andredeo at gmail dot com
 
 ## License
 
-GPL-3.0 2023 Aécio dos Santos Pires and André Luis Boni Déo
+GPL-3.0 2024 Aécio dos Santos Pires and André Luis Boni Déo
