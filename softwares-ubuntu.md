@@ -835,7 +835,7 @@ Uma estrutura para gerenciar e manter ganchos de pré-confirmação multi lingua
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.7.1"
+VERSION="4.0.1"
 
 asdf plugin list all | grep pre-commit
 asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
@@ -888,14 +888,14 @@ Documentação: https://github.com/JFryy/qq
 Execute os seguintes comandos para instalar o qq:
 
 ```bash
-VERSION="v0.1.6"
+VERSION="v0.2.3"
 cd /tmp
 wget -O qq.tar.gz "https://github.com/JFryy/qq/releases/download/${VERSION}/qq-${VERSION}-linux-amd64.tar.gz"
 tar xzvf qq.tar.gz
 sudo mv qq /usr/local/bin/qq
 sudo chmod +x /usr/local/bin/qq
 rm qq.tar.gz
-qq version 0.15.0
+qq --version
 ```
 
 Examples:
@@ -953,7 +953,7 @@ sudo rm /usr/local/bin/sops
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.9.0"
+VERSION="3.9.3"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -1002,13 +1002,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.9.2
+tfenv install 1.10.3
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.9.2
+tfenv use 1.10.3
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1029,7 +1029,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.9.2
+1.10.3
 ```
 
 # terraform-docs
@@ -1039,7 +1039,7 @@ Execute os seguintes comandos para instalar o terraform-docs
 Documentação: https://github.com/segmentio/terraform-docs
 
 ```bash
-VERSION=v0.18.0
+VERSION=v0.19.0
 
 curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz terraform-docs
@@ -1126,7 +1126,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.63.2
+tgenv install 0.71.1
 ```
 
 Liste as versões instaladas:
@@ -1138,7 +1138,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.63.2
+tgenv use 0.71.1
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1153,7 +1153,7 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.63.2
+0.71.1
 ```
 
 # yq
@@ -1173,7 +1173,7 @@ sudo rm /usr/bin/yq
 ```bash
 YQ_1="3.4.1"   # homologada
 YQ_2="4.35.1"  # homologada
-YQ_3="4.44.2"
+YQ_3="4.44.6"
 
 asdf plugin list all | grep yq
 asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
@@ -1205,7 +1205,7 @@ Uma ferramenta CLI e que recomenda tipos de instância com base em critérios de
 Documentação: https://github.com/aws/amazon-ec2-instance-selector
 
 ```bash
-VERSION=v2.4.1
+VERSION=v3.0.0
 sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
 sudo chmod +x /usr/local/bin/ec2-instance-selector
 ec2-instance-selector --help
@@ -1221,7 +1221,7 @@ Aliases úteis a serem cadastrados no arquivo ``$HOME/.bashrc``.
 
 ```bash
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.17.5'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.22.28'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -1242,11 +1242,11 @@ alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:1.0.0 -n default -- bash'
+alias nettools='kubectl run --rm -it nettools-\$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.0.0 -n NAMESPACE'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 # Ubuntu 22.04/24.04
-alias set-dns-cabeado='sudo resolvectl dns wlp6s0 1.1.1.1'
-alias set-dns-wifi='sudo resolvectl dns enp7s0 1.1.1.1'
+alias set-dns-cabeado='sudo resolvectl dns enp7s0 1.1.1.1'
+alias set-dns-wifi='sudo resolvectl dns wlp6s0 1.1.1.1'
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
 alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION --profile CHANGE_PROFILE'
 alias terradocs='terraform-docs markdown table . > README.md'
@@ -1284,7 +1284,7 @@ sudo rm /usr/local/bin/kind
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.23.0"
+VERSION="0.26.0"
 asdf plugin list all | grep kind
 asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
 asdf latest kind
@@ -1306,7 +1306,7 @@ cat << EOF > $HOME/kind-3nodes.yaml
 # Metal LB in Kind: https://kind.sigs.k8s.io/docs/user/loadbalancer
 # Ingress in Kind: https://kind.sigs.k8s.io/docs/user/ingress
 
-# Config compatible with kind v0.23.0
+# Config compatible with kind v0.26.0
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -1314,7 +1314,7 @@ networking:
   serviceSubnet: "10.96.0.0/12"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
     kubeadmConfigPatches:
     - |
       kind: InitConfiguration
@@ -1331,9 +1331,9 @@ nodes:
       listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
       protocol: TCP
   - role: worker
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
   - role: worker
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
 EOF
 ```
 
@@ -1384,7 +1384,7 @@ sudo rm /usr/local/bin/minikube
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.33.1"
+VERSION="1.34.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1424,7 +1424,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.53.0"
+VERSION="0.58.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1456,7 +1456,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.52.0"
+VERSION="0.54.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
