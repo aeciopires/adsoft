@@ -1,6 +1,6 @@
 <!-- TOC -->
 
-- [Ubuntu 24.04](#ubuntu-2404)
+- [Ubuntu](#ubuntu)
   - [Essenciais](#essenciais)
   - [Opcionais](#opcionais)
 - [Git](#git)
@@ -59,14 +59,20 @@
 
 <!-- TOC -->
 
-# Ubuntu 24.04
+# Ubuntu
 
 ## Essenciais
 
-Execute os seguintes comandos:
+Execute os seguintes comandos no Ubuntu 24.04/22.02:
 
 ```bash
 sudo apt install -y vim traceroute telnet netcat-openbsd git tcpdump elinks curl wget openssl net-tools python3 python3-pip meld python3-venv default-jdk jq make gnupg
+```
+
+Com o Python "3.10.*" execute o seguinte comando para criar o link simbólico:
+
+```bash
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 ```
 
 Com o Python "3.12.*" execute o seguinte comando para criar o link simbólico:
