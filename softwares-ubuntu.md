@@ -1253,6 +1253,14 @@ alias terradocs='terraform-docs markdown table . > README.md'
 alias alertmanager='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE && kubectl port-forward alertmanager-monitor-alertmanager-0 9093:9093 -n monitoring ; kubectx -'
 alias prometheus='kubectl port-forward prometheus-monitor-prometheus-0 9090:9090 -n monitoring'
 alias sc="source $HOME/.bashrc"
+alias randompass='pwgen 16 1'
+alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
+alias sc="source $HOME/.bashrc"
+alias python=python3
+alias pip=pip3
+alias kubepug="kubectl-depreciations"
+alias kind_create="kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml"
+alias kind_delete="kind delete clusters \$(kind get clusters)"
 ```
 
 # [OPCIONAL] Clipboard Indicator
