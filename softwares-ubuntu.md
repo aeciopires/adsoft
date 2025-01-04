@@ -32,6 +32,7 @@
   - [Outras Kubetools:](#outras-kubetools)
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
+- [kustomize](#kustomize)
 - [lens](#lens)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
@@ -155,7 +156,7 @@ asdf update
 > Se tentar reinstalar ou atualizar mudando a versão nos comandos seguintes, será necessário reinstalar todos os plugins/comandos instalados antes, por isso é muito importante fazer backup do diretório $HOME/.asdf.
 
 ```bash
-ASDF_VERSION="v0.14.0"
+ASDF_VERSION="v0.15.0"
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch $ASDF_VERSION
 
 # Adicionando no $HOME/.bashrc
@@ -196,7 +197,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.17.5"
+AWS_CLI_V2="2.22.28"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -298,7 +299,7 @@ sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="484.0.0"
+VERSION="504.0.1"
 
 asdf plugin list all | grep gcloud
 asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
@@ -357,7 +358,7 @@ Execute os seguintes comandos para instalar o Go.
 Documentação: https://golang.org/doc/
 
 ```bash
-VERSION=1.22.4
+VERSION=1.23.4
 
 mkdir -p $HOME/go/bin
 cd /tmp
@@ -394,7 +395,7 @@ sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.15.2"
+VERSION="3.16.2"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -423,7 +424,7 @@ sudo rm /usr/local/bin/helm-docs
 Documentação: https://github.com/norwoodj/helm-docs 
 
 ```bash
-VERSION="1.13.1"
+VERSION="1.14.2"
 
 asdf plugin list all | grep helm-docs
 asdf plugin add helm-docs https://github.com/sudermanjr/asdf-helm-docs.git
@@ -456,7 +457,7 @@ sudo rm /usr/local/bin/helmfile
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.166.0"
+VERSION="0.169.2"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -477,7 +478,7 @@ Execute os seguintes comandos para instalar o plugin para o helm, helm-diff.
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.9.8
+helm plugin install https://github.com/databus23/helm-diff --version v3.9.13
 ```
 
 # helm-secrets - Plugin
@@ -487,7 +488,7 @@ Execute os seguintes comandos para instalar o plugin para o helm, helm-secrets.
 Documentação: https://github.com/jkroepke/helm-secrets
 
 ```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.0
+helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
 ```
 
 # jj
@@ -521,7 +522,7 @@ Execute a seguinte função shell para instalar o kubectl.
 Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
 
 ```bash
-VERSION_OPTION_1="1.30.2"
+VERSION_OPTION_1="1.32.0"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -627,7 +628,7 @@ Instale com os seguintes comandos:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION_KUBECOLOR=0.3.3
+VERSION_KUBECOLOR=0.4.0
 asdf plugin list all | grep kubecolor
 asdf plugin add kubecolor https://github.com/dex4er/asdf-kubecolor.git
 asdf latest kubecolor
@@ -733,7 +734,7 @@ sudo rm /usr/local/bin/kubeshark
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="50.4"
+VERSION="52.3.9"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -762,7 +763,7 @@ sudo rm /usr/local/bin/k9s
 Documentação: https://k9scli.io/topics/commands/
 
 ```bash
-VERSION="0.32.5"
+VERSION="0.32.7"
 
 asdf plugin list all | grep k9s
 asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
@@ -774,6 +775,35 @@ asdf list k9s
 # Definindo a versão padrão
 asdf global k9s $VERSION
 asdf list k9s
+```
+
+# kustomize
+
+O Kustomize apresenta uma maneira de aplicar mudanças no Kubernetes alternativa ao trabalho realizado pelo Helm. O kustomize funciona integrado ao kubectl com o subcomando ``apply -k``.
+
+> Antes de continuar, se tiver o kustomize instalado, remova-o com o seguinte comando:
+
+```bash
+sudo rm /usr/local/bin/kustomize
+```
+
+> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+
+Documentação: https://k9scli.io/topics/commands/
+
+```bash
+VERSION="5.5.0"
+
+asdf plugin list all | grep kustomize
+asdf plugin add kustomize https://github.com/Banno/asdf-kustomize.git
+asdf latest kustomize
+
+asdf install kustomize $VERSION
+asdf list kustomize
+
+# Definindo a versão padrão
+asdf global kustomize $VERSION
+asdf list kustomize
 ```
 
 # lens
