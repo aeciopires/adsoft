@@ -6,7 +6,7 @@
 - [adsoft\_files](#adsoft_files)
 - [English](#english)
   - [Contributing](#contributing)
-  - [Developers](#developers)
+  - [Maintainers](#maintainers)
   - [License](#license)
 
 <!-- TOC -->
@@ -15,21 +15,18 @@
 
 # English
 
-Examples of infrastructure as code on ADSoft - Aécio and Déo Software :-).
+Examples of infrastructure as code on ADSoft (Aécio and Déo Software).
 
 ## Contributing
 
-1. See [REQUIREMENTS.md](REQUIREMENTS.md) file.
-2. See [CONTRIBUTING.md](CONTRIBUTING.md) file.
+1. See [CONTRIBUTING.md](CONTRIBUTING.md) file.
+2. See [REQUIREMENTS.md](REQUIREMENTS.md) file.
 
-## Developers
+## Maintainers
 
-developer: Aécio dos Santos Pires<br>
-mail: http://blog.aeciopires.com/contato
-
-developer: André Luis Boni Déo<br>
-mail: andredeo at gmail dot com
+- Aécio dos Santos Pires ([linkedin.com/in/aeciopires](https://www.linkedin.com/in/aeciopires))
+- André Luis Boni Déo ([linkedin.com/in/andredeo](https://www.linkedin.com/in/andredeo))
 
 ## License
 
-GPL-3.0 2024 Aécio dos Santos Pires and André Luis Boni Déo
+GPL-3.0 Aécio dos Santos Pires and André Luis Boni Déo

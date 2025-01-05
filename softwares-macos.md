@@ -106,30 +106,30 @@ Instale o python3-pip seguindo as instruções da página: https://docs.brew.sh/
 
 Instale os seguintes softwares:
 
-* Google Chrome: https://support.google.com/chrome/answer/95346?hl=pt-BR&co=GENIE.Platform%3DDesktop#zippy=%2Cmac
-* WPS: https://br.wps.com/office/mac/
-* LightShot: https://app.prntscr.com/pt-br/download.html
-* Visual Code: https://code.visualstudio.com
-* Plugins para Visual Code
-  * Instruções para exportar/importar plugins do VSCode: https://stackoverflow.com/questions/35773299/how-can-you-export-the-visual-studio-code-extension-list
-  * docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker (Requer instalação do comando docker mostrado nas seções a seguir).
-  * gitlens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens (Requer instalação do comando git mostrado na seção a anterior).
-  * go: https://marketplace.visualstudio.com/items?itemName=golang.Go (Requer instalação do comando go mostrado nas seções a seguir).
-  * gotemplate-syntax: https://marketplace.visualstudio.com/items?itemName=casualjim.gotemplate
-  * Markdown-all-in-one: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
-  * Markdown-lint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
-  * Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
-  * python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requer instalação do comando python3 mostrado na seção anterior).
-  * shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requer instalação do comando shellcheck mostrado nas seções a seguir).
-  * terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform mostrado nas seções a seguir).
-  * YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
-  * Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
-  * Contar número de linhas selecionadas: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
-  * jenkinsfile support: https://marketplace.visualstudio.com/items?itemName=ivory-lab.jenkinsfile-support
-  * Theme for VSCode:
-    * https://code.visualstudio.com/docs/getstarted/themes
-    * https://dev.to/thegeoffstevens/50-vs-code-themes-for-2020-45cc
-    * https://vscodethemes.com/
+- Google Chrome: https://support.google.com/chrome/answer/95346?hl=pt-BR&co=GENIE.Platform%3DDesktop#zippy=%2Cmac
+- WPS: https://br.wps.com/office/mac/
+- LightShot: https://app.prntscr.com/pt-br/download.html
+- Visual Code: https://code.visualstudio.com
+- Plugins para Visual Code
+  - Instruções para exportar/importar plugins do VSCode: https://stackoverflow.com/questions/35773299/how-can-you-export-the-visual-studio-code-extension-list
+  - docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker (Requer instalação do comando docker mostrado nas seções a seguir).
+  - gitlens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens (Requer instalação do comando git mostrado na seção a anterior).
+  - go: https://marketplace.visualstudio.com/items?itemName=golang.Go (Requer instalação do comando go mostrado nas seções a seguir).
+  - gotemplate-syntax: https://marketplace.visualstudio.com/items?itemName=casualjim.gotemplate
+  - Markdown-all-in-one: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
+  - Markdown-lint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
+  - Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
+  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requer instalação do comando python3 mostrado na seção anterior).
+  - shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requer instalação do comando shellcheck mostrado nas seções a seguir).
+  - terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform mostrado nas seções a seguir).
+  - YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
+  - Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
+  - Contar número de linhas selecionadas: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
+  - jenkinsfile support: https://marketplace.visualstudio.com/items?itemName=ivory-lab.jenkinsfile-support
+  - Theme for VSCode:
+    - https://code.visualstudio.com/docs/getstarted/themes
+    - https://dev.to/thegeoffstevens/50-vs-code-themes-for-2020-45cc
+    - https://vscodethemes.com/
 
 # Git
 
@@ -215,7 +215,7 @@ sudo ln -s $HOME/.asdf/shims/aws /usr/local/bin/aws
 
 Fonte:
 * https://asdf-vm.com/guide/introduction.html
-* https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
+- https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
 * https://computingforgeeks.com/how-to-install-and-use-aws-cli-on-linux-ubuntu-debian-centos/
 
 # bat
@@ -246,7 +246,7 @@ echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
 ```
 
 Mais informações em:
-* https://github.com/sharkdp/bat
+- https://github.com/sharkdp/bat
 
 # dbeaver (Database client)
 
@@ -301,17 +301,17 @@ Execute as instruções deste tutorial se autenticar com o gcloud Autenticação
 Fonte: https://stackoverflow.com/questions/62658237/it-seems-that-the-version-of-the-libffi-library-seen-at-runtime-is-different-fro
 
 Referências:
-* https://cloud.google.com/sdk/install
-* https://cloud.google.com/sdk/docs/downloads-apt-get
-* https://cloud.google.com/docs/authentication/gcloud
-* https://cloud.google.com/docs/authentication/getting-started
-* https://console.cloud.google.com/apis/credentials/serviceaccountkey
-* https://cloud.google.com/sdk/gcloud/reference/config/set
-* https://code-maven.com/gcloud
-* https://gist.github.com/pydevops/cffbd3c694d599c6ca18342d3625af97
-* https://blog.realkinetic.com/using-google-cloud-service-accounts-on-gke-e0ca4b81b9a2
-* https://www.the-swamp.info/blog/configuring-gcloud-multiple-projects/
-* Google - Autenticação em duas etapas. Habilite o duplo fator de autenticação na sua conta Google.
+- https://cloud.google.com/sdk/install
+- https://cloud.google.com/sdk/docs/downloads-apt-get
+- https://cloud.google.com/docs/authentication/gcloud
+- https://cloud.google.com/docs/authentication/getting-started
+- https://console.cloud.google.com/apis/credentials/serviceaccountkey
+- https://cloud.google.com/sdk/gcloud/reference/config/set
+- https://code-maven.com/gcloud
+- https://gist.github.com/pydevops/cffbd3c694d599c6ca18342d3625af97
+- https://blog.realkinetic.com/using-google-cloud-service-accounts-on-gke-e0ca4b81b9a2
+- https://www.the-swamp.info/blog/configuring-gcloud-multiple-projects/
+- Google - Autenticação em duas etapas. Habilite o duplo fator de autenticação na sua conta Google.
 
 Login na GCP usando o gcloud:
 
@@ -474,7 +474,7 @@ brew install kustomize
 
 Referência:
 
-* https://kustomize.io
+- https://kustomize.io
 
 # Plugins para kubectl
 
@@ -483,8 +483,8 @@ A seguir são listados alguns plugins úteis para o Kubectl.
 ## krew
 
 Documentação:
-* https://github.com/kubernetes-sigs/krew/
-* https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+- https://github.com/kubernetes-sigs/krew/
+- https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 
 Instale com o seguinte comando:
 
@@ -583,9 +583,9 @@ Documentação: https://github.com/kvaps/kubectl-node-shell
 ## kubefwd
 
 Documentação:
-* https://github.com/txn2/kubefwd
-* https://imti.co/kubernetes-port-forwarding
-* https://kubefwd.com
+- https://github.com/txn2/kubefwd
+- https://imti.co/kubernetes-port-forwarding
+- https://kubefwd.com
 
 Siga as instruções da página: https://kubefwd.com/install/mac/
 
@@ -626,14 +626,14 @@ brew install kubent
 
 ## Outras Kubetools
 
-* http://dockerlabs.collabnix.com/kubernetes/kubetools/
-* https://caylent.com/50-useful-kubernetes-tools
-* https://caylent.com/50+-useful-kubernetes-tools-list-part-2
-* https://developer.sh/posts/kubernetes-client-tools-overview
-* https://github.com/kubernetes-sigs/kind
-* https://github.com/rancher/k3d
-* https://microk8s.io/
-* https://argoproj.github.io/argo-cd/
+- http://dockerlabs.collabnix.com/kubernetes/kubetools/
+- https://caylent.com/50-useful-kubernetes-tools
+- https://caylent.com/50+-useful-kubernetes-tools-list-part-2
+- https://developer.sh/posts/kubernetes-client-tools-overview
+- https://github.com/kubernetes-sigs/kind
+- https://github.com/rancher/k3d
+- https://microk8s.io/
+- https://argoproj.github.io/argo-cd/
 
 # kubeshark
 
@@ -712,8 +712,8 @@ brew install postman
 ```
 
 Documentação:
-* https://linuxize.com/post/how-to-install-postman-on-ubuntu-20-04/
-* https://www.postman.com
+- https://linuxize.com/post/how-to-install-postman-on-ubuntu-20-04/
+- https://www.postman.com
 
 # pre-commit
 
@@ -741,12 +741,12 @@ Fonte: https://asdf-vm.com/guide/introduction.html
 Para mostrar o nome da branch, diretório atual, cluster k8s autenticado e namespace em uso, existem vários projetos open source que providenciam isso e você pode escolher o que mais lhe agradar.
 
 Para zsh:
-* https://ohmyz.sh/
-* https://github.com/jonmosco/kube-ps1
+- https://ohmyz.sh/
+- https://github.com/jonmosco/kube-ps1
 
 Para bash:
-* https://github.com/ohmybash/oh-my-bash
-* https://github.com/jonmosco/kube-ps1
+- https://github.com/ohmybash/oh-my-bash
+- https://github.com/jonmosco/kube-ps1
 
 ## bash_prompt
 
@@ -917,8 +917,8 @@ brew install terraform-docs
 Execute os seguintes comandos para instalar o tgenv, controlador de versões de do Terragrunt
 
 Documentação:
-* https://github.com/cunymatthieu/tgenv
-* https://blog.gruntwork.io/how-to-manage-multiple-versions-of-terragrunt-and-terraform-as-a-team-in-your-iac-project-da5b59209f2d
+- https://github.com/cunymatthieu/tgenv
+- https://blog.gruntwork.io/how-to-manage-multiple-versions-of-terragrunt-and-terraform-as-a-team-in-your-iac-project-da5b59209f2d
 
 > Antes de prosseguir, certifique-se de ter instalado o comando [Homebrew](#homebrew).
 
@@ -1069,7 +1069,7 @@ alias kind_delete="kind delete clusters \$(kind get clusters)"
 
 Instale a ferramenta lightshot para facilitar o print screen (captura da tela).
 
-* https://app.prntscr.com/pt-br/download.html
+- https://app.prntscr.com/pt-br/download.html
 
 # [OPCIONAL] kind
 
@@ -1152,10 +1152,10 @@ kind delete clusters $(kind get clusters)
 ```
 
 Referências:
-* https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-1/DescomplicandoKubernetes-Day1.md#kind
-* https://kind.sigs.k8s.io/docs/user/quick-start/
-* https://github.com/kubernetes-sigs/kind/releases
-* https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/#kind-kubernetes-made-easy-in-a-container
+- https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-1/DescomplicandoKubernetes-Day1.md#kind
+- https://kind.sigs.k8s.io/docs/user/quick-start/
+- https://github.com/kubernetes-sigs/kind/releases
+- https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/#kind-kubernetes-made-easy-in-a-container
 
 Repositório alternativo para uso do kind com nginx-controller, linkerd e outras ferramentas: https://github.com/rafaelperoco/kind
 
