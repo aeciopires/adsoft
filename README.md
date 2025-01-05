@@ -1,6 +1,5 @@
 [![Codeac](https://static.codeac.io/badges/2-229420634.svg "Codeac.io")](https://app.codeac.io/github/aeciopires/adsoft)
 
-
 <!-- TOC -->
 
 - [adsoft\_files](#adsoft_files)
