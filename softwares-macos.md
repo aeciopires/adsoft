@@ -5,7 +5,9 @@
   - [Essenciais](#essenciais)
 - [Git](#git)
 - [asdf](#asdf)
+- [awscli](#awscli)
 - [bat](#bat)
+- [dbeaver (Database client)](#dbeaver-database-client)
 - [docker](#docker)
 - [docker-compose](#docker-compose)
 - [gcloud](#gcloud)
@@ -17,6 +19,7 @@
 - [helm-secrets - Plugin](#helm-secrets---plugin)
 - [jj](#jj)
 - [kubectl](#kubectl)
+- [Kustomize](#kustomize)
 - [Plugins para kubectl](#plugins-para-kubectl)
   - [krew](#krew)
   - [kubectx e kubens](#kubectx-e-kubens)
@@ -41,6 +44,7 @@
 - [terraform e tfenv](#terraform-e-tfenv)
 - [terraform-docs](#terraform-docs)
 - [terragrunt e tgenv](#terragrunt-e-tgenv)
+- [Vault](#vault)
 - [yq](#yq)
 - [tig](#tig)
 - [\[OPCIONAL\] Aliases úteis](#opcional-aliases-úteis)
@@ -77,7 +81,7 @@ Execute os seguintes comandos:
 ```bash
 software --install rosetta --agree-to-license
 
-brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools python3 meld openjdk jq make gnupg coreutils
+brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools python3 meld openjdk jq make gnupg coreutils visual-studio-code
 
 echo 'export PATH="/opt/homebrew/opt/curl/bin:\$PATH"' >> "/User/$USER/.bash_profile"
 
@@ -106,7 +110,7 @@ Instale os seguintes softwares:
 * WPS: https://br.wps.com/office/mac/
 * LightShot: https://app.prntscr.com/pt-br/download.html
 * Visual Code: https://code.visualstudio.com
-  * Plugins para Visual Code
+* Plugins para Visual Code
   * Instruções para exportar/importar plugins do VSCode: https://stackoverflow.com/questions/35773299/how-can-you-export-the-visual-studio-code-extension-list
   * docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker (Requer instalação do comando docker mostrado nas seções a seguir).
   * gitlens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens (Requer instalação do comando git mostrado na seção a anterior).
@@ -117,7 +121,7 @@ Instale os seguintes softwares:
   * Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
   * python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requer instalação do comando python3 mostrado na seção anterior).
   * shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requer instalação do comando shellcheck mostrado nas seções a seguir).
-  * terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform 0.12 mostrado nas seções a seguir).
+  * terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform mostrado nas seções a seguir).
   * YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
   * Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
   * Contar número de linhas selecionadas: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
@@ -154,10 +158,18 @@ cd ~
 
 # asdf
 
-Execute o seguinte comando:
+Execute os seguintes comandos:
+
+> Atenção!!! Para atualizar o asdf utilize APENAS o seguinte comando:
 
 ```bash
-ASDF_VERSION="v0.14.0"
+asdf update
+```
+
+> Se tentar reinstalar ou atualizar mudando a versão nos comandos seguintes, será necessário reinstalar todos os plugins/comandos instalados antes, por isso é muito importante fazer backup do diretório $HOME/.asdf.
+
+```bash
+ASDF_VERSION="v0.15.0"
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch $ASDF_VERSION
 
 # Adicionando no $HOME/.bashrc
@@ -167,6 +179,44 @@ source ~/.bash_profile
 ```
 
 Fonte: https://asdf-vm.com/guide/introduction.html
+
+# awscli
+
+Instale o ``awscli`` usando o ``asdf``:
+
+> Antes de continuar, se tiver o awscli instalado, remova-o com os seguintes comandos:
+
+```bash
+sudo rm /usr/local/bin/aws
+sudo rm -rf /usr/local/aws-cli
+# ou
+sudo rm -rf /usr/local/aws
+```
+
+> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+
+```bash
+AWS_CLI_V2="2.22.28"
+
+asdf plugin list all | grep aws
+asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
+asdf latest awscli
+
+asdf install awscli $AWS_CLI_V2
+asdf list awscli
+
+# Definindo a versão padrão
+asdf global awscli $AWS_CLI_V2
+asdf list awscli
+
+# Criando um link simbólico
+sudo ln -s $HOME/.asdf/shims/aws /usr/local/bin/aws
+```
+
+Fonte:
+* https://asdf-vm.com/guide/introduction.html
+* https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
+* https://computingforgeeks.com/how-to-install-and-use-aws-cli-on-linux-ubuntu-debian-centos/
 
 # bat
 
@@ -197,6 +247,18 @@ echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
 
 Mais informações em:
 * https://github.com/sharkdp/bat
+
+# dbeaver (Database client)
+
+DBeaver é uma ferramenta gratuita de banco de dados multiplataforma. Ele suporta todos os bancos de dados SQL populares como MySQL, MariaDB, PostgreSQL, SQLite, Apache Family e muito mais.
+
+Instale com o seguinte comando:
+
+```bash
+brew install --cask dbeaver-community
+```
+
+Mais informações: https://dbeaver.io/download/
 
 # docker
 
@@ -230,20 +292,8 @@ brew install docker-compose
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="484.0.0"
-
-asdf plugin list all | grep gcloud
-asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
-asdf latest gcloud
-
-asdf install gcloud $VERSION
-asdf list gcloud
-
-# Definindo a versão padrão
-asdf global gcloud $VERSION
-asdf list gcloud
-
-gcloud init # (alternativamente, gcloud init --console-only)
+brew install google-cloud-sdk
+gcloud components install gke-gcloud-auth-plugin
 ```
 
 Execute as instruções deste tutorial se autenticar com o gcloud Autenticação do terraform/terragrunt no GCP
@@ -293,7 +343,7 @@ Execute os seguintes comandos para instalar o helm:
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.15.2"
+VERSION="3.16.2"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -316,7 +366,7 @@ Execute os seguintes comandos para instalar o helm-docs.
 Documentação: https://github.com/norwoodj/helm-docs 
 
 ```bash
-VERSION="1.13.1"
+VERSION="1.14.2"
 
 asdf plugin list all | grep helm-docs
 asdf plugin add helm-docs https://github.com/sudermanjr/asdf-helm-docs.git
@@ -343,7 +393,7 @@ Execute os seguintes comandos para instalar o helmfile.
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.166.0"
+VERSION="0.169.2"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -359,22 +409,22 @@ asdf list helmfile
 
 # helm-diff - Plugin
 
-Execute os seguintes comandos para instalar o plugin para o helm, helm-diff.
+Execute os seguintes comandos para instalar o plugin helm-diff.
 
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.9.8
+helm plugin install https://github.com/databus23/helm-diff --version v3.9.13
 ```
 
 # helm-secrets - Plugin
 
-Execute os seguintes comandos para instalar o plugin para o helm, helm-secrets.
+Execute os seguintes comandos para instalar o plugin helm-secrets.
 
 Documentação: https://github.com/jkroepke/helm-secrets
 
 ```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.0
+helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
 ```
 
 # jj
@@ -398,7 +448,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [Asdf](#asdf).
 
 ```bash
-VERSION_OPTION_1="1.30.2"
+VERSION_OPTION_1="1.32.0"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -413,6 +463,18 @@ asdf list kubectl
 ```
 
 Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
+
+# Kustomize
+
+Instale o Kustomize com o seguinte comando:
+
+```bash
+brew install kustomize
+```
+
+Referência:
+
+* https://kustomize.io
 
 # Plugins para kubectl
 
@@ -441,8 +503,10 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [Homebrew](#homebrew).
 
 ```bash
-brew install kubectx kubens
+brew install kubectx
 ```
+
+> Este pacote vai instalar o kubens junto no MacOS
 
 Comandos úteis:
 
@@ -584,7 +648,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="50.4"
+VERSION="52.3.9"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -609,7 +673,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.32.5"
+VERSION="0.32.7"
 
 asdf plugin list all | grep k9s
 asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
@@ -658,7 +722,7 @@ Uma estrutura para gerenciar e manter ganchos de pré-confirmação multi lingua
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.7.1"
+VERSION="4.0.1"
 
 asdf plugin list all | grep pre-commit
 asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
@@ -750,14 +814,14 @@ Alternativamente é possível usar o site https://www.shellcheck.net para faze
 
 # Sops
 
-Execute a seguinte função shell para instalar o sops.
+Execute os seguintes comandos.
 
 Documentação: https://github.com/getsops/sops/
 
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.9.0"
+VERSION="3.9.3"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -806,13 +870,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.9.2
+tfenv install 1.10.3
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.9.2
+tfenv use 1.10.3
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -833,7 +897,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.9.2
+1.10.3
 ```
 
 # terraform-docs
@@ -871,7 +935,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.63.2
+tgenv install 0.71.1
 ```
 
 Liste as versões instaladas:
@@ -883,7 +947,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.63.2
+tgenv use 0.71.1
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -898,8 +962,21 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.63.2
+0.71.1
 ```
+
+# Vault
+
+Instale o binário do Vault com os seguintes comandos:
+
+> Antes de prosseguir, certifique-se de ter instalado o comando [Homebrew](#homebrew).
+
+```bash
+brew tap hashicorp/tap
+brew install hashicorp/tap/vault
+```
+
+Mais informações em: https://developer.hashicorp.com/vault/docs?product_intent=vault
 
 # yq
 
@@ -912,7 +989,7 @@ Instale com os seguintes comandos:
 ```bash
 YQ_1="3.4.1"   # homologada
 YQ_2="4.35.1"  # homologada
-YQ_3="4.44.2"
+YQ_3="4.44.6"
 
 asdf plugin list all | grep yq
 asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
@@ -951,7 +1028,7 @@ Aliases úteis a serem cadastrados no arquivo ``$HOME/.bashrc``.
 
 ```bash
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.17.5'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.22.8'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -961,6 +1038,10 @@ alias k='kubecolor'
 source <(kubectl completion bash)
 export PATH="${PATH}:${HOME}/.krew/bin"
 alias kubectl='kubecolor'
+alias kmongo='kubectl run --rm -it mongoshell-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mongo:4.0.28 -n default -- bash'
+alias kmysql5='kubectl run --rm -it mysql5-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mysql:5.7 -n default -- bash'
+alias kmysql8='kubectl run --rm -it mysql8-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mysql:8.0 -n default -- bash'
+alias kredis='kubectl run --rm -it redis-cli-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=redis:latest -n default -- bash'
 alias kpgsql14='kubectl run --rm -it pgsql14-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=postgres:14 -n default -- bash'
 alias kssh='kubectl run --rm -it ssh-agent-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=kroniak/ssh-client -n default -- bash'
 alias l='ls -CF'
@@ -968,7 +1049,7 @@ alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:1.0.0 -n default -- bash'
+alias nettools='kubectl run --rm -it nettools-\$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.0.0 -n NAMESPACE'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
 alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION --profile CHANGE_PROFILE'
@@ -979,6 +1060,9 @@ alias sc="source $HOME/.bashrc"
 alias python=python3
 alias pip=pip3
 alias kubepug=kubectl-depreciations
+alias kubepug="kubectl-depreciations"
+alias kind_create="kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml"
+alias kind_delete="kind delete clusters \$(kind get clusters)"
 ```
 
 # [OPCIONAL] Lightshot
@@ -996,7 +1080,7 @@ Para instalar o kind execute os seguintes comandos.
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.23.0"
+VERSION="0.26.0"
 asdf plugin list all | grep kind
 asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
 asdf latest kind
@@ -1018,7 +1102,7 @@ cat << EOF > $HOME/kind-3nodes.yaml
 # Metal LB in Kind: https://kind.sigs.k8s.io/docs/user/loadbalancer
 # Ingress in Kind: https://kind.sigs.k8s.io/docs/user/ingress
 
-# Config compatible with kind v0.23.0
+# Config compatible with kind v0.26.0
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -1026,7 +1110,7 @@ networking:
   serviceSubnet: "10.96.0.0/12"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
     kubeadmConfigPatches:
     - |
       kind: InitConfiguration
@@ -1043,9 +1127,9 @@ nodes:
       listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
       protocol: TCP
   - role: worker
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
   - role: worker
-    image: kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e
+    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
 EOF
 ```
 
@@ -1086,7 +1170,7 @@ Execute os seguintes comandos para instalação:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.33.1"
+VERSION="1.34.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1126,7 +1210,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.53.0"
+VERSION="0.58.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1158,7 +1242,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.52.0"
+VERSION="0.54.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
