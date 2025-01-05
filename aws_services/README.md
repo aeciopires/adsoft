@@ -24,11 +24,11 @@
 
 # About
 
-Create EKS Kubernetes cluster 1.27 using Terragrunt and Terraform code.
+Create EKS Kubernetes cluster 1.31 using Terragrunt and Terraform code.
 
 # Requirements
 
-* Configure the AWS Credentials and all install all packages and binaries following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
+- Configure the AWS Credentials and all install all packages and binaries following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
 
 Access https://terragrunt.gruntwork.io/docs/#getting-started for more informations about Terragrunt commands.
 
@@ -97,19 +97,17 @@ Reference: https://terragrunt.gruntwork.io/docs/features/caching/
 
 # How to Install
 
-* Clone repository.
+- Clone repository.
 
 ```bash
 mkdir ~/git
-
 cd ~/git
-
 git clone https://github.com/aeciopires/adsoft
 ```
 
 > **WARNING:** Before start to contribute, run the command: `git pull origin master` to fetch the newest content of the main branch and avoid conflicts that can make you waste time.
 
-* Create a branch. Example:
+- Create a branch. Example:
 
 ```bash
 git checkout -b BRANCH_NAME
@@ -117,7 +115,7 @@ git checkout -b BRANCH_NAME
 
 ## Stage 0: Change the configurations
 
-* Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
+- Change values in files ``environment.hcl``, ``region.hcl`` and ``customer.hcl`` files.
 
 ```bash
 cd ~/git/adsoft/aws_services/
@@ -127,7 +125,7 @@ find . -type f | grep "environment.hcl\|region.hcl\|customer.hcl" | grep -v terr
 
 ## Stage 1: Create VPC
 
-* For create VPC for specific customer:
+- For create VPC for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -147,7 +145,7 @@ terragrunt output
 
 ## Stage 2: Create key pair RSA
 
-* For create key pair RSA for specific customer:
+- For create key pair RSA for specific customer:
 
 Example:
 
@@ -157,19 +155,19 @@ SUFFIX=gyr4
 ssh-keygen -t rsa -b 4096 -v -f ~/key-$SUFFIX.pem
 ```
 
-* Copy content public key without USER and HOST.
+- Copy content public key without USER and HOST.
 
 ```bash
 cat ~/key-$SUFFIX.pem.pub | cut -d " " -f1,2
 ```
 
-* Example:
+- Example:
 
 ```
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UOQ5zd6yRWsJESIpRPBUGK7yWcNdXSZl+NGbOy4xndkSOBYWWVr0IJk3nEddqsIxfTazh8p9gwVu0O1WUTsxOxTx6vk8EQbArA/o8m+Hiue2pPJlJDl+cY2t7twfwzoh6aZ0MstYvMRrjvTKHcur4bXqD/UqaTn1UeNJ2WytY8+JSvtx3YoS97UHFiGmHnEfZzsShVSkqJv0wgm1eqZnajFVcqXIKOSyxk0CN4kfCTOd29b5Y8CoO1o4IAqISoz2eecViTw5gy0IlhEtmoa03084WSyOzGG/D0QZ0lfA3mXgAAmG5uv/5sN0E7pzs4R1ZgMFYHorN8Cdp+3eJiPX
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGaj/Af6UpsosJoP7Z3AEW6qf+9qQsIpYhbWR9ZXfo0M5/HorpCe/OqqyMwjLwfZb6TCDKDjH/9MK5Y3VxoL/SF/ECjk3SJM5NQO/NWZojZUYM8nTkkc0sqsF7MNJgN4I0SFeigJwWpYE2h0NAJTadMIt9jY9OAEcH1FIcpcBgE9SuL4SvZm7CDbBlSloMoGqBS+BB/9sHc7UCANFR0FrAFdwMKGYUmlOmMJlklbryoSuht8A5fWGo+iPtkksVgJ07fIlnkDiFhJIiaM4ScEd5g8OwjrmZjfx4+pyQlEAXKiYwR5T/05gHomMCNdUZfLjIAzLRlcaRTxQ6CVhRUlB4KYcoYdpc8sbw8stVh6p0uRUZ9O+cKoEcyQv8gq0pUoq+er3+inHIlcUY+nLNPGFRlRcWzZ0Dd96QeJclEByln7vRVZDokKyn1y41P/jV2FtXdt/z/MbCYxhqtWxXQtDpIuauW6aPU9CDyjPgif3KjluxILYH7lyw8uKJuJM3pV0S15ZVdu6a3GeVrGRYMx4Gq6QyFcc9Rtl3E1QhFFxXWFvpMkIfeiax5HfQHE+XHWKN38LXR+8ZjQbMZSD/8/WJP2K9YVLIsRfLclwwkccYGEvMfiQuDIx7YjLZ+lF8WBGNUswbibDhiDK9aQLZ0n4bvGRrPtWgbE5oJm8AjeQi2w==
 ```
 
-* Change the values according to the need of the customer in ``~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
+- Change the values according to the need of the customer in ``~/git/adsoft/aws_services/live/testing/regions/us-east-2/mycustomer/customer.hcl``.
 
 ```bash
 SUFFIX='gyr4'
@@ -189,7 +187,7 @@ terragrunt output
 
 ## Stage 3: Create KMS
 
-* For create KMS for specific customer:
+- For create KMS for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -209,7 +207,7 @@ terragrunt output
 
 ## Stage 4: Create Kubernetes cluster
 
-* For create EKS in specific customer:
+- For create EKS in specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -255,22 +253,22 @@ terragrunt apply -auto-approve
 
 References:
 
-* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/699
-* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/852
-* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911
-* https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1280
-* https://medium.com/@ssorcnafets/terraform-k8s-provider-auth-issue-eb98814e673c
-* https://github.com/aws/containers-roadmap/issues/654
-* https://github.com/terraform-aws-modules/terraform-aws-eks
-* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/launch_templates/main.tf
-* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
-* https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
+- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/699
+- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/852
+- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911
+- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1280
+- https://medium.com/@ssorcnafets/terraform-k8s-provider-auth-issue-eb98814e673c
+- https://github.com/aws/containers-roadmap/issues/654
+- https://github.com/terraform-aws-modules/terraform-aws-eks
+- https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/launch_templates/main.tf
+- https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
+- https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
 
 # How to Uninstall
 
 ## Remove Kubernetes cluster
 
-* For remove EKS for specific customer:
+- For remove EKS for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -288,7 +286,7 @@ terragrunt destroy
 
 ## Remove KMS
 
-* For remove EKS for specific customer:
+- For remove EKS for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -305,7 +303,7 @@ terragrunt destroy
 
 ## Remove subnets, NAT Gateway and VPC
 
-* For remove network resources for specific customer:
+- For remove network resources for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -314,7 +312,7 @@ AWS_REGION='us-east-2'
 cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
 ```
 
-Run the command:
+- Run the command:
 
 ```bash
 terragrunt destroy
@@ -322,7 +320,7 @@ terragrunt destroy
 
 ## Remove key pair RSA
 
-* For remove key par RSA for specific customer:
+- For remove key par RSA for specific customer:
 
 ```bash
 SUFFIX='gyr4'
@@ -331,7 +329,7 @@ AWS_REGION='us-east-2'
 cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keypair/key-$SUFFIX/"
 ```
 
-Run the ``terragrunt`` command.
+- Run the ``terragrunt`` command.
 
 ```bash
 terragrunt destroy
@@ -339,7 +337,7 @@ terragrunt destroy
 
 ## Remove AWS S3 Bucket
 
-Run the command:
+- Run the command:
 
 ```bash
 AWS_ACCOUNT_ID='CHANGE_HERE'
@@ -360,12 +358,12 @@ aws s3api delete-bucket \
 
 References:
 
-* https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html
-* https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/delete-bucket.html
+- https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
 
 ## Remove DynamoDB Table
 
-Run the command:
+- Run the command:
 
 ```bash
 AWS_ACCOUNT_ID='CHANGE_HERE'
@@ -379,4 +377,4 @@ aws dynamodb delete-table \
 
 References:
 
-* https://docs.aws.amazon.com/cli/latest/reference/dynamodb/delete-table.html
+- https://docs.aws.amazon.com/cli/latest/reference/dynamodb/delete-table.html
