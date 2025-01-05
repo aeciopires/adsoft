@@ -29,7 +29,7 @@
   - [kubefwd](#kubefwd)
   - [kubepug](#kubepug)
   - [kubent](#kubent)
-  - [Outras Kubetools:](#outras-kubetools)
+  - [Outras Kubetools](#outras-kubetools)
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
 - [kustomize](#kustomize)
@@ -108,7 +108,7 @@ Instale os seguintes softwares:
   * Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
   * python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requer instalação do comando python3 mostrado na seção anterior).
   * shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requer instalação do comando shellcheck mostrado nas seções a seguir).
-  * terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform 0.12 mostrado nas seções a seguir).
+  * terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform mostrado nas seções a seguir).
   * YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
   * Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
   * Contar número de linhas selecionadas: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
@@ -183,7 +183,7 @@ ansible --version
 
 # awscli
 
-Instale o awscli usando o asdf:
+Instale o ``awscli`` usando o ``asdf``:
 
 > Antes de continuar, se tiver o awscli instalado, remova-o com os seguintes comandos:
 
@@ -210,7 +210,7 @@ asdf list awscli
 asdf global awscli $AWS_CLI_V2
 asdf list awscli
 
-# Criando um link simbólico para o comando aws
+# Criando um link simbólico
 sudo ln -s $HOME/.asdf/shims/aws /usr/local/bin/aws
 ```
 
@@ -221,7 +221,7 @@ Fonte:
 
 # bat
 
-O bat é um binário que ajuda a destacar as diferenças entres arquivos e muito útil quando usado em conjunto com outros comandos, incluído o kubectl e o helm.
+O bat é um binário que ajuda a destacar as diferenças entres arquivos e muito útil quando usado em conjunto com outros comandos, incluído o ``kubectl`` e o ``helm``.
 
 > Antes de continuar, se tiver o bat instalado, remova-o com o seguinte comando:
 
@@ -252,8 +252,7 @@ Dica de utilização para terminais com temas escuro/claros é usar a opção ``
 echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
 ```
 
-Mais informações em:
-* https://github.com/sharkdp/bat
+Mais informações em: https://github.com/sharkdp/bat
 
 # docker
 
@@ -438,13 +437,13 @@ asdf global helm-docs $VERSION
 asdf list helm-docs
 ```
 
-A documentação gerado pelo helm-docs é com base no conteúdo do arquivo ``values.yaml`` e ``Chart.yaml``. Ele tenta sobrescrever o conteúdo do arquivo README.md dentro do diretório do chart.
+A documentação gerado pelo helm-docs é com base no conteúdo do arquivo ``values.yaml`` e ``Chart.yaml``. Ele tenta sobrescrever o conteúdo do arquivo ``README.md`` dentro do diretório do chart.
 
 Para evitar este problema execute o comando ``helm-docs --dry-run`` (dentro do diretório de cada chart) e copie manualmente o conteúdo exibido na saída padrão para dentro do arquivo ``README.md``, evitando perda de dados.
 
 # helmfile
 
-Execute os seguintes comandos para instalar o helmfile.
+Execute os seguintes comandos para instalar o ``helmfile``.
 
 > Antes de continuar, se tiver o helmfile instalado, remova-o com o seguinte comando:
 
@@ -473,7 +472,7 @@ asdf list helmfile
 
 # helm-diff - Plugin
 
-Execute os seguintes comandos para instalar o plugin para o helm, helm-diff.
+Execute os seguintes comandos para instalar o plugin ``helm-diff``.
 
 Documentação: https://github.com/databus23/helm-diff
 
@@ -483,7 +482,7 @@ helm plugin install https://github.com/databus23/helm-diff --version v3.9.13
 
 # helm-secrets - Plugin
 
-Execute os seguintes comandos para instalar o plugin para o helm, helm-secrets.
+Execute os seguintes comandos para instalar o plugin ``helm-secrets``.
 
 Documentação: https://github.com/jkroepke/helm-secrets
 
@@ -517,7 +516,7 @@ exit
 
 # kubectl
 
-Execute a seguinte função shell para instalar o kubectl.
+Execute os seguintes comandos.
 
 Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
 
@@ -535,7 +534,7 @@ asdf list kubectl
 asdf global kubectl $VERSION_OPTION_1
 asdf list kubectl
 
-# Criando um link simbólico para o comando kubectl
+# Criando um link simbólico
 sudo ln -s $HOME/.asdf/shims/kubectl /usr/local/bin/kubectl
 ```
 
@@ -589,12 +588,12 @@ FOE
 Comandos úteis:
 
 ```bash
-kubectx -u # (para deslogar do cluster)
-kubectx # (para listar os clusters cadastrados na máquina local
-kubectx NOME_DO_CLUSTER # (para logar num cluster previamente cadastrado na máquina local)
-kubectx -d NOME_DO_CLUSTER # (para remover um cluster previamente cadastrado na máquina local)
-kubens # (para listar os namespaces de um cluster)
-kubens NAMESPACE # (para mudar para um namespace previamente criado no cluster com o comando kubectl create ns NAMESPACE)
+kubectx -u # para deslogar do cluster
+kubectx # para listar os clusters cadastrados na máquina local
+kubectx NOME_DO_CLUSTER # para logar num cluster previamente cadastrado na máquina local
+kubectx -d NOME_DO_CLUSTER # para remover um cluster previamente cadastrado na máquina local
+kubens # para listar os namespaces de um cluster
+kubens NAMESPACE # para mudar para um namespace previamente criado no cluster com o comando ``kubectl create ns NAMESPACE``
 ```
 
 ## Fuzzy
@@ -623,7 +622,7 @@ kubectl krew install tree
 
 Documentação: https://github.com/kubecolor/kubecolor
 
-Instale com os seguintes comandos:
+Instale com os seguintes comandos.
 
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
@@ -647,7 +646,7 @@ source ~/.bashrc
 
 ## node-shell
 
-Plugin para conectar ssh num node k8s.
+Plugin para conectar ssh em um node k8s.
 
 Instale com o seguinte comando:
 
@@ -706,7 +705,7 @@ sh -c "$(curl -sSL https://git.io/install-kubent)"
 kubent --help
 ```
 
-## Outras Kubetools:
+## Outras Kubetools
 
 * http://dockerlabs.collabnix.com/kubernetes/kubetools/
 * https://caylent.com/50-useful-kubernetes-tools
@@ -750,7 +749,7 @@ asdf list kubeshark
 
 # k9s
 
-O k9s é uma ferramenta em CLI para gerenciamento de cluster kubernetes
+O k9s é uma ferramenta em CLI para gerenciamento de cluster kubernetes.
 
 > Antes de continuar, se tiver o k9s instalado, remova-o com o seguinte comando:
 
@@ -940,7 +939,7 @@ Alternativamente é possível usar o site https://www.shellcheck.net para faze
 
 # Sops
 
-Execute a seguinte função shell para instalar o sops.
+Instale com os seguintes comandos.
 
 Documentação: https://github.com/getsops/sops/
 
@@ -983,7 +982,7 @@ creation_rules:
 
 # terraform e tfenv
 
-Execute os seguintes comandos para instalar o ``tfenv``, controlador de versões de do Terraform
+Execute os seguintes comandos para instalar o ``tfenv``, controlador de versões de do Terraform.
 
 Documentação: https://github.com/tfutils/tfenv
 
@@ -1052,7 +1051,7 @@ terraform-docs --version
 
 # terragrunt e tgenv
 
-Execute os seguintes comandos para instalar o tgenv, controlador de versões de do Terragrunt
+Execute os seguintes comandos para instalar o ``tgenv``, controlador de versões de do Terragrunt.
 
 Documentação:
 * https://github.com/cunymatthieu/tgenv
