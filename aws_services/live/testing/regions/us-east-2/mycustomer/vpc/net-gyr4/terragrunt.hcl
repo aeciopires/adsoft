@@ -19,14 +19,6 @@ locals {
   private_subnet_tags = local.customer_vars.locals.private_subnet_tags
 }
 
-# Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
-# working directory, into a temporary folder, and execute your Terraform commands in that folder.
-terraform {
-  # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///terraform-aws-modules/vpc/aws//?version=5.17.0"
-}
-
-# These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
   cidr                = local.cidr
   azs                 = local.az_id_list
