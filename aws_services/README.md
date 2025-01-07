@@ -54,30 +54,36 @@ Terragrunt will forward almost all commands, arguments, and options directly to 
 │       │   └── us-east-2 # Directory with specific region code
 │       │       ├── mycustomer # Directory with specific resources code of customer
 │       │       │   ├── certificates
+│       │       │   │   └── wildcard-mydomain-com
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create certificate
+│       │       │   │   └── certificate.hcl # Terragrunt template for ACM certificate
+│       │       │   ├── dns
 │       │       │   │   ├── validation-wildcard-mydomain-com
 │       │       │   │   │   └── terragrunt.hcl # Terragrunt for create DNS record to validate certificate
-│       │       │   │   └── wildcard-mydomain-com
-│       │       │   │       └── terragrunt.hcl # Terragrunt for create certificate
+│       │       │   │   └── dns-record.hcl # Terragrunt template for Route53 DNS record
 │       │       │   ├── customer.hcl  # Customer configurations for Terragrunt code
 │       │       │   ├── ec2
 │       │       │   │   └── apps
-│       │       │   │       └── terragrunt.hcl # Terragrunt for create EC2 instance
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create EC2 instance
+│       │       │   │   └── ec2.hcl # Terragrunt template for EC2 instance
 │       │       │   ├── eks
 │       │       │   │   └── cluster1-gyr4
-│       │       │   │       └── terragrunt.hcl # Terragrunt for create EKS cluster
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create EKS cluster
+│       │       │   │   └── eks-1-31.hcl # Terragrunt template for EKS 1.31
 │       │       │   ├── keypair
 │       │       │   │   └── key-gyr4
-│       │       │   │       └── terragrunt.hcl # Terragrunt for create Key pair
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create Key pair
+│       │       │   │   └── keypair.hcl # Terragrunt template for Keypair
 │       │       │   ├── kms
 │       │       │   │   └── kms-gyr4
-│       │       │   │       └── terragrunt.hcl # Terragrunt for create KMS
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for create KMS
+│       │       │   │   └── kms.hcl # Terragrunt template for KMS
 │       │       │   └── vpc
 │       │       │       └── net-gyr4
-│       │       │           └── terragrunt.hcl # Terragrunt for create VPC
+│       │       │       │  └── terragrunt.hcl # Terragrunt for create VPC
+│       │       │       └── vpc.hcl # Terragrunt template for VPC
 │       │       └── region.hcl # Region configurations for Terragrunt code
-│       └── terragrunt.hcl # General Terragrunt code for manage state in S3 e lockID in DynamoDB
-├── modules # Directory with Terraform modules
-│   └── kubernetes-1-27 # Terraform module for create EKS cluster
+│       └── root.hcl # General Terragrunt code for manage state in S3 e lockID in DynamoDB
 └── README.md # This documentation
 ```
 
@@ -234,7 +240,7 @@ AWS_REGION='us-east-2'
 CUSTOMER_ID='cdk17o7adl'
 CLUSTER_NAME="${CUSTOMER_ID}-cluster1-${SUFFIX}"
 
-aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profile my-account
+aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profile myaccount
 ```
 
 ```diff
@@ -346,14 +352,14 @@ AWS_REGION='us-east-2'
 aws s3 rb "s3://terragrunt-remote-state-${AWS_ACCOUNT_ID}" \
   --force \
   --region "$AWS_REGION" \
-  --profile my-account
+  --profile myaccount
 
 # or
 
 aws s3api delete-bucket \
   --bucket "terragrunt-remote-state-${AWS_ACCOUNT_ID}" \
   --region "$AWS_REGION" \
-  --profile my-account
+  --profile myaccount
 ```
 
 References:
@@ -372,7 +378,7 @@ AWS_REGION='us-east-2'
 aws dynamodb delete-table \
   --table-name "terragrunt-state-lock-dynamo-${AWS_ACCOUNT_ID}" \
   --region "$AWS_REGION" \
-  --profile my-account
+  --profile myaccount
 ```
 
 References:
