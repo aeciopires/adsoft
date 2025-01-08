@@ -10,15 +10,15 @@ include "kms" {
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
   customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  environment_name = local.environment_vars.locals.environment_name
+  environment      = local.environment_vars.locals.environment_name
   customer_name    = local.customer_vars.locals.customer_name
   customer_tags    = local.customer_vars.locals.customer_tags
 }
 
 inputs = {
   create                  = true
-  description             = "General ${local.customer_name}-${local.environment_name} encryption key"
-  aliases                 = ["alias/${local.customer_name}-${local.environment_name}"]
+  description             = "General ${local.customer_name}-${local.environment} encryption key"
+  aliases                 = ["alias/${local.customer_name}-${local.environment}"]
   key_usage               = "ENCRYPT_DECRYPT"
   deletion_window_in_days = 7
   enable_key_rotation     = false
