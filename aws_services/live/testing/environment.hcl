@@ -15,7 +15,7 @@ locals {
   aws_profile             = "myaccount"
   region_bucket           = "us-east-2"
   dns_zone_id             = "CHANGE_HERE"
-  dns_domain_name         = "CHANGE_HERE"
+  dns_domain_name         = "mydomain.com" # CHANGE_HERE
 
   default_tags = {
     environment = local.environment_name,

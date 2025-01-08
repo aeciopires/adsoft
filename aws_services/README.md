@@ -12,11 +12,13 @@
   - [Stage 2: Create key pair RSA](#stage-2-create-key-pair-rsa)
   - [Stage 3: Create KMS](#stage-3-create-kms)
   - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
+  - [Optionals: Route53 domain and records, ACM certificate and SES to send email](#optionals-route53-domain-and-records-acm-certificate-and-ses-to-send-email)
 - [How to Uninstall](#how-to-uninstall)
   - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
   - [Remove KMS](#remove-kms)
   - [Remove subnets, NAT Gateway and VPC](#remove-subnets-nat-gateway-and-vpc)
   - [Remove key pair RSA](#remove-key-pair-rsa)
+  - [Remove optionals if created](#remove-optionals-if-created)
   - [Remove AWS S3 Bucket](#remove-aws-s3-bucket)
   - [Remove DynamoDB Table](#remove-dynamodb-table)
 
@@ -184,13 +186,6 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keyp
 
 Run the ``terragrunt`` commands.
 
-```bash
-terragrunt validate
-terragrunt plan
-terragrunt apply
-terragrunt output
-```
-
 ## Stage 3: Create KMS
 
 - For create KMS for specific customer:
@@ -203,13 +198,6 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/kms/
 ```
 
 Run the ``terragrunt`` commands.
-
-```bash
-terragrunt validate
-terragrunt plan
-terragrunt apply
-terragrunt output
-```
 
 ## Stage 4: Create Kubernetes cluster
 
@@ -224,13 +212,6 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/
 ```
 
 Run the ``terragrunt`` commands.
-
-```bash
-terragrunt validate
-terragrunt plan
-terragrunt apply
-terragrunt output
-```
 
 Authenticate in cluster with follow command.
 
@@ -248,6 +229,8 @@ aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profil
 - Problems with aws-auth configmap or kubeconfig?
 + Solutions:
 ```
+
+Run the ``terragrunt`` commands.
 
 ```bash
 terragrunt state list
@@ -269,6 +252,50 @@ References:
 - https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/launch_templates/main.tf
 - https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
 - https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
+
+## Optionals: Route53 domain and records, ACM certificate and SES to send email
+
+- For create Route53 domain:
+
+```bash
+AWS_REGION='us-east-2'
+
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/mydomain.com/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create ACM certificate:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/certificates/wildcard-mydomain-com/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create DNS record to validate ACM certificate:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-wildcard-mydomain-com/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create SES noreply email:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/ses/noreply-mydomain-com/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create DNS MX records to validate ses:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-noreply-mydomain-com/"
+```
+
+Run the ``terragrunt`` commands.
 
 # How to Uninstall
 
@@ -336,6 +363,70 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keyp
 ```
 
 - Run the ``terragrunt`` command.
+
+```bash
+terragrunt destroy
+```
+
+## Remove optionals if created
+
+- For remove DNS MX records to validate ses:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-noreply-mydomain-com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove DNS record to validate ACM certificate:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-wildcard-mydomain-com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove ACM certificate:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/certificates/wildcard-mydomain-com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove SES noreply email:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/ses/noreply-mydomain-com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove Route53 domain:
+
+```bash
+AWS_REGION='us-east-2'
+
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/mydomain.com/"
+```
+
+- Run the command:
 
 ```bash
 terragrunt destroy
