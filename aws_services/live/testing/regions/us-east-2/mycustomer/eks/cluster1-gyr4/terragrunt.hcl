@@ -1,14 +1,17 @@
-# Include all settings from the root terragrunt.hcl file
-include {
-  path = find_in_parent_folders()
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+include "eks-1-31" {
+  path   = find_in_parent_folders("eks-1-31.hcl")
+  expose = true
 }
 
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
   region_vars      = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  environment_name = local.environment_vars.locals.environment_name
-  aws_profile      = local.environment_vars.locals.aws_profile
+  environment      = local.environment_vars.locals.environment_name
   account_id       = local.environment_vars.locals.account_id
   dns_domain_name  = local.environment_vars.locals.dns_domain_name
   region           = local.region_vars.locals.region
@@ -22,42 +25,28 @@ locals {
   cluster_shortname = local.customer_vars.locals.cluster1_short_name
 
   cluster_endpoint_public_access_cidrs = local.customer_vars.locals.cluster_endpoint_public_access_cidrs
-
-  list_roles = local.customer_vars.locals.list_roles
-  list_users = local.customer_vars.locals.list_users
+  access_entries                       = local.customer_vars.locals.access_entries
 }
 
-# Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
-# working directory, into a temporary folder, and execute your Terraform commands in that folder.
-terraform {
-  # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "${get_repo_root()}/aws_services/modules//kubernetes-1-27"
-}
-
+# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
-    "../../vpc/net-${local.suffix}/",
-    "../../keypair/key-${local.suffix}",
-    "../../kms/kms-${local.suffix}",
-    #"../../certificates/wildcard-${local.dns_domain_name}/",
+    "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/vpc/net-${local.suffix}/",
+    "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/keypair/key-${local.suffix}/",
+    "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/kms/kms-${local.suffix}/",
   ]
 }
 
-
 dependency "vpc" {
-  config_path = "../../vpc/net-${local.suffix}/"
-}
-
-#dependency "certificate" {
-#  config_path = "../../certificates/wildcard-${local.dns_domain_name}/"
-#}
-
-dependency "kms" {
-  config_path = "../../kms/kms-${local.suffix}/"
+  config_path = "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/vpc/net-${local.suffix}/"
 }
 
 dependency "keypair" {
-  config_path = "../../keypair/key-${local.suffix}/"
+  config_path = "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/keypair/key-${local.suffix}/"
+}
+
+dependency "kms" {
+  config_path = "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/kms/kms-${local.suffix}/"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -66,40 +55,31 @@ inputs = {
   #-----------------------
   # ATTENTION!
   # Theese inputs are a complete example to create EKS cluster
-  # using Karpenter, AWS Manage Node Group or Self Manage Node Group
-  # using all components optionals, guest permitions and without using VPN
-  #
-  # You can to use this file for to learn how to create EKS cluster
+  # using AWS Manage Node Group
   #-----------------------
 
 
   #--------------------------
   # General
   #--------------------------
-  profile      = local.aws_profile
-  region       = local.region
-  environment  = local.environment_name
   cluster_name = local.cluster_name
-
 
   #--------------------------
   # Network
   #--------------------------
-  vpc_id         = dependency.vpc.outputs.vpc_id
-  vpc_cidr_block = [dependency.vpc.outputs.vpc_cidr_block]
-  subnet_ids     = dependency.vpc.outputs.private_subnets
+  vpc_id     = dependency.vpc.outputs.vpc_id
+  subnet_ids = dependency.vpc.outputs.private_subnets
 
 
   #--------------------------
   # Log
   #--------------------------
   create_cloudwatch_log_group = true
+  cloudwatch_log_group_class  = "INFREQUENT_ACCESS"
 
   # After a cost analysis with cloudwatch it is recommended to keep the authenticator log only
   cluster_enabled_log_types                = ["authenticator"]
   cloudwatch_log_group_retention_in_days   = 1
-  fluentbit_cw_log_group_retention_in_days = 1
-
 
   #--------------------------
   # Security
@@ -124,62 +104,52 @@ inputs = {
   #--------------------------
   # Worker node
   #--------------------------
-  # The 'type_worker_node_group' parameter supports the following values. Choose just one.
-  #
-  # KARPENTER         => create worker node and install Karpenter.
-  # AWS_MANAGED_NODE  => create worker node with some AWS managed settings. Requires 'eks_managed_node_groups' parameter to be set.
-  #                      More options in page: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/modules/eks-managed-node-group#inputs
-  # SELF_MANAGED_NODE => creates a worker node with all settings defined by you. Requires 'self_managed_node_groups' parameter to be set.
-  #                      More options in https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/modules/self-managed-node-group#inputs
-
-  type_worker_node_group = "AWS_MANAGED_NODE"  # Requires 'eks_managed_node_groups' parameter to be set.
-
   # Set this parameter only if you want to use 'type_worker_node_group' with value 'AWS_MANAGED_NODE'
   # More options in page: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/modules/eks-managed-node-group#inputs
   eks_managed_node_groups = {
-    "spot" = {
-      name              = "${local.cluster_shortname}-spot"
-      capacity_type     = "SPOT"
-      key_name          = dependency.keypair.outputs.key_pair_name
-      min_size          = 2
-      max_size          = 20
-      desired_size      = 2
-      # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
-      # ec2-instance-selector --memory CHANGE_HERE --vcpus CHANGE_HERE --cpu-architecture x86_64 --hypervisor nitro --service eks --usage-class spot --region AWS_REGION --profile AWS_PROFILE
-      #
-      # Example:
-      # ec2-instance-selector --memory 4 --vcpus 2 --cpu-architecture x86_64 --hypervisor nitro --service eks --usage-class spot --region us-east-2 --profile my-account
-      instance_types    = [
-        "c5.large",
-        "c5a.large",
-        "c5ad.large",
-        "c5d.large",
-        "c6a.large",
-        "c6i.large",
-        "c6id.large",
-        "c6in.large",
-        "t3.medium",
-        "t3a.medium"
-      ]
-      enable_monitoring = false
-
-      block_device_mappings = {
-        xvda = {
-          device_name = "/dev/xvda"
-          ebs = {
-            volume_size = 50
-            volume_type = "gp3"
-            encrypted   = true
-          }
-        }
-      }
-
-      network_interfaces = [
-        {
-          associate_public_ip_address = false
-        }
-      ]
-    },
+    #"spot" = {
+    #  name              = "${local.cluster_shortname}-spot"
+    #  capacity_type     = "SPOT"
+    #  key_name          = dependency.keypair.outputs.key_pair_name
+    #  min_size          = 2
+    #  max_size          = 20
+    #  desired_size      = 2
+    #  # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+    #  # ec2-instance-selector --memory CHANGE_HERE --vcpus CHANGE_HERE --cpu-architecture x86_64 --hypervisor nitro --usage-class spot --region AWS_REGION --profile AWS_PROFILE
+    #  #
+    #  # Example:
+    #  # ec2-instance-selector --memory 4 --vcpus 2 --cpu-architecture x86_64 --hypervisor nitro --usage-class spot --region us-east-2 --profile my-account
+    #  instance_types    = [
+    #    "c5.large",
+    #    "c5a.large",
+    #    "c5ad.large",
+    #    "c5d.large",
+    #    "c6a.large",
+    #    "c6i.large",
+    #    "c6id.large",
+    #    "c6in.large",
+    #    "t3.medium",
+    #    "t3a.medium"
+    #  ]
+    #  enable_monitoring = false
+    #
+    #  block_device_mappings = {
+    #    xvda = {
+    #      device_name = "/dev/xvda"
+    #      ebs = {
+    #        volume_size = 50
+    #        volume_type = "gp3"
+    #        encrypted   = true
+    #      }
+    #    }
+    #  }
+    #
+    #  network_interfaces = [
+    #    {
+    #      associate_public_ip_address = false
+    #    }
+    #  ]
+    #},
     "on-demand" = {
       name              = "${local.cluster_shortname}-ondemand"
       capacity_type     = "ON_DEMAND"
@@ -187,7 +157,30 @@ inputs = {
       min_size          = 2
       max_size          = 20
       desired_size      = 2
-      instance_types    = ["m5.large", "m5a.large"]
+      # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+      # ec2-instance-selector --memory CHANGE_HERE --vcpus CHANGE_HERE --cpu-architecture x86_64 --hypervisor nitro --service eks --usage-class on-demand --region AWS_REGION --profile AWS_PROFILE
+      #
+      # Example:
+      # ec2-instance-selector --memory 8 --vcpus 2 --cpu-architecture x86_64 --hypervisor nitro --usage-class on-demand --region us-east-2 --profile myaccount
+      instance_types    = [
+        "m5.large",
+        "m5a.large",
+        "m5ad.large",
+        "m5d.large",
+        "m5dn.large",
+        "m5n.large",
+        "m5zn.large",
+        "m6a.large",
+        "m6i.large",
+        "m6id.large",
+        "m6idn.large",
+        "m6in.large",
+        "m7a.large",
+        "m7i-flex.large",
+        "m7i.large",
+        "t3.large",
+        "t3a.large",
+      ]
       enable_monitoring = false
 
       block_device_mappings = {
@@ -209,83 +202,41 @@ inputs = {
     }
   }
 
-  # Set this parameter only if you want to use 'type_worker_node_group' with value 'SELF_MANAGED_NODE'
-  # More options in https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/modules/self-managed-node-group#inputs
-  self_managed_node_groups = {}
-
-
   #--------------------------
   # EKS components optionals
   #--------------------------
-  install_aws_loadbalancer_controller = true
-  install_aws_vpc_cni_without_vpn     = true
-  install_aws_vpc_cni_with_vpn        = false
-  install_metrics_server              = true
-  install_traefik                     = false
-  # Change (if true) setup default of default StorageClass from GP2 to GP3.
-  install_storage_class_gp3           = true
-
-  # For create traefik ingress, the parameters 'install_aws_loadbalancer_controller' and 'install_traefik' must have 'true' value.
-  create_traefik_ingress              = false
-  # The 'traefik_ingress_alb_certificate_arn' variable is used only if the 'create_traefik_ingress' variable is defined
-  #traefik_ingress_alb_certificate_arn = dependency.certificate.outputs.acm_certificate_arn
-
-  # Guest permissions
-  enable_guest_permissions_core_resources = true
-
-
-  #--------------------------
-  # Velero
-  #--------------------------
-  install_velero          = false
-  velero_irsa             = false
-  velero_s3_bucket_name   = "CHANGE_HERE"
-  velero_s3_bucket_prefix = "CHANGE_HERE"
-  velero_s3_bucket_region = "CHANGE_HERE"
-  velero_deploy_fsbackup  = false
-  velero_default_fsbackup = false
-  velero_snapshot_enabled = false
-
-  #--------------------------
-  # Namespace customization
-  #--------------------------
-  # The label namespace_created_with_eks=true is applied by default in namespaces:
-  # karpenter, traefik, amazon-cloudwatch, kube-system, default, kube-node-lease, kube-public
-  # Other labels can be added in this namespace via the 'default_labels_namespaces' variable
-  #
-  # By default, no annotations are applied in these namespaces, but something can be set in the 
-  # 'default_annotations_namespaces' variable
-  #
-  # It's a optional customization. If 'true' requires 'namespace_customization' parameter to be set.
-  # If this feature is enabled and later disabled... it will not remove the namespace or added labels/annotations.
-  enable_namespace_customization = false
-  # This feature is idempotent... if the namespace exists on the cluster, you can use
-  # the module to add labels and annotations. This applies to the kube-system namespace, for example.
-  namespace_customization = {
-    namespace1 = {
-      namespace = "my-namespace"
-      annotations = [
-        "annotation1=value1", "annotation2=value2"
-      ],
-      labels = [
-        "label1=value1", "label2=value2"
-      ]
-    }
+  # More info about EKS Addons:
+  # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-eks.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-vendors.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/community-addons.html
+  cluster_addons = {
+    coredns                = {}
+    eks-pod-identity-agent = {}
+    kube-proxy             = {}
+    vpc-cni                = {}
+    aws-ebs-csi-driver     = {}
+    #aws-efs-csi-driver           = {}
+    #aws-mountpoint-s3-csi-driver = {}
+    metrics-server         = {}
+    
   }
-
 
   #--------------------------
   # EKS roles, users, accounts and tags
   #--------------------------
-
-  # List of role maps to add to the 'aws-auth' configmap in 'kube-system' namespace
-  aws_auth_roles = local.list_roles
-
-  # List of user maps to add to the 'aws-auth' configmap in 'kube-system' namespace
-  aws_auth_users = local.list_users
-
-  # [OPTIONAL] List of account maps to add to the 'aws-auth' configmap in 'kube-system' namespace
-  aws_auth_accounts = []
+  # Adds the current caller identity as an administrator via cluster access entry
+  # If true, EKS uses aws-auth configmap for authentication
+  # If false,EKS uses access entry for authentication
+  enable_cluster_creator_admin_permissions = false
+  authentication_mode                      = "API"
+  # See bellow pages for review access policy permissions
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
+  # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
+  access_entries = local.access_entries
 
   tags = merge(
     local.customer_tags,

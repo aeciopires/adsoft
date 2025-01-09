@@ -34,18 +34,15 @@ locals {
 
   # IP Address that can access the Kubernetes cluster
   cluster_endpoint_public_access_cidrs = [
-    "187.106.32.9/32",
+    "187.106.46.247/32",
   ]
 
-  key_name           = "key-${local.suffix1}"
-  public_key_content = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDi+Wel2qL9OR541sPZLXczj/wEzDjRblXgya/y40E1xYSQDGXkMikndWywKGB0uoV1P1oGXQqFGHKn0lewiwuNAKsg5vGqIJ8miVqfMQ+qpiAU2Byt0cAz14eb2adJmRAlo5hQpj+xTGvi4xnde8ud1v0FHLABNtNdTn7VpPpGmvpXff68kj6ebV9IrRQ1kVkD8hlZTEixYAGnVHQScjfsrId68H0uNFYghgzdKlWWbP21b4WKNWZNQZc4U7gQ405vRRHqXfM/YIcUuDskT+T1+r0aBYkrtvPbxQLy5CHV46YAeYOs0TushrjwaGl3PLNopFC3duBUMaHnaRN/5ikD"
+  public_key_content = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGaj/Af6UpsosJoP7Z3AEW6qf+9qQsIpYhbWR9ZXfo0M5/HorpCe/OqqyMwjLwfZb6TCDKDjH/9MK5Y3VxoL/SF/ECjk3SJM5NQO/NWZojZUYM8nTkkc0sqsF7MNJgN4I0SFeigJwWpYE2h0NAJTadMIt9jY9OAEcH1FIcpcBgE9SuL4SvZm7CDbBlSloMoGqBS+BB/9sHc7UCANFR0FrAFdwMKGYUmlOmMJlklbryoSuht8A5fWGo+iPtkksVgJ07fIlnkDiFhJIiaM4ScEd5g8OwjrmZjfx4+pyQlEAXKiYwR5T/05gHomMCNdUZfLjIAzLRlcaRTxQ6CVhRUlB4KYcoYdpc8sbw8stVh6p0uRUZ9O+cKoEcyQv8gq0pUoq+er3+inHIlcUY+nLNPGFRlRcWzZ0Dd96QeJclEByln7vRVZDokKyn1y41P/jV2FtXdt/z/MbCYxhqtWxXQtDpIuauW6aPU9CDyjPgif3KjluxILYH7lyw8uKJuJM3pV0S15ZVdu6a3GeVrGRYMx4Gq6QyFcc9Rtl3E1QhFFxXWFvpMkIfeiax5HfQHE+XHWKN38LXR+8ZjQbMZSD/8/WJP2K9YVLIsRfLclwwkccYGEvMfiQuDIx7YjLZ+lF8WBGNUswbibDhiDK9aQLZ0n4bvGRrPtWgbE5oJm8AjeQi2w=="
 
 
   #----------------------------
   # VPC Configurations
   #----------------------------
-  vpc_name = "net-${local.suffix1}"
-
   # http://jodies.de/ipcalc?host=172.31.240.0&mask1=20&mask2=22
   cidr = "172.31.240.0/20"
 
@@ -63,26 +60,62 @@ locals {
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
   ]
 
-  list_roles = [
-    {
-      rolearn  = "arn:aws:iam::${local.account_id}:role/adsoft"
-      username = "adsoft"
-      groups   = ["system:masters"]
+  # See bellow pages for review access policy permissions
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
+  # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
+  access_entries = {
+    admin-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone" # CHANGE_HERE
+      policy_associations = {
+        admin-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-  ]
-
-  list_users = [
-    {
-      userarn  = "arn:aws:iam::${local.account_id}:user/aeciopires"
-      username = "aeciopires"
-      groups   = ["system:masters"]
+    admin2-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:root" # CHANGE_HERE
+      policy_associations = {
+        admin-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-    {
-      userarn  = "arn:aws:iam::${local.account_id}:root"
-      username = "root"
-      groups   = ["system:masters"]
+    dev-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone2" # CHANGE_HERE
+      policy_associations = {
+        dev-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-  ]
+    manager-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:role/something" # CHANGE_HERE
+      policy_associations = {
+        manager-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    },
+  }
 
   # Each resource can have a maximum of 50 user created tags.
   # Reference: https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html

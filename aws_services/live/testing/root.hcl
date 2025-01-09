@@ -5,7 +5,7 @@
 //# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
-  environment_vars        = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+  environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
 
   # Automatically load region-level variables
   region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl", "i-dont-exist.hcl"),
@@ -78,5 +78,3 @@ provider "aws" {
 
 EOF
 }
-
-terragrunt_version_constraint = "~> 0.45.0"
