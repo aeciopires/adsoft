@@ -16,8 +16,8 @@
 - [How to Uninstall](#how-to-uninstall)
   - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
   - [Remove KMS](#remove-kms)
-  - [Remove subnets, NAT Gateway and VPC](#remove-subnets-nat-gateway-and-vpc)
   - [Remove key pair RSA](#remove-key-pair-rsa)
+  - [Remove subnets, NAT Gateway and VPC](#remove-subnets-nat-gateway-and-vpc)
   - [Remove optionals if created](#remove-optionals-if-created)
   - [Remove AWS S3 Bucket](#remove-aws-s3-bucket)
   - [Remove DynamoDB Table](#remove-dynamodb-table)
@@ -224,35 +224,6 @@ CLUSTER_NAME="${CUSTOMER_ID}-cluster1-${SUFFIX}"
 aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profile myaccount
 ```
 
-```diff
-- ATTENTION!!!
-- Problems with aws-auth configmap or kubeconfig?
-+ Solutions:
-```
-
-Run the ``terragrunt`` commands.
-
-```bash
-terragrunt state list
-terragrunt state rm kubernetes_config_map.aws_auth[0]
-terragrunt state rm local_file.kubeconfig[0]
-terragrunt import kubernetes_config_map.aws_auth[0] kube-system/aws-auth
-terragrunt apply -auto-approve
-```
-
-References:
-
-- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/699
-- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/852
-- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/911
-- https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1280
-- https://medium.com/@ssorcnafets/terraform-k8s-provider-auth-issue-eb98814e673c
-- https://github.com/aws/containers-roadmap/issues/654
-- https://github.com/terraform-aws-modules/terraform-aws-eks
-- https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/launch_templates/main.tf
-- https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/examples/complete/main.tf
-- https://github.com/particuleio/teks/blob/main/terragrunt/live/production/eu-west-1/clusters/demo/eks/terragrunt.hcl
-
 ## Optionals: Route53 domain and records, ACM certificate and SES to send email
 
 - For create Route53 domain:
@@ -289,13 +260,7 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/ses/
 
 Run the ``terragrunt`` commands.
 
-- For create DNS MX records to validate ses:
-
-```bash
-cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-noreply-mydomain-com/"
-```
-
-Run the ``terragrunt`` commands.
+Run ``terragrunt show -json`` command to see sensitive informations.
 
 # How to Uninstall
 
@@ -334,23 +299,6 @@ Run the command:
 terragrunt destroy
 ```
 
-## Remove subnets, NAT Gateway and VPC
-
-- For remove network resources for specific customer:
-
-```bash
-SUFFIX='gyr4'
-AWS_REGION='us-east-2'
-
-cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
-```
-
-- Run the command:
-
-```bash
-terragrunt destroy
-```
-
 ## Remove key pair RSA
 
 - For remove key par RSA for specific customer:
@@ -368,12 +316,15 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/keyp
 terragrunt destroy
 ```
 
-## Remove optionals if created
+## Remove subnets, NAT Gateway and VPC
 
-- For remove DNS MX records to validate ses:
+- For remove network resources for specific customer:
 
 ```bash
-cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/validation-noreply-mydomain-com/"
+SUFFIX='gyr4'
+AWS_REGION='us-east-2'
+
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/vpc/net-$SUFFIX/"
 ```
 
 - Run the command:
@@ -381,6 +332,8 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/
 ```bash
 terragrunt destroy
 ```
+
+## Remove optionals if created
 
 - For remove DNS record to validate ACM certificate:
 
@@ -442,6 +395,7 @@ AWS_REGION='us-east-2'
 
 aws s3 rb "s3://terragrunt-remote-state-${AWS_ACCOUNT_ID}" \
   --force \
+  --recursive \
   --region "$AWS_REGION" \
   --profile myaccount
 

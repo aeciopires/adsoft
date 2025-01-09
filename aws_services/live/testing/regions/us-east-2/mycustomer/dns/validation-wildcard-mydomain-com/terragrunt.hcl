@@ -36,7 +36,8 @@ inputs = {
   zone_name           = local.dns_domain_name
   records_jsonencoded = jsonencode([
     {
-      name    = dependency.certificate.outputs.validation_domains.0.resource_record_name
+      #name    = dependency.certificate.outputs.validation_domains.0.resource_record_name
+      name    = "_f658d77fdcdc5fce9f4d5451284b4198"
       type    = "CNAME"
       ttl     = 60
       records = [

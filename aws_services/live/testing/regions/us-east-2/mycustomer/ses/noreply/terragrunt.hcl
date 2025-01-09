@@ -28,8 +28,7 @@ inputs = {
   iam_permissions                = [
     "ses:SendRawEmail"
   ]
-  zone_id                        = local.dns_zone_id
-  verify_domain                  = true
-  verify_dkim                    = true
-  tags                           = local.customer_tags
+  zone_id       = local.dns_zone_id
+  verify_domain = true
+  verify_dkim   = true
 }

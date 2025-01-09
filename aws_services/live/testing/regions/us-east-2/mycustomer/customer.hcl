@@ -68,8 +68,7 @@ locals {
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
   access_entries = {
     admin-example = {
-      #principal_arn = "arn:aws:iam::${local.account_id}:user/someone"
-      principal_arn = "arn:aws:iam::${local.account_id}:user/aeciopires"
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone" # CHANGE_HERE
       policy_associations = {
         admin-example = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
@@ -81,7 +80,7 @@ locals {
       }
     },
     admin2-example = {
-      principal_arn = "arn:aws:iam::${local.account_id}:root"
+      principal_arn = "arn:aws:iam::${local.account_id}:root" # CHANGE_HERE
       policy_associations = {
         admin-example = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
@@ -92,21 +91,20 @@ locals {
         }
       }
     },
-    #dev-example = {
-    #  principal_arn = "arn:aws:iam::${local.account_id}:user/someone2"
-    #  policy_associations = {
-    #    dev-example = {
-    #      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-    #      access_scope = {
-    #        namespaces = []
-    #        type       = "cluster"
-    #      }
-    #    }
-    #  }
-    #},
+    dev-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone2" # CHANGE_HERE
+      policy_associations = {
+        dev-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    },
     manager-example = {
-      #principal_arn = "arn:aws:iam::${local.account_id}:role/something"
-      principal_arn = "arn:aws:iam::${local.account_id}:role/adsoft"
+      principal_arn = "arn:aws:iam::${local.account_id}:role/something" # CHANGE_HERE
       policy_associations = {
         manager-example = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
