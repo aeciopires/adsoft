@@ -1,0 +1,4 @@
+# creation rules are evaluated sequentially, the first match wins
+creation_rules:
+  # GCP files using GCP KMS
+  - gcp_kms: projects/nonprod-myproduct/locations/us-central1/keyRings/nprd-nonprod-gyr4/cryptoKeys/sops
