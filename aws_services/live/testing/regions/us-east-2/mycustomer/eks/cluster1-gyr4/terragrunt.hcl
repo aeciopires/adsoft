@@ -25,9 +25,7 @@ locals {
   cluster_shortname = local.customer_vars.locals.cluster1_short_name
 
   cluster_endpoint_public_access_cidrs = local.customer_vars.locals.cluster_endpoint_public_access_cidrs
-
-  list_roles = local.customer_vars.locals.list_roles
-  list_users = local.customer_vars.locals.list_users
+  access_entries                       = local.customer_vars.locals.access_entries
 }
 
 # When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
@@ -238,47 +236,7 @@ inputs = {
   # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
   # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
-  access_entries                           = {
-    admin-example = {
-      principal_arn = "arn:aws:iam::${local.account_id}:user/someone"
-
-      policy_associations = {
-        admin-example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
-          access_scope = {
-            namespaces = []
-            type       = "cluster"
-          }
-        }
-      }
-    },
-    dev-example = {
-      principal_arn = "arn:aws:iam::${local.account_id}:user/someone2"
-
-      policy_associations = {
-        dev-example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = []
-            type       = "cluster"
-          }
-        }
-      }
-    },
-    manager-example = {
-      principal_arn = "arn:aws:iam::${local.account_id}:role/something"
-
-      policy_associations = {
-        manager-example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
-          access_scope = {
-            namespaces = []
-            type       = "cluster"
-          }
-        }
-      }
-    },
-  }
+  access_entries = local.access_entries
 
   tags = merge(
     local.customer_tags,

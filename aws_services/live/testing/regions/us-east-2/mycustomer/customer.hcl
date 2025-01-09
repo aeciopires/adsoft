@@ -60,26 +60,64 @@ locals {
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
   ]
 
-  list_roles = [
-    {
-      rolearn  = "arn:aws:iam::${local.account_id}:role/adsoft"
-      username = "adsoft"
-      groups   = ["system:masters"]
+  # See bellow pages for review access policy permissions
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
+  # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
+  access_entries = {
+    admin-example = {
+      #principal_arn = "arn:aws:iam::${local.account_id}:user/someone"
+      principal_arn = "arn:aws:iam::${local.account_id}:user/aeciopires"
+      policy_associations = {
+        admin-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-  ]
-
-  list_users = [
-    {
-      userarn  = "arn:aws:iam::${local.account_id}:user/aeciopires"
-      username = "aeciopires"
-      groups   = ["system:masters"]
+    admin2-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:root"
+      policy_associations = {
+        admin-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-    {
-      userarn  = "arn:aws:iam::${local.account_id}:root"
-      username = "root"
-      groups   = ["system:masters"]
+    #dev-example = {
+    #  principal_arn = "arn:aws:iam::${local.account_id}:user/someone2"
+    #  policy_associations = {
+    #    dev-example = {
+    #      policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+    #      access_scope = {
+    #        namespaces = []
+    #        type       = "cluster"
+    #      }
+    #    }
+    #  }
+    #},
+    manager-example = {
+      #principal_arn = "arn:aws:iam::${local.account_id}:role/something"
+      principal_arn = "arn:aws:iam::${local.account_id}:role/adsoft"
+      policy_associations = {
+        manager-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
     },
-  ]
+  }
 
   # Each resource can have a maximum of 50 user created tags.
   # Reference: https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html
