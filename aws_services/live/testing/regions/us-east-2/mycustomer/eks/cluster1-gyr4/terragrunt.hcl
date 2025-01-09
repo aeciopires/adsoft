@@ -77,6 +77,7 @@ inputs = {
   # Log
   #--------------------------
   create_cloudwatch_log_group = true
+  cloudwatch_log_group_class  = "INFREQUENT_ACCESS"
 
   # After a cost analysis with cloudwatch it is recommended to keep the authenticator log only
   cluster_enabled_log_types                = ["authenticator"]
@@ -206,24 +207,78 @@ inputs = {
   #--------------------------
   # EKS components optionals
   #--------------------------
+  # More info about EKS Addons:
+  # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-eks.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-vendors.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/community-addons.html
   cluster_addons = {
     coredns                = {}
     eks-pod-identity-agent = {}
     kube-proxy             = {}
     vpc-cni                = {}
+    aws-ebs-csi-driver     = {}
+    #aws-efs-csi-driver           = {}
+    #aws-mountpoint-s3-csi-driver = {}
+    metrics-server         = {}
+    
   }
-  #install_aws_loadbalancer_controller = true
-  #install_aws_vpc_cni_without_vpn     = true
-  #install_aws_vpc_cni_with_vpn        = false
-  #install_metrics_server              = true
-  ## Change (if true) setup default of default StorageClass from GP2 to GP3.
-  #install_storage_class_gp3           = true
 
   #--------------------------
   # EKS roles, users, accounts and tags
   #--------------------------
-  authentication_mode = "API"
-  access_entries      = {}
+  # Adds the current caller identity as an administrator via cluster access entry
+  # If true, EKS uses aws-auth configmap for authentication
+  # If false,EKS uses access entry for authentication
+  enable_cluster_creator_admin_permissions = false
+  authentication_mode                      = "API"
+  # See bellow pages for review access policy permissions
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policy-permissions.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html
+  # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
+  access_entries                           = {
+    admin-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone"
+
+      policy_associations = {
+        admin-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    },
+    dev-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:user/someone2"
+
+      policy_associations = {
+        dev-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    },
+    manager-example = {
+      principal_arn = "arn:aws:iam::${local.account_id}:role/something"
+
+      policy_associations = {
+        manager-example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    },
+  }
 
   tags = merge(
     local.customer_tags,
