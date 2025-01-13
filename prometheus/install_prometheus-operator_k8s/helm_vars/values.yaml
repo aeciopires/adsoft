@@ -17,10 +17,22 @@ grafana:
   enabled: true
 
 ## Exporters
+kubernetesServiceMonitors:
+  enabled: true
+
+kubeApiServer:
+  enabled: false
+
 kubelet:
   enabled: true
 
 kubeControllerManager:
+  enabled: false
+
+coreDns:
+  enabled: false
+
+kubeDns:
   enabled: false
 
 kubeEtcd:
@@ -31,6 +43,10 @@ kubeScheduler:
 
 kubeProxy:
   enabled: false
+
+kubeStateMetrics:
+  enabled: false
+
 
 ## Prometheus operator
 prometheusOperator:
@@ -50,11 +66,12 @@ prometheusOperator:
 ## Prometheus
 prometheus:
   enabled: true
+
   prometheusSpec:
     image:
       registry: quay.io
       repository: prometheus/prometheus
-      tag: v2.43.0
+      tag: v3.1.0
     resources:
       limits:
         cpu: 1024m
@@ -66,3 +83,7 @@ prometheus:
     scrapeInterval: 60s
     replicaExternalLabelName: "replica"
     serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+thanosRuler:
+  enabled: false
