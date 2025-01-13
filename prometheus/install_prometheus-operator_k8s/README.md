@@ -23,22 +23,22 @@ We use Prometheus Operator to manage the deployments of prometheis along kuberne
 
 More info about prometheus-operator can find in follow pages.
 
-* https://github.com/coreos/prometheus-operator
-* https://prometheus-operator.dev/
-* https://devops.college/prometheus-operator-how-to-monitor-an-external-service-3cb6ac8d5acb
-* https://blog.sebastian-daschner.com/entries/prometheus-kubernetes-operator
-* https://kruschecompany.com/kubernetes-prometheus-operator/
-* https://containerjournal.com/topics/container-management/cluster-monitoring-with-prometheus-operator/
-* https://sysdig.com/blog/kubernetes-monitoring-prometheus/
-* https://sysdig.com/blog/kubernetes-monitoring-with-prometheus-alertmanager-grafana-pushgateway-part-2/
-* https://sysdig.com/blog/kubernetes-monitoring-prometheus-operator-part3/
+- https://github.com/coreos/prometheus-operator
+- https://prometheus-operator.dev/
+- https://devops.college/prometheus-operator-how-to-monitor-an-external-service-3cb6ac8d5acb
+- https://blog.sebastian-daschner.com/entries/prometheus-kubernetes-operator
+- https://kruschecompany.com/kubernetes-prometheus-operator/
+- https://containerjournal.com/topics/container-management/cluster-monitoring-with-prometheus-operator/
+- https://sysdig.com/blog/kubernetes-monitoring-prometheus/
+- https://sysdig.com/blog/kubernetes-monitoring-with-prometheus-alertmanager-grafana-pushgateway-part-2/
+- https://sysdig.com/blog/kubernetes-monitoring-prometheus-operator-part3/
 
 About config parameters of prometheus-operator:
 
-* https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md
-* https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#remotewritespec
-* https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
-* https://www.robustperception.io/dropping-metrics-at-scrape-time-with-prometheus
+- https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md
+- https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#remotewritespec
+- https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
+- https://www.robustperception.io/dropping-metrics-at-scrape-time-with-prometheus
 
 # Summary
 
@@ -106,9 +106,13 @@ kubectl delete crd podmonitors.monitoring.coreos.com
 
 kubectl delete crd probes.monitoring.coreos.com
 
+kubectl delete crd prometheusagents.monitoring.coreos.com
+
 kubectl delete crd prometheuses.monitoring.coreos.com
 
 kubectl delete crd prometheusrules.monitoring.coreos.com
+
+kubectl delete crd scrapeconfigs.monitoring.coreos.com
 
 kubectl delete crd servicemonitors.monitoring.coreos.com
 
@@ -124,26 +128,30 @@ helm.go:88: [debug] [unable to recognize "": no matches for kind "Alertmanager" 
 unable to build kubernetes objects from release manifest
 ```
 
-**Solution**: Use Kubernetes >= 1.22 and install CRDs.
+**Solution**: Use Kubernetes >= 1.32 and install CRDs.
 
-For release 0.63.0 of prometheus-operator:
+For release 0.79.0, of prometheus-operator:
 
 ```bash
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.63.0/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
+
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.79.0/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
 ```
 ---
 
@@ -158,7 +166,7 @@ helm repo update
 
 cd install_prometheus-operator_k8s
 
-./deploy.sh <install|upgrade> <aws|gcp> <testing|staging|production> <cluster_name> [--dry-run]
+./deploy.sh -a <install|upgrade> -p <aws|gcp> -e <testing|staging|production> -c <cluster_name> [--dry-run]
 ```
 
 The `<cluster_name>` argument must be the ``file_cluster.yaml`` wich contains the values to apply in a prometheus-operator deployment.
@@ -190,13 +198,13 @@ Examples:
 Deploy of Prometheus in cluster ``mycluster3`` in environment ``testing`` in AWS.
 
 ```bash
-./deploy.sh install aws testing mycluster3
+./deploy.sh -a install -p aws -e testing -c mycluster3
 ```
 
 Deploy of Prometheus in cluster ``mycluster6`` in environment ``testing`` in GCP.
 
 ```bash
-./deploy.sh install aws testing mycluster6
+./deploy.sh -a install -p gcp -e testing -c mycluster6
 ```
 
 # Accessing Prometheus
@@ -277,8 +285,8 @@ kubectl port-forward svc/monitor-grafana 3000:80 -n monitoring
 
 Access your web navigator in URL http://localhost:3000
 
-* **login**: admin
-* **password**: prom-operator
+- **login**: admin
+- **password**: prom-operator
 
 To edit password default of Grafana, edit secrets of Grafana of Prometheus Operator:
 
