@@ -25,6 +25,17 @@ kubectl apply -f application.yaml
 
 You can see the application status in: https://localhost:8443/applications
 
+Accessing Zabbix:
+
+```bash
+kubectl -n monitoring port-forward svc/zabbix-zabbix-web 8080:80
+```
+
+Access URL: http://localhost:8080
+
+- Login: Admin
+- Password: zabbix
+
 # References:
 
 - https://artifacthub.io/packages/helm/argo/argo-cd
