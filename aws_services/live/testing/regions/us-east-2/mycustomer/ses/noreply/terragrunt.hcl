@@ -9,13 +9,9 @@ include "ses-send-email" {
 
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
-  customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  region_vars      = read_terragrunt_config(find_in_parent_folders("region.hcl"))
-  region           = local.region_vars.locals.region
   environment      = local.environment_vars.locals.environment_name
   dns_zone_id      = local.environment_vars.locals.dns_zone_id
   dns_domain_name  = local.environment_vars.locals.dns_domain_name
-  customer_tags    = local.customer_vars.locals.customer_tags
 }
 
 inputs = {
@@ -28,7 +24,7 @@ inputs = {
   iam_permissions                = [
     "ses:SendRawEmail"
   ]
-  zone_id       = local.dns_zone_id
-  verify_domain = true
-  verify_dkim   = true
+  zone_id                        = local.dns_zone_id
+  verify_domain                  = true
+  verify_dkim                    = true
 }

@@ -1,14 +1,5 @@
 locals {
-  environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
-  region_vars      = read_terragrunt_config(find_in_parent_folders("region.hcl"))
-  customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  environment      = local.environment_vars.locals.environment_name
-  region           = local.region_vars.locals.region
-  az_name_list     = local.region_vars.locals.az_name_list
-  customer_id      = local.customer_vars.locals.customer_id
-  customer_tags    = local.customer_vars.locals.customer_tags
-  suffix           = local.customer_vars.locals.suffix1
-  instance_name    = "${basename(get_terragrunt_dir())}"
+  instance_name = "${basename(get_terragrunt_dir())}"
 }
 
 # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
@@ -58,7 +49,7 @@ inputs = {
       volume_type = "gp3"
       throughput  = 200
       volume_size = 20
-      tags = {
+      tags        = {
         Name = "${local.instance_name}-root-ebs"
       }
     },

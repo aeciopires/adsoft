@@ -14,7 +14,6 @@ locals {
   environment      = local.environment_vars.locals.environment_name
   region           = local.region_vars.locals.region
   az_name_list     = local.region_vars.locals.az_name_list
-  customer_id      = local.customer_vars.locals.customer_id
   customer_tags    = local.customer_vars.locals.customer_tags
   suffix           = local.customer_vars.locals.suffix1
 }
