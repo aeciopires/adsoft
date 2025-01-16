@@ -25,9 +25,9 @@ inputs = {
   iam_permissions                = [
     "ses:SendRawEmail"
   ]
-  zone_id       = local.dns_zone_id
-  verify_domain = true
-  verify_dkim   = true
+  zone_id                        = local.dns_zone_id
+  verify_domain                  = true
+  verify_dkim                    = true
   # Commented to avoid bug/error: peration error IAM: CreateUser, 
   # InvalidInput: Duplicate tag keys found. Please note that Tag keys are case insensitive.
   #tags         = {}

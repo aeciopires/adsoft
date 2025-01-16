@@ -17,8 +17,7 @@ inputs = {
   create_key_pair = true
   key_name        = local.key_name
   public_key      = local.public_key_content
-
-  tags = merge(
+  tags            = merge(
     local.customer_tags,
   )
 }

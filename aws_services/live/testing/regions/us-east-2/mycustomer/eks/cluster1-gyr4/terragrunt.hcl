@@ -8,24 +8,18 @@ include "eks-1-31" {
 }
 
 locals {
-  environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
-  region_vars      = read_terragrunt_config(find_in_parent_folders("region.hcl"))
-  customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
-  environment      = local.environment_vars.locals.environment_name
-  account_id       = local.environment_vars.locals.account_id
-  dns_domain_name  = local.environment_vars.locals.dns_domain_name
-  region           = local.region_vars.locals.region
-
-  customer_id   = local.customer_vars.locals.customer_id
-  customer_name = local.customer_vars.locals.customer_name
-  customer_tags = local.customer_vars.locals.customer_tags
-
-  suffix            = local.customer_vars.locals.suffix1
+  environment_vars  = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
+  region_vars       = read_terragrunt_config(find_in_parent_folders("region.hcl"))
+  customer_vars     = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
+  environment       = local.environment_vars.locals.environment_name
+  region            = local.region_vars.locals.region
+  customer_tags     = local.customer_vars.locals.customer_tags
+  suffix            = local.customer_vars.locals.cluster1_suffix
   cluster_name      = local.customer_vars.locals.cluster1_name
   cluster_shortname = local.customer_vars.locals.cluster1_short_name
+  access_entries    = local.customer_vars.locals.cluster1_access_entries
 
-  cluster_endpoint_public_access_cidrs = local.customer_vars.locals.cluster_endpoint_public_access_cidrs
-  access_entries                       = local.customer_vars.locals.access_entries
+  cluster_endpoint_public_access_cidrs = local.customer_vars.locals.cluster1_endpoint_public_access_cidrs
 }
 
 # When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
@@ -64,6 +58,7 @@ inputs = {
   #--------------------------
   cluster_name = local.cluster_name
 
+
   #--------------------------
   # Network
   #--------------------------
@@ -80,6 +75,7 @@ inputs = {
   # After a cost analysis with cloudwatch it is recommended to keep the authenticator log only
   cluster_enabled_log_types                = ["authenticator"]
   cloudwatch_log_group_retention_in_days   = 1
+
 
   #--------------------------
   # Security
@@ -115,6 +111,10 @@ inputs = {
     #  max_size          = 20
     #  desired_size      = 2
     #  # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+    #  # Other sites: 
+    #  # https://spot.cloudpilot.ai/aws?instance=m5a.large#region=us-east-1
+    #  # https://learnk8s.io/kubernetes-instance-calculator
+    #  # 
     #  # ec2-instance-selector --memory CHANGE_HERE --vcpus CHANGE_HERE --cpu-architecture x86_64 --hypervisor nitro --usage-class spot --region AWS_REGION --profile AWS_PROFILE
     #  #
     #  # Example:
@@ -158,6 +158,11 @@ inputs = {
       max_size          = 20
       desired_size      = 2
       # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+      # Other sites: 
+      # https://spot.cloudpilot.ai/aws?instance=m5a.large#region=us-east-1
+      # https://learnk8s.io/kubernetes-instance-calculator
+      # 
+      #
       # ec2-instance-selector --memory CHANGE_HERE --vcpus CHANGE_HERE --cpu-architecture x86_64 --hypervisor nitro --service eks --usage-class on-demand --region AWS_REGION --profile AWS_PROFILE
       #
       # Example:
@@ -202,6 +207,7 @@ inputs = {
     }
   }
 
+
   #--------------------------
   # EKS components optionals
   #--------------------------
@@ -219,8 +225,8 @@ inputs = {
     #aws-efs-csi-driver           = {}
     #aws-mountpoint-s3-csi-driver = {}
     metrics-server         = {}
-    
   }
+
 
   #--------------------------
   # EKS roles, users, accounts and tags
@@ -237,8 +243,7 @@ inputs = {
   # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
   access_entries = local.access_entries
-
-  tags = merge(
+  tags           = merge(
     local.customer_tags,
   )
 }

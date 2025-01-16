@@ -1,6 +1,5 @@
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
-  customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
   dns_zone_id      = local.environment_vars.locals.dns_zone_id
   dns_domain_name  = local.environment_vars.locals.dns_domain_name
 }
