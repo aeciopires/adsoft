@@ -1,10 +1,10 @@
 
-//# ---------------------------------------------------------------------------------------------------------------------
-//# REGION PARAMETERS
-//# Set common variables for the region.
-//# These variables apply to all configurations in this subfolder. These are automatically merged into the child
-//# `terragrunt.hcl` config via the include block.
-//# ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+# REGION PARAMETERS
+# Set common variables for the region.
+# These variables apply to all configurations in this subfolder. These are automatically merged into the child
+# `terragrunt.hcl` config via the include block.
+# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
   region = "us-east-2"

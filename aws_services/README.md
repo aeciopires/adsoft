@@ -12,6 +12,7 @@
   - [Stage 2: Create key pair RSA](#stage-2-create-key-pair-rsa)
   - [Stage 3: Create KMS](#stage-3-create-kms)
   - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
+  - [Stage 5: Install EKS Blueprints addons](#stage-5-install-eks-blueprints-addons)
   - [Optionals: Route53 domain and records, ACM certificate and SES to send email](#optionals-route53-domain-and-records-acm-certificate-and-ses-to-send-email)
 - [How to Uninstall](#how-to-uninstall)
   - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
@@ -199,6 +200,18 @@ Authenticate in cluster with follow command.
 ```bash
 aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$AWS_REGION" --profile myaccount
 ```
+
+## Stage 5: Install EKS Blueprints addons
+
+- Change the VPC_ID in ``~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${PREFIX_CLUSTER_NAME}-${SUFFIX}-blueprints-addons/terragrunt.hcl`` file and run the follow commands:
+
+```bash
+export KUBE_CONFIG_PATH=~/.kube/config
+
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/${PREFIX_CLUSTER_NAME}-${SUFFIX}-blueprints-addons/"
+```
+
+Run the ``terragrunt`` commands.
 
 ## Optionals: Route53 domain and records, ACM certificate and SES to send email
 
