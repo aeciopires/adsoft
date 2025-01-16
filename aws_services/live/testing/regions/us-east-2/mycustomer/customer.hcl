@@ -1,10 +1,10 @@
 
-//# ---------------------------------------------------------------------------------------------------------------------
-//# CUSTOMER PARAMETERS
-//# Set common variables for the customer.
-//# These variables apply to all configurations in this subfolder. These are automatically merged into the child
-//# `terragrunt.hcl` config via the include block.
-//# ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+# CUSTOMER PARAMETERS
+# Set common variables for the customer.
+# These variables apply to all configurations in this subfolder. These are automatically merged into the child
+# `terragrunt.hcl` config via the include block.
+# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))

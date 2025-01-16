@@ -1,8 +1,8 @@
-//# ---------------------------------------------------------------------------------------------------------------------
-//# TERRAGRUNT CONFIGURATION
-//# Terragrunt is a thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules,
-//# remote state, and locking: https://github.com/gruntwork-io/terragrunt
-//# ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+# TERRAGRUNT CONFIGURATION
+# Terragrunt is a thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules,
+# remote state, and locking: https://github.com/gruntwork-io/terragrunt
+# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl"))
@@ -50,11 +50,11 @@ remote_state {
   }
 }
 
-//# ---------------------------------------------------------------------------------------------------------------------
-//# GLOBAL PARAMETERS
-//# These variables apply to all configurations in this subfolder. These are automatically merged into the child
-//# `terragrunt.hcl` config via the include block.
-//# ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+# GLOBAL PARAMETERS
+# These variables apply to all configurations in this subfolder. These are automatically merged into the child
+# `terragrunt.hcl` config via the include block.
+# ---------------------------------------------------------------------------------------------------------------------
 
 terraform {
   # Force Terraform to keep trying to acquire a lock for
