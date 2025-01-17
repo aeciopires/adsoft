@@ -72,6 +72,8 @@ Terragrunt will forward almost all commands, arguments, and options directly to 
 │       │       │   ├── eks
 │       │       │   │   └── cluster1-gyr4
 │       │       │   │   │   └── terragrunt.hcl # Terragrunt for create EKS cluster
+│       │       │   │   └── cluster1-gyr4-blueprints-addons
+│       │       │   │   │   └── terragrunt.hcl # Terragrunt for install EKS blueprint addons
 │       │       │   │   └── eks-1-31.hcl # Terragrunt template for EKS 1.31
 │       │       │   ├── keypair
 │       │       │   │   └── key-gyr4
