@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=25.0.1"
+  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=25.0.2"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -22,7 +22,7 @@ inputs = {
   db_charset           = "UTF8"
   db_collation         = "en_US.UTF8"
   random_instance_name = false
-  database_version     = "POSTGRES_14"
+  database_version     = "POSTGRES_17"
 
   # Master configurations
   tier                            = "db-custom-2-8192"

@@ -196,7 +196,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.22.28"
+AWS_CLI_V2="2.23.2"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -225,7 +225,7 @@ O bat é um binário que ajuda a destacar as diferenças entres arquivos e muito
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.24.0"
+VERSION="0.25.0"
 
 asdf plugin list all | grep bat
 asdf plugin add bat https://gitlab.com/wt0f/asdf-bat.git
@@ -343,7 +343,7 @@ Execute os seguintes comandos para instalar o helm:
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.16.2"
+VERSION="3.17.0"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -393,7 +393,7 @@ Execute os seguintes comandos para instalar o helmfile.
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.169.2"
+VERSION="0.170.0"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -414,7 +414,7 @@ Execute os seguintes comandos para instalar o plugin helm-diff.
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.9.13
+helm plugin install https://github.com/databus23/helm-diff --version v3.9.14
 ```
 
 # helm-secrets - Plugin
@@ -448,7 +448,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [Asdf](#asdf).
 
 ```bash
-VERSION_OPTION_1="1.32.0"
+VERSION_OPTION_1="1.32.1"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -648,7 +648,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.3.9"
+VERSION="52.3.95"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -870,13 +870,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.10.3
+tfenv install 1.10.4
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.10.3
+tfenv use 1.10.4
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -897,7 +897,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.10.3
+1.10.4
 ```
 
 # terraform-docs
@@ -935,7 +935,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.71.1
+tgenv install 0.72.2
 ```
 
 Liste as versões instaladas:
@@ -947,7 +947,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.71.1
+tgenv use 0.72.2
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -962,7 +962,7 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.71.1
+0.72.2
 ```
 
 # Vault
@@ -989,7 +989,7 @@ Instale com os seguintes comandos:
 ```bash
 YQ_1="3.4.1"   # homologada
 YQ_2="4.35.1"  # homologada
-YQ_3="4.44.6"
+YQ_3="4.45.1"
 
 asdf plugin list all | grep yq
 asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
@@ -1170,7 +1170,7 @@ Execute os seguintes comandos para instalação:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.34.0"
+VERSION="1.35.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1210,7 +1210,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.58.0"
+VERSION="0.58.2"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1242,7 +1242,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.54.0"
+VERSION="0.55.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git

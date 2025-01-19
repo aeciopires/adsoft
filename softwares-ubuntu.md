@@ -170,11 +170,10 @@ Fonte: https://asdf-vm.com/guide/introduction.html
 # ansible
 
 ```bash
-VERSION="8.7.0"
-asdf update
+VERSION="9.13.0"
 
 ASDF_PYAPP_INCLUDE_DEPS=1 asdf plugin add ansible https://github.com/amrox/asdf-pyapp.git
-
+asdf latest ansible
 asdf install ansible $VERSION
 asdf global ansible $VERSION
 
@@ -197,7 +196,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.22.28"
+AWS_CLI_V2="2.23.2"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -232,7 +231,7 @@ sudo rm /usr/bin/bat
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.24.0"
+VERSION="0.25.0"
 
 asdf plugin list all | grep bat
 asdf plugin add bat https://gitlab.com/wt0f/asdf-bat.git
@@ -298,7 +297,7 @@ sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="504.0.1"
+VERSION="506.0.0"
 
 asdf plugin list all | grep gcloud
 asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
@@ -357,7 +356,7 @@ Execute os seguintes comandos para instalar o Go.
 Documentação: https://golang.org/doc/
 
 ```bash
-VERSION=1.23.4
+VERSION=1.23.5
 
 mkdir -p $HOME/go/bin
 cd /tmp
@@ -394,7 +393,7 @@ sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.16.2"
+VERSION="3.17.0"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -456,7 +455,7 @@ sudo rm /usr/local/bin/helmfile
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.169.2"
+VERSION="0.170.0"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -477,7 +476,7 @@ Execute os seguintes comandos para instalar o plugin ``helm-diff``.
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.9.13
+helm plugin install https://github.com/databus23/helm-diff --version v3.9.14
 ```
 
 # helm-secrets - Plugin
@@ -521,7 +520,7 @@ Execute os seguintes comandos.
 Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
 
 ```bash
-VERSION_OPTION_1="1.32.0"
+VERSION_OPTION_1="1.32.1"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -627,7 +626,7 @@ Instale com os seguintes comandos.
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION_KUBECOLOR=0.4.0
+VERSION_KUBECOLOR=0.5.0
 asdf plugin list all | grep kubecolor
 asdf plugin add kubecolor https://github.com/dex4er/asdf-kubecolor.git
 asdf latest kubecolor
@@ -733,7 +732,7 @@ sudo rm /usr/local/bin/kubeshark
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.3.9"
+VERSION="52.3.95"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -791,7 +790,7 @@ sudo rm /usr/local/bin/kustomize
 Documentação: https://k9scli.io/topics/commands/
 
 ```bash
-VERSION="5.5.0"
+VERSION="5.6.0"
 
 asdf plugin list all | grep kustomize
 asdf plugin add kustomize https://github.com/Banno/asdf-kustomize.git
@@ -1001,13 +1000,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.10.3
+tfenv install 1.10.4
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.10.3
+tfenv use 1.10.4
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1028,7 +1027,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.10.3
+1.10.4
 ```
 
 # terraform-docs
@@ -1125,7 +1124,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.71.1
+tgenv install 0.72.2
 ```
 
 Liste as versões instaladas:
@@ -1137,7 +1136,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.71.1
+tgenv use 0.72.2
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1152,7 +1151,7 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.71.1
+0.72.2
 ```
 
 # yq
@@ -1172,7 +1171,7 @@ sudo rm /usr/bin/yq
 ```bash
 YQ_1="3.4.1"   # homologada
 YQ_2="4.35.1"  # homologada
-YQ_3="4.44.6"
+YQ_3="4.45.1"
 
 asdf plugin list all | grep yq
 asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
@@ -1391,7 +1390,7 @@ sudo rm /usr/local/bin/minikube
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.34.0"
+VERSION="1.35.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1431,7 +1430,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.58.0"
+VERSION="0.58.2"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1463,7 +1462,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.54.0"
+VERSION="0.55.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git

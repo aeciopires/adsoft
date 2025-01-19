@@ -107,7 +107,7 @@ _COUNT_ARGS_FOR_ERROR="${#}"
 HELM_REPO_NAME='prometheus-community'
 HELM_REPO_URL='https://prometheus-community.github.io/helm-charts'
 HELM_CHART_NAME='kube-prometheus-stack'
-CHART_VERSION='67.11.0'
+CHART_VERSION='68.2.1'
 APP_NAME='monitor'
 NAMESPACE='monitoring'
 # Use true to add helm repo always, use false to don't install helm repo

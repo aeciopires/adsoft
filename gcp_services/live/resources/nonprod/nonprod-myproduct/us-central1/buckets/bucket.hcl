@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/cloud-storage/google//modules/simple_bucket?version=9.0.0"
+  source = "tfr:///terraform-google-modules/cloud-storage/google//modules/simple_bucket?version=9.0.1"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

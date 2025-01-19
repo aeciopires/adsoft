@@ -68,7 +68,7 @@ inputs = {
   # https://cloud.google.com/kubernetes-engine/docs/release-schedule
   # https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels
   # https://cloud.google.com/kubernetes-engine/versioning
-  kubernetes_version = "1.30.6-gke.1596000" # last version of REGULAR channel
+  kubernetes_version = "1.30.8-gke.1051000" # last version of REGULAR channel
   # The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`.
   release_channel    = "UNSPECIFIED" # choice this option to disable auto_upgrade and auto_repair in node groups
 
