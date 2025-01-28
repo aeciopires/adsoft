@@ -27,7 +27,7 @@
 
 # About
 
-Create EKS Kubernetes cluster 1.31 using Terragrunt and Terraform code.
+Create EKS Kubernetes cluster using Terragrunt and Terraform code.
 
 # Requirements
 
@@ -74,7 +74,7 @@ Terragrunt will forward almost all commands, arguments, and options directly to 
 │       │       │   │   │   └── terragrunt.hcl # Terragrunt for create EKS cluster
 │       │       │   │   └── cluster1-gyr4-blueprints-addons
 │       │       │   │   │   └── terragrunt.hcl # Terragrunt for install EKS blueprint addons
-│       │       │   │   └── eks-1-31.hcl # Terragrunt template for EKS 1.31
+│       │       │   │   └── eks-1-32.hcl # Terragrunt template for EKS 1.32
 │       │       │   ├── keypair
 │       │       │   │   └── key-gyr4
 │       │       │   │   │   └── terragrunt.hcl # Terragrunt for create Key pair
