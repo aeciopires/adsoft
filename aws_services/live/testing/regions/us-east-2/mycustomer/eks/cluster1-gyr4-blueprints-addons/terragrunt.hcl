@@ -8,7 +8,7 @@ include "root" {
 }
 
 include "eks-blueprints-addons" {
-  path   = find_in_parent_folders("eks-1-31-blueprints-addons.hcl")
+  path   = find_in_parent_folders("eks-1-32-blueprints-addons.hcl")
   expose = true
 }
 
@@ -60,7 +60,7 @@ locals {
     replicaCount: 2
 
     image:
-      tag: "v1.31.1"
+      tag: "v1.32.0"
 
     priorityClassName: "system-cluster-critical"
 
@@ -137,7 +137,7 @@ inputs = {
     name          = "cluster-autoscaler"
     # Install version 1.32.0 of cluster-autoscaler chart. 
     # See new changes on release notes of application: https://github.com/kubernetes/autoscaler/releases
-    chart_version = "9.45.0"
+    chart_version = "9.46.0"
     repository    = "https://kubernetes.github.io/autoscaler"
     namespace     = "kube-system"
     values        = [

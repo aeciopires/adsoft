@@ -3,7 +3,7 @@ include "root" {
 }
 
 include "eks" {
-  path   = find_in_parent_folders("eks-1-31.hcl")
+  path   = find_in_parent_folders("eks-1-32.hcl")
   expose = true
 }
 
