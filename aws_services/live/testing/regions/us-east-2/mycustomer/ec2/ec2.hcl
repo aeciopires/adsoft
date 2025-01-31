@@ -17,7 +17,7 @@ inputs = {
   # References: 
   #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  ami           = "ami-0e44962f5c9a2baab"
+  ami           = "ami-0cb91c7de36eed2cb"
   # Reference: https://aws.amazon.com/ec2/instance-types/
   instance_type = "t3.medium"
 

@@ -2,8 +2,8 @@ include "root" {
   path = find_in_parent_folders("root.hcl")
 }
 
-include "ec2" {
-  path   = find_in_parent_folders("ec2.hcl")
+include "asg" {
+  path   = find_in_parent_folders("asg.hcl")
   expose = true
 }
 
@@ -35,49 +35,64 @@ dependency "keypair" {
 }
 
 inputs = {
+  min_size                  = 1
+  max_size                  = 2
+  desired_capacity          = 1
+  wait_for_capacity_timeout = 0
+  health_check_type         = "EC2"
+  vpc_zone_identifier       = dependency.vpc.outputs.private_subnets
 
   # Ubuntu 24.04 64 bits AMD64 HVM SSD.
   # References: 
   #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  ami           = "ami-0cb91c7de36eed2cb"
+  image_id          = "ami-0cb91c7de36eed2cb"
   # Reference: https://aws.amazon.com/ec2/instance-types/
-  instance_type = "t3.medium"
+  instance_type     = "t3.medium"
+  ebs_optimized     = true
+  enable_monitoring = false
+  user_data         = base64encode(file("${get_terragrunt_dir()}/configurations/userdata.tpl"))
+  key_name          = dependency.keypair.outputs.key_pair_name
 
-  availability_zone      = local.az_name_list[0]
-  subnet_id              = dependency.vpc.outputs.public_subnets[0]
-  vpc_security_group_ids = [
-    dependency.vpc.outputs.default_security_group_id
-  ]
-
-  associate_public_ip_address = true
-  monitoring                  = false
-  disable_api_stop            = false
-  key_name                    = dependency.keypair.outputs.key_pair_name
+  # IAM role & instance profile
   create_iam_instance_profile = true
-  iam_role_description        = "IAM role for EC2 instance"
   iam_role_policies           = {
     AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
 
-  # only one of these can be enabled at a time
-  hibernation = true
-  # enclave_options_enabled = true
+  capacity_reservation_specification = {
+    capacity_reservation_preference = "open"
+  }
 
-  user_data_base64            = base64encode(file("${get_terragrunt_dir()}/configurations/userdata.tpl"))
-  user_data_replace_on_change = true
+  # More info: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#cpu-options
+  cpu_options = {}
 
-  enable_volume_tags = false
-  root_block_device  = [
+  # More info: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#credit-specification
+  credit_specification = {
+    cpu_credits = "standard"
+  }
+
+  #instance_market_options = {
+  #  market_type = "spot" # or "capacity-block"
+  #  spot_options = {
+  #    block_duration_minutes = 60
+  #  }
+  #}
+
+  # This will ensure imdsv2 is enabled, required, and a single hop which is aws security
+  # best practices
+  # See https://docs.aws.amazon.com/securityhub/latest/userguide/autoscaling-controls.html#autoscaling-4
+  metadata_options = {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  # More options: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#network-interfaces
+  network_interfaces = [
     {
-      encrypted   = true
-      volume_type = "gp3"
-      throughput  = 200
-      volume_size = 50
-      tags = {
-        Name = "${include.ec2.inputs.name}-root-ebs"
-      }
-    },
+      associate_public_ip_address = false
+    }
   ]
 
   tags = merge(
