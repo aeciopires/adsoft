@@ -13,7 +13,7 @@
   - [Stage 3: Create KMS](#stage-3-create-kms)
   - [Stage 4: Create Kubernetes cluster](#stage-4-create-kubernetes-cluster)
   - [Stage 5: Install EKS Blueprints addons](#stage-5-install-eks-blueprints-addons)
-  - [Optionals: Route53 domain and records, ACM certificate and SES to send email](#optionals-route53-domain-and-records-acm-certificate-and-ses-to-send-email)
+  - [Optionals: Route53 domain and records, ACM certificate, SES to send email, Autoscaling Group and loadbalancer (with target to EC2 instance)](#optionals-route53-domain-and-records-acm-certificate-ses-to-send-email-autoscaling-group-and-loadbalancer-with-target-to-ec2-instance)
 - [How to Uninstall](#how-to-uninstall)
   - [Remove Kubernetes cluster](#remove-kubernetes-cluster)
   - [Remove KMS](#remove-kms)
@@ -215,7 +215,7 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/eks/
 
 Run the ``terragrunt`` commands.
 
-## Optionals: Route53 domain and records, ACM certificate and SES to send email
+## Optionals: Route53 domain and records, ACM certificate, SES to send email, Autoscaling Group and loadbalancer (with target to EC2 instance)
 
 - For create Route53 domain:
 
@@ -250,6 +250,30 @@ cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/ses/
 Run the ``terragrunt`` commands.
 
 Run ``terragrunt show -json`` command to see sensitive informations.
+
+- For create Autoscaling group (ASG):
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/asg/${CUSTOMER_ID}-apps/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create loadbalancer with target to Autoscaling group (ASG):
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/loadbalancer/${CUSTOMER_ID}-apps/"
+```
+
+Run the ``terragrunt`` commands.
+
+- For create DNS to loadbalancer:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/kube-pires-mydomain-com/"
+```
+
+Run the ``terragrunt`` commands.
 
 # How to Uninstall
 
@@ -361,6 +385,42 @@ terragrunt destroy
 
 ```bash
 cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/mydomain.com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove DNS to loadbalancer:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/dns/kube-pires-mydomain-com/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove loadbalancer:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/loadbalancer/${CUSTOMER_ID}-apps/"
+```
+
+- Run the command:
+
+```bash
+terragrunt destroy
+```
+
+- For remove Autoscaling group:
+
+```bash
+cd "~/git/adsoft/aws_services/live/testing/regions/${AWS_REGION}/mycustomer/asg/${CUSTOMER_ID}-apps/"
 ```
 
 - Run the command:
