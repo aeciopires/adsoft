@@ -24,6 +24,8 @@ Reference: https://blog.aeciopires.com/instalando-o-hashicorp-vault-no-kubernete
 Run the follow commands:
 
 ```bash
+cd adsoft/helm_apps/vault
+
 # Add helm repository of vault
 helm repo add hashicorp https://helm.releases.hashicorp.com
 

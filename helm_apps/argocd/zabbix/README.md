@@ -19,7 +19,7 @@
 Deploy of application:
 
 ```bash
-cd adsoft/argocd/zabbix
+cd adsoft/helm_apps/argocd/zabbix
 kubectl apply -f application.yaml
 ```
 
