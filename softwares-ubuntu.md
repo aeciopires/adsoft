@@ -45,6 +45,7 @@
 - [terraform-docs](#terraform-docs)
 - [terragrunt e tgenv](#terragrunt-e-tgenv)
   - [Problema conhecido](#problema-conhecido)
+- [vault-cli](#vault-cli)
 - [yq](#yq)
 - [tig](#tig)
 - [ec2-instance-selector](#ec2-instance-selector)
@@ -1153,6 +1154,37 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 cat .terragrunt-version
 0.72.2
 ```
+
+# vault-cli
+
+Utilitário de linha de comando do Hashicorp Vault: https://developer.hashicorp.com/vault
+
+> Antes de continuar, se tiver o yq instalado, remova-o com os seguintes comandos:
+
+```bash
+sudo apt remove vault
+# ou
+sudo rm /usr/bin/vault
+```
+
+> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+
+```bash
+VERSION="1.18.4"
+
+asdf plugin list all | grep vault
+asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
+asdf latest vault
+
+asdf install vault $VERSION
+asdf list vault
+
+# Definindo a versão padrão
+asdf global vault $VERSION
+asdf list vault
+```
+
+Fonte: https://asdf-vm.com/guide/introduction.html
 
 # yq
 
