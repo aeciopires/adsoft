@@ -1,0 +1,158 @@
+# Custom values for zabbix.
+zabbixImageTag: alpine-7.2.2
+
+zabbixServer:
+  enabled: true
+  replicaCount: 2
+  zabbixServerHA:
+    enabled: false
+  haNodesAutoClean:
+    enabled: false
+    image:
+      # Postgresql Docker image name: chose one of "postgres" or "timescale/timescaledb"
+      repository: postgres
+      #repository: timescale/timescaledb
+      # -- Tag of Docker image of Postgresql server, choice "17" for postgres "2.17.2-pg16" for timescaledb
+      # (Zabbix supports TimescaleDB. More info: https://www.zabbix.com/documentation/7.2/en/manual/installation/requirements)
+      tag: 17
+      #tag: 2.17.2-pg16
+  service:
+    type: NodePort
+    port: 10051
+    nodePort: 31051
+  extraEnv:
+    - name: "ZBX_EXAMPLE_MY_ENV_1"
+      value: "true"
+    - name: "ZBX_EXAMPLE_MY_ENV_2"
+      value: "false"
+    - name: "ZBX_EXAMPLE_MY_ENV_3"
+      value: "100"
+#    - name: MY_USERNAME
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: user
+#    - name: MY_PASSWORD
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: password
+# Example of readinessProbe when zabbix-server has two or more replicas in HA mode
+#  readinessProbe:
+#    exec:
+#      command:
+#      - /bin/sh
+#      - -c
+#      - |-
+#       test $(zabbix_server -R ha_status | awk /$ZBX_NODEADDRESS:10051/'{print $5}') = active
+#    initialDelaySeconds: 60
+#    periodSeconds: 10
+#    timeoutSeconds: 5
+#    successThreshold: 1
+#    failureThreshold: 6
+
+postgresql:
+  enabled: true
+  image:
+    # Postgresql Docker image name: chose one of "postgres" or "timescale/timescaledb"
+    repository: postgres
+    #repository: timescale/timescaledb
+    # -- Tag of Docker image of Postgresql server, choice "17" for postgres "2.17.2-pg16" for timescaledb
+    # (Zabbix supports TimescaleDB7. More info: https://www.zabbix.com/documentation/7.0/en/manual/installation/requirements)
+    tag: 17
+    #tag: 2.17.2-pg16
+  max_connections: 100
+  persistence:
+    enabled: true
+    existingClaimName: false
+    storageSize: 5Gi # generate a PVC in default storage class with the given size for the DB
+
+zabbixProxy:
+  enabled: true
+  replicaCount: 1
+  ZBX_PROXYMODE: 0 # The variable allows to switch Zabbix proxy mode. By default, value is 0 - active proxy. Allowed values are 0 - active proxy and 1 - passive proxy.
+  ZBX_HOSTNAME: zabbix-proxy # This variable is unique, case sensitive hostname.
+  ZBX_SERVER_HOST: zabbix-zabbix-server
+  ZBX_SERVER_PORT: 10051
+  # ZBX_LOADMODULE: dummy1.so,dummy2.so # The variable is list of comma separated loadable Zabbix modules. It works with volume /var/lib/zabbix/modules.
+  # ZBX_DEBUGLEVEL: 4 # The variable is used to specify debug level, from 0 to 5
+  # ZBX_TIMEOUT: 4 # The variable is used to specify timeout for processing checks. By default, value is 4.
+  # ZBX_JAVAGATEWAY_ENABLE: false # The variable enable communication with Zabbix Java Gateway to collect Java related checks. By default, value is false.
+  ZBX_VMWARECACHESIZE: 128M
+  service:
+    type: NodePort
+    port: 10051
+    nodePort: 31053
+  extraEnv:
+    - name: "ZBX_EXAMPLE_MY_ENV_4"
+      value: "true"
+    - name: "ZBX_EXAMPLE_MY_ENV_5"
+      value: "false"
+    - name: "ZBX_EXAMPLE_MY_ENV_6"
+      value: "100"
+#    - name: MY_USERNAME
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: user
+#    - name: MY_PASSWORD
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: password
+
+zabbixAgent:
+  enabled: true
+  ZBX_HOSTNAME: zabbix-agent
+  ZBX_SERVER_HOST: 0.0.0.0/0
+  ZBX_SERVER_PORT: 10051
+  ZBX_PASSIVE_ALLOW: true # This variable is boolean (true or false) and enables or disables feature of passive checks. By default, value is true
+  ZBX_ACTIVE_ALLOW: false # This variable is boolean (true or false) and enables or disables feature of active checks
+  ZBX_DEBUGLEVEL: 3 # The variable is used to specify debug level, from 0 to 5
+  ZBX_TIMEOUT: 4 # The variable is used to specify timeout for processing checks. By default, value is 4.
+  ZBX_VMWARECACHESIZE: 128M
+  service:
+    type: ClusterIP
+    port: 10050
+  extraEnv:
+    - name: "ZBX_EXAMPLE_MY_ENV_7"
+      value: "true"
+    - name: "ZBX_EXAMPLE_MY_ENV_8"
+      value: "false"
+    - name: "ZBX_EXAMPLE_MY_ENV_9"
+      value: "100"
+#    - name: MY_USERNAME
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: user
+#    - name: MY_PASSWORD
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: password
+
+
+zabbixWeb:
+  enabled: true
+  ZBX_SERVER_HOST: zabbix-zabbix-server
+  ZBX_SERVER_PORT: 10051
+  service:
+    port: 80
+  extraEnv:
+    - name: "ZBX_EXAMPLE_MY_ENV_10"
+      value: "true"
+    - name: "ZBX_EXAMPLE_MY_ENV_11"
+      value: "false"
+    - name: "ZBX_EXAMPLE_MY_ENV_12"
+      value: "100"
+#    - name: MY_USERNAME
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: user
+#    - name: MY_PASSWORD
+#      valueFrom:
+#        secretKeyRef:
+#          name: my-envs
+#          key: password
