@@ -197,7 +197,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.23.2"
+AWS_CLI_V2="2.23.11"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -298,7 +298,7 @@ sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="506.0.0"
+VERSION="508.0.0"
 
 asdf plugin list all | grep gcloud
 asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
@@ -456,7 +456,7 @@ sudo rm /usr/local/bin/helmfile
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.170.0"
+VERSION="0.170.1"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -733,7 +733,7 @@ sudo rm /usr/local/bin/kubeshark
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.3.95"
+VERSION="52.3.96"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -834,7 +834,7 @@ Uma estrutura para gerenciar e manter ganchos de pré-confirmação multi lingua
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="4.0.1"
+VERSION="4.1.0"
 
 asdf plugin list all | grep pre-commit
 asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
@@ -952,7 +952,7 @@ sudo rm /usr/local/bin/sops
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.9.3"
+VERSION="3.9.4"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -1001,13 +1001,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.10.4
+tfenv install 1.10.5
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.10.4
+tfenv use 1.10.5
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1028,7 +1028,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.10.4
+1.10.5
 ```
 
 # terraform-docs
@@ -1125,7 +1125,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.72.2
+tgenv install 0.72.6
 ```
 
 Liste as versões instaladas:
@@ -1137,7 +1137,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.72.2
+tgenv use 0.72.6
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1152,7 +1152,7 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.72.2
+0.72.6
 ```
 
 # vault-cli
@@ -1170,7 +1170,7 @@ sudo rm /usr/bin/vault
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.18.4"
+VERSION="1.18.4+ent"
 
 asdf plugin list all | grep vault
 asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
@@ -1462,7 +1462,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.58.2"
+VERSION="0.59.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1494,7 +1494,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.55.0"
+VERSION="0.55.1"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
