@@ -35,13 +35,16 @@ spec:
       labels:
         app: my-app-2
       annotations:
+        # Annotations used by vault-agent init container
         vault.hashicorp.com/agent-init-first: "true"
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-requests-cpu: "10m"
         vault.hashicorp.com/agent-requests-mem: "32Mi"
         vault.hashicorp.com/agent-limits-cpu: "20m"
         vault.hashicorp.com/agent-limits-mem: "64Mi"
+        # The same name of role app in vault
         vault.hashicorp.com/role: "role-my-app-2"
+        # The same name of group and endpoint secret in vault
         vault.hashicorp.com/agent-inject-secret-config: "my-group-secrets/my-app-2"
         vault.hashicorp.com/agent-inject-template-config: |
           {{- with secret "my-group-secrets/my-app-2" -}}
@@ -50,6 +53,7 @@ spec:
           {{ end }}
           {{- end }}
     spec:
+      # The same name of service account name associated to role in vault
       serviceAccountName: sa-my-app-2
       containers:
       - name: my-app-2
@@ -57,6 +61,8 @@ spec:
         ports:
           - containerPort: 8080
         imagePullPolicy: IfNotPresent
+        # Load vault config and start the app
+        # This application is developed in Node.js. You can customize for other applications
         command: ["sh", "-c"]
         args: ["source /vault/secrets/config && npm start"]
         resources:
