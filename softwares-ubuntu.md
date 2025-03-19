@@ -1272,7 +1272,7 @@ alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools-\$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.1.0 -n NAMESPACE /bin/bash'
+alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.1.0 -n NAMESPACE /bin/bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 # Ubuntu 22.04/24.04
 alias set-dns-cabeado='sudo resolvectl dns enp7s0 1.1.1.1'
