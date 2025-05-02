@@ -197,7 +197,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.23.11"
+AWS_CLI_V2="2.27.6"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -298,7 +298,7 @@ sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="508.0.0"
+VERSION="520.0.0"
 
 asdf plugin list all | grep gcloud
 asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
@@ -357,7 +357,7 @@ Execute os seguintes comandos para instalar o Go.
 Documentação: https://golang.org/doc/
 
 ```bash
-VERSION=1.23.5
+VERSION=1.24.2
 
 mkdir -p $HOME/go/bin
 cd /tmp
@@ -394,7 +394,7 @@ sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.17.0"
+VERSION="3.17.3"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -456,7 +456,7 @@ sudo rm /usr/local/bin/helmfile
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="0.170.1"
+VERSION="1.0.0"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -477,7 +477,7 @@ Execute os seguintes comandos para instalar o plugin ``helm-diff``.
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.9.14
+helm plugin install https://github.com/databus23/helm-diff --version v3.11.0
 ```
 
 # helm-secrets - Plugin
@@ -487,7 +487,7 @@ Execute os seguintes comandos para instalar o plugin ``helm-secrets``.
 Documentação: https://github.com/jkroepke/helm-secrets
 
 ```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.2
+helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.3
 ```
 
 # jj
@@ -521,7 +521,7 @@ Execute os seguintes comandos.
 Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
 
 ```bash
-VERSION_OPTION_1="1.32.1"
+VERSION_OPTION_1="1.33.0"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -627,7 +627,7 @@ Instale com os seguintes comandos.
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION_KUBECOLOR=0.5.0
+VERSION_KUBECOLOR=0.5.1
 asdf plugin list all | grep kubecolor
 asdf plugin add kubecolor https://github.com/dex4er/asdf-kubecolor.git
 asdf latest kubecolor
@@ -733,7 +733,7 @@ sudo rm /usr/local/bin/kubeshark
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.3.96"
+VERSION="52.7.0"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -762,7 +762,7 @@ sudo rm /usr/local/bin/k9s
 Documentação: https://k9scli.io/topics/commands/
 
 ```bash
-VERSION="0.32.7"
+VERSION="0.50.4"
 
 asdf plugin list all | grep k9s
 asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
@@ -834,7 +834,7 @@ Uma estrutura para gerenciar e manter ganchos de pré-confirmação multi lingua
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="4.1.0"
+VERSION="4.2.0"
 
 asdf plugin list all | grep pre-commit
 asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
@@ -887,7 +887,7 @@ Documentação: https://github.com/JFryy/qq
 Execute os seguintes comandos para instalar o qq:
 
 ```bash
-VERSION="v0.2.3"
+VERSION="v0.2.5"
 cd /tmp
 wget -O qq.tar.gz "https://github.com/JFryy/qq/releases/download/${VERSION}/qq-${VERSION}-linux-amd64.tar.gz"
 tar xzvf qq.tar.gz
@@ -952,7 +952,7 @@ sudo rm /usr/local/bin/sops
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.9.4"
+VERSION="3.10.2"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -1001,13 +1001,13 @@ tfenv list-remote
 Instale as seguintes versões do Terraform usando o tfenv:
 
 ```bash
-tfenv install 1.10.5
+tfenv install 1.11.4
 ```
 
 Defina como padrão a seguinte versão:
 
 ```bash
-tfenv use 1.10.5
+tfenv use 1.11.4
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1028,7 +1028,7 @@ Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versã
 
 ```bash
 cat .terraform-version
-1.10.5
+1.11.4
 ```
 
 # terraform-docs
@@ -1038,7 +1038,7 @@ Execute os seguintes comandos para instalar o terraform-docs
 Documentação: https://github.com/segmentio/terraform-docs
 
 ```bash
-VERSION=v0.19.0
+VERSION=v0.20.0
 
 curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz terraform-docs
@@ -1125,7 +1125,7 @@ tgenv list-remote
 Instale as seguintes versões do Terragrunt usando o tgenv:
 
 ```bash
-tgenv install 0.72.6
+tgenv install 0.77.2
 ```
 
 Liste as versões instaladas:
@@ -1137,7 +1137,7 @@ tgenv list
 Defina como padrão uma determinada versão:
 
 ```bash
-tgenv use 0.72.6
+tgenv use 0.77.2
 ```
 
 Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
@@ -1152,7 +1152,7 @@ Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da vers�
 
 ```bash
 cat .terragrunt-version
-0.72.6
+0.77.2
 ```
 
 # vault-cli
@@ -1170,7 +1170,7 @@ sudo rm /usr/bin/vault
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.18.4+ent"
+VERSION="1.19.3+ent"
 
 asdf plugin list all | grep vault
 asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
@@ -1235,7 +1235,7 @@ Uma ferramenta CLI e que recomenda tipos de instância com base em critérios de
 Documentação: https://github.com/aws/amazon-ec2-instance-selector
 
 ```bash
-VERSION=v3.0.0
+VERSION=v3.1.1
 sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
 sudo chmod +x /usr/local/bin/ec2-instance-selector
 ec2-instance-selector --help
@@ -1322,7 +1322,7 @@ sudo rm /usr/local/bin/kind
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.26.0"
+VERSION="0.27.0"
 asdf plugin list all | grep kind
 asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
 asdf latest kind
@@ -1344,7 +1344,7 @@ cat << EOF > $HOME/kind-3nodes.yaml
 # Metal LB in Kind: https://kind.sigs.k8s.io/docs/user/loadbalancer
 # Ingress in Kind: https://kind.sigs.k8s.io/docs/user/ingress
 
-# Config compatible with kind v0.26.0
+# Config compatible with kind v0.27.0
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -1352,7 +1352,7 @@ networking:
   serviceSubnet: "10.96.0.0/12"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
+    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
     kubeadmConfigPatches:
     - |
       kind: InitConfiguration
@@ -1369,9 +1369,9 @@ nodes:
       listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
       protocol: TCP
   - role: worker
-    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
+    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
   - role: worker
-    image: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
+    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
 EOF
 ```
 
@@ -1440,7 +1440,7 @@ Para iniciar um cluster com 2 nodes e utilizando a versão 1.30.2 do kubernetes,
 > O driver default do minikube é o docker.
 
 ```bash
-minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.30.2
+minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.32.2
 ```
 
 Para adicionar um novo node ao cluster execute:
@@ -1462,7 +1462,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.59.0"
+VERSION="0.62.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1494,7 +1494,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.55.1"
+VERSION="0.56.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
