@@ -36,7 +36,7 @@ helm search repo argo/argo-cd --versions
 Install the using the follow command:
 
 ```bash
-ARGOCD_CHART_VERSION=7.7.21
+ARGOCD_CHART_VERSION=7.9.0
 
 helm upgrade --install argocd \
   argo/argo-cd --version "$ARGOCD_CHART_VERSION" \

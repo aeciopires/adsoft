@@ -36,7 +36,7 @@ helm repo update
 helm search repo vault --versions
 
 # Install vault in kind cluster
-VAULT_CHART_VERSION=0.29.1
+VAULT_CHART_VERSION=0.30.0
 helm upgrade --install vault \
   hashicorp/vault --version "$VAULT_CHART_VERSION" -f values.yaml \
   --namespace vault --create-namespace --debug --timeout=900s --wait

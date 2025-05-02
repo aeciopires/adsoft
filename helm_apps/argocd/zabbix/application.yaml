@@ -24,7 +24,7 @@ spec:
   sources:
   - repoURL: https://zabbix-community.github.io/helm-zabbix
     chart: zabbix
-    targetRevision: 7.0.3
+    targetRevision: 7.0.6
     helm:
       valueFiles:
       - $values/argocd/zabbix/zabbix_values.yaml
