@@ -196,7 +196,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.27.6"
+AWS_CLI_V2="2.27.62"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -648,7 +648,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.7.0"
+VERSION="52.8.0"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -1028,7 +1028,7 @@ Aliases úteis a serem cadastrados no arquivo ``$HOME/.bashrc``.
 
 ```bash
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.22.8'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.27.62'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -1245,7 +1245,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.56.0"
+VERSION="0.58.1"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git

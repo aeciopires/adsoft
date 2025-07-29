@@ -197,7 +197,7 @@ sudo rm -rf /usr/local/aws
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-AWS_CLI_V2="2.27.6"
+AWS_CLI_V2="2.27.62"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -734,7 +734,7 @@ sudo rm /usr/local/bin/kubeshark
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="52.7.0"
+VERSION="52.8.0"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -953,7 +953,7 @@ sudo rm /usr/local/bin/sops
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.10.2"
+VERSION="v3.10.2"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -1171,7 +1171,7 @@ sudo rm /usr/bin/vault
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.19.3+ent"
+VERSION="1.20.1"
 
 asdf plugin list all | grep vault
 asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
@@ -1252,7 +1252,7 @@ Aliases úteis a serem cadastrados no arquivo ``$HOME/.bashrc``.
 
 ```bash
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.22.28'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.27.62'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -1495,7 +1495,7 @@ Instalando tflint via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.58.1 "
+VERSION="0.58.1"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
