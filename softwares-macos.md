@@ -343,7 +343,7 @@ Execute os seguintes comandos para instalar o helm:
 Documentação: https://helm.sh/docs/
 
 ```bash
-VERSION="3.17.3"
+VERSION="3.18.4"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -393,7 +393,7 @@ Execute os seguintes comandos para instalar o helmfile.
 Documentação: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="1.0.0"
+VERSION="1.1.3"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -414,7 +414,7 @@ Execute os seguintes comandos para instalar o plugin helm-diff.
 Documentação: https://github.com/databus23/helm-diff
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.11.0
+helm plugin install https://github.com/databus23/helm-diff --version v3.12.4
 ```
 
 # helm-secrets - Plugin
@@ -424,7 +424,7 @@ Execute os seguintes comandos para instalar o plugin helm-secrets.
 Documentação: https://github.com/jkroepke/helm-secrets
 
 ```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.3
+helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.5
 ```
 
 # jj
@@ -448,7 +448,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [Asdf](#asdf).
 
 ```bash
-VERSION_OPTION_1="1.33.0"
+VERSION_OPTION_1="1.33.3"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -673,7 +673,7 @@ Instale com o seguinte comando:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.50.4"
+VERSION="0.50.9"
 
 asdf plugin list all | grep k9s
 asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
@@ -821,7 +821,7 @@ Documentação: https://github.com/getsops/sops/
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="3.10.2"
+VERSION="v3.10.2"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -1043,6 +1043,8 @@ alias kmysql5='kubectl run --rm -it mysql5-$(< /dev/urandom tr -dc a-z-0-9 | hea
 alias kmysql8='kubectl run --rm -it mysql8-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mysql:8.0 -n default -- bash'
 alias kredis='kubectl run --rm -it redis-cli-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=redis:latest -n default -- bash'
 alias kpgsql14='kubectl run --rm -it pgsql14-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=postgres:14 -n default -- bash'
+alias kind_create="kind create cluster --name kind-multinodes --config \$HOME/kind-3nodes.yaml"
+alias kind_delete='kind delete clusters $(kind get clusters)'
 alias kssh='kubectl run --rm -it ssh-agent-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=kroniak/ssh-client -n default -- bash'
 alias l='ls -CF'
 alias la='ls -A'
@@ -1050,7 +1052,8 @@ alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
 alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.1.0 -n NAMESPACE /bin/bash'
-alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
+alias randompass='pwgen 16 1'
+alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
 alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION --profile CHANGE_PROFILE'
 alias terradocs='terraform-docs markdown table . > README.md'
@@ -1080,7 +1083,7 @@ Para instalar o kind execute os seguintes comandos.
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.27.0"
+VERSION="0.29.0"
 asdf plugin list all | grep kind
 asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
 asdf latest kind
@@ -1102,7 +1105,7 @@ cat << EOF > $HOME/kind-3nodes.yaml
 # Metal LB in Kind: https://kind.sigs.k8s.io/docs/user/loadbalancer
 # Ingress in Kind: https://kind.sigs.k8s.io/docs/user/ingress
 
-# Config compatible with kind v0.27.0
+# Config compatible with kind v0.29.0
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -1110,7 +1113,7 @@ networking:
   serviceSubnet: "10.96.0.0/12"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
+    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
     kubeadmConfigPatches:
     - |
       kind: InitConfiguration
@@ -1127,9 +1130,9 @@ nodes:
       listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
       protocol: TCP
   - role: worker
-    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
+    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
   - role: worker
-    image: kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f
+    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
 EOF
 ```
 
@@ -1170,7 +1173,7 @@ Execute os seguintes comandos para instalação:
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="1.35.0"
+VERSION="1.36.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1188,7 +1191,7 @@ Para iniciar um cluster com 2 nodes e utilizando a versão 1.30.2 do kubernetes,
 > O driver default do minikube é o docker.
 
 ```bash
-minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.32.2
+minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.33.1
 ```
 
 Para adicionar um novo node ao cluster execute:
@@ -1210,7 +1213,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.62.0"
+VERSION="0.64.1"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
