@@ -83,18 +83,18 @@ software --install rosetta --agree-to-license
 
 brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools python3 meld openjdk jq make gnupg coreutils visual-studio-code
 
-echo 'export PATH="/opt/homebrew/opt/curl/bin:\$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/curl/bin:$PATH"' >> "/Users/$USER/.bash_profile"
 
 export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
 
 sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 
-echo 'export PATH="/opt/homebrew/opt/openjdk/bin:\$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> "/Users/$USER/.bash_profile"
 
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
-echo 'export PATH="/opt/homebrew/opt/make/libexec/gnubin:\$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"' >> "/Users/$USER/.bash_profile"
 
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 
