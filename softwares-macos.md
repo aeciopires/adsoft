@@ -173,8 +173,8 @@ ASDF_VERSION="v0.15.0"
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch $ASDF_VERSION
 
 # Adicionando no $HOME/.bashrc
-echo ". \"\$HOME/.asdf/asdf.sh\"" >> ~/.bash_profile
-echo ". \"\$HOME/.asdf/completions/asdf.bash\"" >> ~/.bash_profile
+echo ". \"$HOME/.asdf/asdf.sh\"" >> ~/.bash_profile
+echo ". \"$HOME/.asdf/completions/asdf.bash\"" >> ~/.bash_profile
 source ~/.bash_profile
 ```
 
@@ -575,7 +575,7 @@ kubectl krew install node-shell
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-echo 'export PATH="\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH"' >> /Users/$USER/.bash_profile
+echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> /Users/$USER/.bash_profile
 ```
 
 Documentação: https://github.com/kvaps/kubectl-node-shell
@@ -755,7 +755,7 @@ curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d
 chmod +x ~/.bash_prompt
 echo "source ~/.bash_prompt" >> ~/.bashrc 
 source ~/.bashrc
-exec bash
+exec /bin/bash
 ```
 
 Resultado:
