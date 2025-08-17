@@ -352,7 +352,7 @@ Execute os seguintes comandos para instalar o Go.
 Documentação: https://golang.org/doc/
 
 ```bash
-VERSION=1.24.5
+VERSION=1.25.0
 
 mkdir -p $HOME/go/bin
 cd /tmp
