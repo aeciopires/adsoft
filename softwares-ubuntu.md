@@ -127,13 +127,7 @@ Crie o diretório ``~/git``.
 mkdir ~/git
 ```
 
-Baixe o script ``updateGit.sh``:
-
-```bash
-cd ~
-wget https://gist.githubusercontent.com/aeciopires/2457cccebb9f30fe66ba1d67ae617ee9/raw/8d088c6fadb8a4397b5ff2c7d6a36980f46d40ae/updateGit.sh
-chmod +x ~/updateGit.sh
-```
+Baixe o binário ``updateGit`` conforme mostrado no seguinte link: https://github.com/aeciopires/updateGit
 
 Agora você pode clonar todos os repositórios git e salvar dentro de ``~/git``.
 
@@ -141,7 +135,7 @@ No início da jornada de trabalho diária atualize todos os repositórios git de
 
 ```bash
 cd ~
-./updateGit.sh git/
+./updateGit pull -G git/
 ```
 
 # asdf
@@ -1463,7 +1457,7 @@ Instalando trivy via asdf
 > Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
 
 ```bash
-VERSION="0.64.1"
+VERSION="0.65.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
