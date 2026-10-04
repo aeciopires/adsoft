@@ -1,5 +1,8 @@
 # Custom values for zabbix.
-zabbixImageTag: alpine-7.2.6
+# Values supported by the chart: https://github.com/zabbix-community/helm-zabbix/blob/main/charts/zabbix/README.md
+# By default the chart installs the latest Zabbix LTS version. Here a non-LTS version (7.4.x) is used.
+# Docker images: https://hub.docker.com/u/zabbix
+zabbixImageTag: alpine-7.4.15
 
 zabbixServer:
   enabled: true
@@ -12,9 +15,9 @@ zabbixServer:
       # Postgresql Docker image name: chose one of "postgres" or "timescale/timescaledb"
       repository: postgres
       #repository: timescale/timescaledb
-      # -- Tag of Docker image of Postgresql server, choice "17" for postgres "2.17.2-pg16" for timescaledb
-      # (Zabbix supports TimescaleDB. More info: https://www.zabbix.com/documentation/7.2/en/manual/installation/requirements)
-      tag: 17
+      # -- Tag of Docker image of Postgresql server, choice "18" for postgres or a tag of timescale/timescaledb
+      # (Zabbix 7.4 supports PostgreSQL 13.0-18.X and TimescaleDB. More info: https://www.zabbix.com/documentation/7.4/en/manual/installation/requirements)
+      tag: 18
       #tag: 2.17.2-pg16
   service:
     type: NodePort
@@ -57,11 +60,13 @@ postgresql:
     # Postgresql Docker image name: chose one of "postgres" or "timescale/timescaledb"
     repository: postgres
     #repository: timescale/timescaledb
-    # -- Tag of Docker image of Postgresql server, choice "17" for postgres "2.17.2-pg16" for timescaledb
-    # (Zabbix supports TimescaleDB7. More info: https://www.zabbix.com/documentation/7.0/en/manual/installation/requirements)
-    tag: 17
+    # -- Tag of Docker image of Postgresql server, choice "18" for postgres or a tag of timescale/timescaledb
+    # (Zabbix 7.4 supports PostgreSQL 13.0-18.X and TimescaleDB. More info: https://www.zabbix.com/documentation/7.4/en/manual/installation/requirements)
+    tag: 18
     #tag: 2.17.2-pg16
-  max_connections: 100
+  # Extra Postgresql runtime parameters ("-c" options)
+  extraRuntimeParameters:
+    max_connections: 100
   persistence:
     enabled: true
     existingClaimName: false
@@ -103,14 +108,12 @@ zabbixProxy:
 
 zabbixAgent:
   enabled: true
-  ZBX_HOSTNAME: zabbix-agent
   ZBX_SERVER_HOST: 0.0.0.0/0
   ZBX_SERVER_PORT: 10051
   ZBX_PASSIVE_ALLOW: true # This variable is boolean (true or false) and enables or disables feature of passive checks. By default, value is true
   ZBX_ACTIVE_ALLOW: false # This variable is boolean (true or false) and enables or disables feature of active checks
   ZBX_DEBUGLEVEL: 3 # The variable is used to specify debug level, from 0 to 5
   ZBX_TIMEOUT: 4 # The variable is used to specify timeout for processing checks. By default, value is 4.
-  ZBX_VMWARECACHESIZE: 128M
   service:
     type: ClusterIP
     port: 10050
@@ -135,8 +138,6 @@ zabbixAgent:
 
 zabbixWeb:
   enabled: true
-  ZBX_SERVER_HOST: zabbix-zabbix-server
-  ZBX_SERVER_PORT: 10051
   service:
     port: 80
   extraEnv:

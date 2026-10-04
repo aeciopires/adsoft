@@ -19,9 +19,15 @@ Install the following binaries following the instructions on the [REQUIREMENTS.m
 
 # Install Vault in kind cluster
 
-Reference: https://blog.aeciopires.com/instalando-o-hashicorp-vault-no-kubernetes-gke-usando-o-helm-e-configurando-um-bucket-gcs-para-armazenamento/
+References:
 
-Run the follow commands:
+- https://developer.hashicorp.com/vault/docs/deploy/kubernetes/helm
+- https://github.com/hashicorp/vault-helm
+- https://blog.aeciopires.com/instalando-o-hashicorp-vault-no-kubernetes-gke-usando-o-helm-e-configurando-um-bucket-gcs-para-armazenamento/ (in Portuguese)
+
+The chart version 0.34.1 installs Vault 2.0.4 and vault-k8s 1.7.6. The file ``values.yaml`` contains the default values of the chart 0.34.1 with the following changes: ``injector.enabled: true``, ``injector.webhook.failurePolicy: Fail`` and ``injector.webhook.namespaceSelector`` limited to the ``my-namespace`` namespace.
+
+Run the following commands:
 
 ```bash
 cd adsoft/helm_apps/vault
@@ -36,7 +42,7 @@ helm repo update
 helm search repo vault --versions
 
 # Install vault in kind cluster
-VAULT_CHART_VERSION=0.30.0
+VAULT_CHART_VERSION=0.34.1
 helm upgrade --install vault \
   hashicorp/vault --version "$VAULT_CHART_VERSION" -f values.yaml \
   --namespace vault --create-namespace --debug --timeout=900s --wait
@@ -64,7 +70,7 @@ export VAULT_ADDR=http://127.0.0.1:8200
 vault operator init
 ```
 
-Annotate the result of command init, like this
+Save the result of the init command, like this
 
 ```text
 Unseal Key 1: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -76,7 +82,7 @@ Unseal Key 5: EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 Initial Root Token: hvs.blablablablablabla
 ```
 
-Run the follow command 3 times inserting the each unseal key:
+Run the following command 3 times, inserting each unseal key:
 
 ```bash
 # Unseal vault
@@ -85,7 +91,7 @@ vault operator unseal "Unseal Key 2"
 vault operator unseal "Unseal Key 3"
 ```
 
-Run the follow commands:
+Run the following commands:
 
 ```bash
 # Get vault status
@@ -118,16 +124,16 @@ vault write auth/kubernetes/config \
 
 # Create secrets in vault and configure apps
 
-Reference: https://blog.aeciopires.com/hashicorp-vault-entregando-segredos-para-uma-aplicacao-no-kubernetes/
+Reference: https://blog.aeciopires.com/hashicorp-vault-entregando-segredos-para-uma-aplicacao-no-kubernetes/ (in Portuguese)
 
-Run the follow commands:
+Run the following commands:
 
 ```bash
 # Creating kv engine in vault to store secrets
 PATH_KV_NAME="my-group-secrets"
 vault secrets enable -path="$PATH_KV_NAME" --version=2 kv
 
-# Creating secrets in vault for app2
+# Creating secrets in vault for app1
 vault kv put "$PATH_KV_NAME"/my-app-1 \
   DB_PASSWORD="password1" \
   DB_USER="user1" \
