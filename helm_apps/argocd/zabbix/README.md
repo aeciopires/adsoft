@@ -11,7 +11,7 @@
 
 # Requirements
 
-- Install all packages and binaries following the instructions on the [REQUIREMENTS.md](../../REQUIREMENTS.md) file.
+- Install all packages and binaries following the instructions on the [REQUIREMENTS.md](../../../REQUIREMENTS.md) file.
 - Install ArgoCD following the instructions on the [README.md](../README.md) file.
 - The ``application.yaml`` file reads the ``zabbix_values.yaml`` file from the ``master`` branch of the https://github.com/aeciopires/adsoft repository. If you use a fork, change the ``repoURL`` and ``targetRevision`` in ``application.yaml``.
 

@@ -6,6 +6,6 @@
 
 # Requirements
 
-For **Ubuntu**, follow the instructions (in PT-BR) to install softwares [softwares-ubuntu](softwares-ubuntu.md)
+For **Ubuntu**, follow the instructions to install the software [softwares-ubuntu](softwares-ubuntu.md)
 
-For **MacOS**, follow the instructions (in PT-BR) to install softwares [softwares-macos](softwares-macos.md)
+For **MacOS**, follow the instructions to install the software [softwares-macos](softwares-macos.md)

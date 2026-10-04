@@ -3,7 +3,7 @@
 - [About](#about)
   - [ArgoCD](#argocd)
   - [Vault](#vault)
-  - [Requirements to develop and test of Helm Charts](#requirements-to-develop-and-test-of-helm-charts)
+  - [Requirements to develop and test Helm Charts](#requirements-to-develop-and-test-helm-charts)
   - [Kubernetes cluster](#kubernetes-cluster)
   - [Install kube-pires helm chart](#install-kube-pires-helm-chart)
 
@@ -19,13 +19,13 @@ See the [argocd/README.md](argocd/README.md)
 
 See the [vault/README.md](vault/README.md)
 
-## Requirements to develop and test of Helm Charts
+## Requirements to develop and test Helm Charts
 
-- [OPTIONAL] Install all packages and binaries following this [tutorial](REQUIREMENTS.md).
+- [OPTIONAL] Install all packages and binaries following this [tutorial](../REQUIREMENTS.md).
 
 ## Kubernetes cluster
 
-- Read [aws_services/README.md](../aws_services/README.md) or [ubuntu-kind](../softwares-ubuntu.md#opcional-kind) or [macos-kind](../softwares-macos.md#opcional-kind) files to learn create a Kubernetes cluster.
+- Read [aws_services/README.md](../aws_services/README.md) or [ubuntu-kind](../softwares-ubuntu.md#optional-kind) or [macos-kind](../softwares-macos.md#optional-kind) files to learn how to create a Kubernetes cluster.
 
 ## Install kube-pires helm chart
 

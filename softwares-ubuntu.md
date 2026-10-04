@@ -1,15 +1,15 @@
 <!-- TOC -->
 
 - [Ubuntu](#ubuntu)
-  - [Essenciais](#essenciais)
-  - [Opcionais](#opcionais)
+  - [Essentials](#essentials)
+  - [Optional](#optional)
 - [Git](#git)
 - [asdf](#asdf)
 - [ansible](#ansible)
 - [awscli](#awscli)
 - [bat](#bat)
 - [docker](#docker)
-- [docker-compose](#docker-compose)
+- [docker compose](#docker-compose)
 - [gcloud](#gcloud)
 - [Go](#go)
 - [Helm](#helm)
@@ -19,9 +19,9 @@
 - [helm-secrets - Plugin](#helm-secrets---plugin)
 - [jj](#jj)
 - [kubectl](#kubectl)
-- [Plugins para kubectl](#plugins-para-kubectl)
+- [Plugins for kubectl](#plugins-for-kubectl)
   - [krew](#krew)
-  - [kubectx e kubens](#kubectx-e-kubens)
+  - [kubectx and kubens](#kubectx-and-kubens)
   - [Fuzzy](#fuzzy)
   - [kubectl-tree](#kubectl-tree)
   - [kubecolor](#kubecolor)
@@ -29,91 +29,90 @@
   - [kubefwd](#kubefwd)
   - [kubepug](#kubepug)
   - [kubent](#kubent)
-  - [Outras Kubetools](#outras-kubetools)
+  - [Other Kubetools](#other-kubetools)
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
 - [kustomize](#kustomize)
 - [lens](#lens)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
-- [Prompt do Terminal Customizado](#prompt-do-terminal-customizado)
+- [Custom Terminal Prompt](#custom-terminal-prompt)
   - [bash\_prompt](#bash_prompt)
 - [qq](#qq)
 - [ShellCheck](#shellcheck)
 - [Sops](#sops)
-- [terraform e tfenv](#terraform-e-tfenv)
+- [terraform and tfenv](#terraform-and-tfenv)
 - [terraform-docs](#terraform-docs)
-- [terragrunt e tgenv](#terragrunt-e-tgenv)
-  - [Problema conhecido](#problema-conhecido)
+- [terragrunt](#terragrunt)
 - [vault-cli](#vault-cli)
 - [yq](#yq)
 - [tig](#tig)
 - [ec2-instance-selector](#ec2-instance-selector)
-- [\[OPCIONAL\] Aliases úteis](#opcional-aliases-úteis)
+- [\[OPTIONAL\] Useful aliases](#optional-useful-aliases)
   - [bashrc](#bashrc)
-- [\[OPCIONAL\] Clipboard Indicator](#opcional-clipboard-indicator)
-- [\[OPCIONAL\] Flameshot](#opcional-flameshot)
-- [\[OPCIONAL\] kind](#opcional-kind)
-- [\[OPCIONAL\] minikube](#opcional-minikube)
-- [\[OPCIONAL\] trivy](#opcional-trivy)
-  - [Instalando trivy via Docker](#instalando-trivy-via-docker)
-- [\[OPCIONAL\] tflint](#opcional-tflint)
+- [\[OPTIONAL\] Clipboard Indicator](#optional-clipboard-indicator)
+- [\[OPTIONAL\] Flameshot](#optional-flameshot)
+- [\[OPTIONAL\] kind](#optional-kind)
+- [\[OPTIONAL\] minikube](#optional-minikube)
+- [\[OPTIONAL\] trivy](#optional-trivy)
+  - [Installing trivy via Docker](#installing-trivy-via-docker)
+- [\[OPTIONAL\] tflint](#optional-tflint)
 
 <!-- TOC -->
 
 # Ubuntu
 
-## Essenciais
+## Essentials
 
-Execute os seguintes comandos no Ubuntu 24.04/22.02:
+Run the following commands on Ubuntu 24.04/22.04:
 
 ```bash
 sudo apt install -y vim traceroute telnet netcat-openbsd git tcpdump elinks curl wget openssl net-tools python3 python3-pip meld python3-venv default-jdk jq make gnupg
 ```
 
-Com o Python "3.10.*" execute o seguinte comando para criar o link simbólico:
+With Python "3.10.*" (Ubuntu 22.04) run the following command to create the symbolic link:
 
 ```bash
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 ```
 
-Com o Python "3.12.*" execute o seguinte comando para criar o link simbólico:
+With Python "3.12.*" (Ubuntu 24.04) run the following command to create the symbolic link:
 
 ```bash
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
 ```
 
-## Opcionais
+## Optional
 
-Execute os seguintes comandos:
+Run the following commands:
 
 ```bash
 sudo apt install -y wireshark redis-tools mysql-client gimp
 ```
 
-Instale os seguintes softwares:
+Install the following software:
 
 - Firefox
 - Google Chrome
-- WPS: https://br.wps.com/download/
+- WPS: https://www.wps.com/
 - Visual Code: https://code.visualstudio.com
-  - Instalação no Ubuntu: https://code.visualstudio.com/docs/setup/linux
-  - Plugins para Visual Code
-  - Instruções para exportar/importar plugins do VSCode: https://stackoverflow.com/questions/35773299/how-can-you-export-the-visual-studio-code-extension-list
-  - docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker (Requer instalação do comando docker mostrado nas seções a seguir).
-  - gitlens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens (Requer instalação do comando git mostrado na seção a anterior).
-  - go: https://marketplace.visualstudio.com/items?itemName=golang.Go (Requer instalação do comando go mostrado nas seções a seguir).
+  - Installation on Ubuntu: https://code.visualstudio.com/docs/setup/linux
+  - Plugins for Visual Code
+  - Instructions to export/import VSCode plugins: https://stackoverflow.com/questions/35773299/how-can-you-export-the-visual-studio-code-extension-list
+  - docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker (Requires the docker command shown in the following sections).
+  - gitlens: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens (Requires the git command shown in the previous section).
+  - go: https://marketplace.visualstudio.com/items?itemName=golang.Go (Requires the go command shown in the following sections).
   - gotemplate-syntax: https://marketplace.visualstudio.com/items?itemName=casualjim.gotemplate
   - Markdown-all-in-one: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
   - Markdown-lint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
   - Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
-  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requer instalação do comando python3 mostrado na seção anterior).
-  - shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requer instalação do comando shellcheck mostrado nas seções a seguir).
-  - terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requer instalação do comando terraform mostrado nas seções a seguir).
-  - YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
-  - Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
-  - Contar número de linhas selecionadas: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
-  - jenkinsfile support: https://marketplace.visualstudio.com/items?itemName=ivory-lab.jenkinsfile-support
+  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requires the python3 command shown in the previous section).
+  - shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requires the shellcheck command shown in the following sections).
+  - terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requires the terraform command shown in the following sections).
+  - YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
+  - Helm Intellisense: https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense
+  - Count the number of selected lines: https://marketplace.visualstudio.com/items?itemName=gurumukhi.selected-lines-count
+  - jenkinsfile support: https://marketplace.visualstudio.com/items?itemName=ivory-lab.jenkinsfile-support
   - Theme for VSCode:
     - https://code.visualstudio.com/docs/getstarted/themes
     - https://dev.to/thegeoffstevens/50-vs-code-themes-for-2020-45cc
@@ -121,17 +120,17 @@ Instale os seguintes softwares:
 
 # Git
 
-Crie o diretório ``~/git``.
+Create the directory ``~/git``.
 
 ```bash
 mkdir ~/git
 ```
 
-Baixe o binário ``updateGit`` conforme mostrado no seguinte link: https://github.com/aeciopires/updateGit
+Download the ``updateGit`` binary as shown in the following link: https://github.com/aeciopires/updateGit
 
-Agora você pode clonar todos os repositórios git e salvar dentro de ``~/git``.
+Now you can clone all git repositories and save them inside ``~/git``.
 
-No início da jornada de trabalho diária atualize todos os repositórios git de uma só vez com o comando a seguir.
+At the beginning of the working day, update all git repositories at once with the following command.
 
 ```bash
 cd ~
@@ -140,58 +139,81 @@ cd ~
 
 # asdf
 
-Execute os seguintes comandos:
-
-> Atenção!!! Para atualizar o asdf utilize APENAS o seguinte comando:
+Since version 0.16.0, asdf is a binary written in Go (the old versions were Bash scripts). Run the following commands to install it:
 
 ```bash
-asdf update
-```
+ASDF_VERSION="v0.20.2"
 
-> Se tentar reinstalar ou atualizar mudando a versão nos comandos seguintes, será necessário reinstalar todos os plugins/comandos instalados antes, por isso é muito importante fazer backup do diretório $HOME/.asdf.
+cd /tmp
+curl -fsSL -o asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz"
+tar -xzf asdf.tar.gz asdf
+sudo mv asdf /usr/local/bin/asdf
+rm asdf.tar.gz
 
-```bash
-ASDF_VERSION="v0.15.0"
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch $ASDF_VERSION
+type -a asdf
+asdf version
 
-# Adicionando no $HOME/.bashrc
-echo ". \"\$HOME/.asdf/asdf.sh\"" >> ~/.bashrc
-echo ". \"\$HOME/.asdf/completions/asdf.bash\"" >> ~/.bashrc
+# Adding the shims directory and the completions in $HOME/.bashrc
+cat << 'FOE' >> ~/.bashrc
+
+# asdf
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+. <(asdf completion bash)
+FOE
+
 source ~/.bashrc
 ```
 
-Fonte: https://asdf-vm.com/guide/introduction.html
+Allow asdf to read the version files of other tools (example: ``.terraform-version`` and ``.terragrunt-version``):
+
+```bash
+echo "legacy_version_file = yes" >> ~/.asdfrc
+```
+
+> Attention!!! The command ``asdf update`` was removed. To update asdf, download the binary of the new version again with the commands above.
+
+> Attention!!! The commands ``asdf global`` and ``asdf local`` were replaced by ``asdf set``. Use ``asdf set -u TOOL VERSION`` to define the default version of a tool in the ``$HOME/.tool-versions`` file.
+
+> If you are upgrading from asdf 0.15.0 or older, remove the old lines (``. "$HOME/.asdf/asdf.sh"`` and ``. "$HOME/.asdf/completions/asdf.bash"``) from ``$HOME/.bashrc`` and run ``asdf reshim``. More info: https://asdf-vm.com/guide/upgrading-to-v0-16.html
+
+Source:
+- https://asdf-vm.com/guide/getting-started.html
+- https://github.com/asdf-vm/asdf/releases
 
 # ansible
 
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+
 ```bash
-VERSION="9.13.0"
+VERSION="14.4.0"
 
 ASDF_PYAPP_INCLUDE_DEPS=1 asdf plugin add ansible https://github.com/amrox/asdf-pyapp.git
 asdf latest ansible
 asdf install ansible $VERSION
-asdf global ansible $VERSION
+asdf set -u ansible $VERSION
 
 ansible --version
 ```
 
+> The ``ansible`` package version 14.x requires Python >= 3.12 (https://pypi.org/project/ansible/).
+
 # awscli
 
-Instale o ``awscli`` usando o ``asdf``:
+Install ``awscli`` using ``asdf``:
 
-> Antes de continuar, se tiver o awscli instalado, remova-o com os seguintes comandos:
+> Before continuing, if you have awscli installed, remove it with the following commands:
 
 ```bash
 sudo rm /usr/local/bin/aws
 sudo rm -rf /usr/local/aws-cli
-# ou
+# or
 sudo rm -rf /usr/local/aws
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-AWS_CLI_V2="2.27.62"
+AWS_CLI_V2="2.37.9"
 
 asdf plugin list all | grep aws
 asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
@@ -200,33 +222,32 @@ asdf latest awscli
 asdf install awscli $AWS_CLI_V2
 asdf list awscli
 
-# Definindo a versão padrão
-asdf global awscli $AWS_CLI_V2
+# Setting the default version
+asdf set -u awscli $AWS_CLI_V2
 asdf list awscli
 
-# Criando um link simbólico
+# Creating a symbolic link
 sudo ln -s $HOME/.asdf/shims/aws /usr/local/bin/aws
 ```
 
-Fonte:
-* https://asdf-vm.com/guide/introduction.html
-- https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html
-* https://computingforgeeks.com/how-to-install-and-use-aws-cli-on-linux-ubuntu-debian-centos/
+Source:
+- https://asdf-vm.com/guide/getting-started.html
+- https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 # bat
 
-O bat é um binário que ajuda a destacar as diferenças entres arquivos e muito útil quando usado em conjunto com outros comandos, incluído o ``kubectl`` e o ``helm``.
+bat is a ``cat`` clone with syntax highlighting and Git integration. It is very useful when used together with other commands, including ``kubectl`` and ``helm``.
 
-> Antes de continuar, se tiver o bat instalado, remova-o com o seguinte comando:
+> Before continuing, if you have bat installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/bin/bat
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="0.25.0"
+VERSION="0.26.1"
 
 asdf plugin list all | grep bat
 asdf plugin add bat https://gitlab.com/wt0f/asdf-bat.git
@@ -235,64 +256,65 @@ asdf latest bat
 asdf install bat $VERSION
 asdf list bat
 
-# Definindo a versão padrão
-asdf global bat $VERSION
+# Setting the default version
+asdf set -u bat $VERSION
 asdf list bat
 ```
 
-Dica de utilização para terminais com temas escuro/claros é usar a opção ``--theme ansi``. Pode-se criar um alias, fazendo com que sempre que o comando for invocado, passe a utilizar esse parâmetro:
+A usage tip for terminals with dark/light themes is to use the option ``--theme ansi``. You can create an alias, so that whenever the command is invoked, it uses this parameter:
 
 ```bash
 echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
 ```
 
-Mais informações em: https://github.com/sharkdp/bat
+More information at: https://github.com/sharkdp/bat
 
 # docker
 
-Instale o Docker CE (Community Edition) seguindo as instruções da página: https://docs.docker.com/engine/install/ubuntu/.
+Install Docker CE (Community Edition) following the instructions of the page: https://docs.docker.com/engine/install/ubuntu/.
 
 ```bash
 sudo apt update
 sudo apt install -y acl
 curl -fsSL https://get.docker.com -o get-docker.sh;
 sudo sh get-docker.sh;
-# Utilizando docker sem sudo
+# Using docker without sudo
 sudo usermod -aG docker $USER;
 sudo setfacl -m user:$USER:rw /var/run/docker.sock
 ```
 
-Fonte: https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
+Source: https://docs.docker.com/engine/install/linux-postinstall/
 
-# docker-compose
+# docker compose
 
-Documentação: https://docs.docker.com/compose/
+Documentation: https://docs.docker.com/compose/
+
+Docker Compose v2 is a plugin of Docker and it is installed by the ``get-docker.sh`` script (package ``docker-compose-plugin``) used in the [docker](#docker) section. Use the command ``docker compose`` (with a space) instead of ``docker-compose``. The standalone ``docker-compose`` v1 is no longer supported.
+
+To install or update only the plugin, run the following commands:
 
 ```bash
-sudo su
-COMPOSE_VERSION=1.29.2
+sudo apt update
+sudo apt install -y docker-compose-plugin
 
-sudo curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-
-/usr/local/bin/docker-compose version
-
-exit
+docker compose version
 ```
+
+Source: https://docs.docker.com/compose/install/linux/
 
 # gcloud
 
-> Antes de continuar, se tiver o gcloud instalado via apt, remova-o com os seguintes comandos:
+> Before continuing, if you have gcloud installed via apt, remove it with the following commands:
 
 ```bash
 sudo apt remove google-cloud-sdk
 sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="532.0.0"
+VERSION="587.0.0"
 
 asdf plugin list all | grep gcloud
 asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
@@ -301,30 +323,30 @@ asdf latest gcloud
 asdf install gcloud $VERSION
 asdf list gcloud
 
-# Definindo a versão padrão
-asdf global gcloud $VERSION
+# Setting the default version
+asdf set -u gcloud $VERSION
 asdf list gcloud
 
-gcloud init # (alternativamente, gcloud init --console-only)
+gcloud init # (alternatively, gcloud init --console-only)
 gcloud components install gke-gcloud-auth-plugin
 ```
 
-Execute as instruções deste tutorial se autenticar com o gcloud Autenticação do terraform/terragrunt no GCP
+Follow the instructions in this section to authenticate with gcloud, which is also used by terraform/terragrunt in GCP.
 
-Se ao utilizar comandos do gcloud ocorrer o seguinte erro:
+If the following error occurs when using gcloud commands:
 ``ERROR: gcloud crashed (SystemError): ffi_prep_closure(): bad user_data (it seems that the version of the libffi library seen at runtime is different from the 'ffi.h' file seen at compile-time)``
 
-Faça o seguinte para resolver no Ubuntu 20.04:
+Do the following to solve it on Ubuntu 20.04:
 
 ```bash
 pip3 uninstall cffi xcffib
 sudo apt install -y libffi-dev
 ```
 
-Fonte: https://stackoverflow.com/questions/62658237/it-seems-that-the-version-of-the-libffi-library-seen-at-runtime-is-different-fro
+Source: https://stackoverflow.com/questions/62658237/it-seems-that-the-version-of-the-libffi-library-seen-at-runtime-is-different-fro
 
-Referências:
-- https://cloud.google.com/sdk/install
+References:
+- https://cloud.google.com/sdk/docs/install
 - https://cloud.google.com/sdk/docs/downloads-apt-get
 - https://cloud.google.com/docs/authentication/gcloud
 - https://cloud.google.com/docs/authentication/getting-started
@@ -334,31 +356,31 @@ Referências:
 - https://gist.github.com/pydevops/cffbd3c694d599c6ca18342d3625af97
 - https://blog.realkinetic.com/using-google-cloud-service-accounts-on-gke-e0ca4b81b9a2
 - https://www.the-swamp.info/blog/configuring-gcloud-multiple-projects/
-- Google - Autenticação em duas etapas. Habilite o duplo fator de autenticação na sua conta Google.
+- Google - 2-Step Verification. Enable two-factor authentication in your Google account.
 
-Login na GCP usando o gcloud:
+Login to GCP using gcloud:
 
 ```bash
 gcloud init
 
-# O navegador padrão será aberto para concluir o login e conceder as permissões.
+# The default browser will open to complete the login and grant the permissions.
 gcloud auth application-default login
 ```
 
 # Go
 
-Execute os seguintes comandos para instalar o Go.
+Run the following commands to install Go.
 
-Documentação: https://golang.org/doc/
+Documentation: https://go.dev/doc/
 
 ```bash
-VERSION=1.25.0
+VERSION=1.27.1
 
 mkdir -p $HOME/go/bin
 cd /tmp
 
 curl -L https://go.dev/dl/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
-sudo rm -rf /usr/local/go 
+sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf go.tar.gz
 rm /tmp/go.tar.gz
 
@@ -371,25 +393,27 @@ echo "GOPATH=$HOME/go" >> ~/.bashrc
 echo "PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" >> ~/.bashrc
 ```
 
+Source: https://go.dev/doc/install
+
 # Helm
 
-Execute os seguintes comandos para instalar o helm:
+Run the following commands to install helm:
 
-> Antes de continuar, se tiver o helm instalado via apt, remova-o com os seguintes comandos:
+> Before continuing, if you have helm installed via apt, remove it with the following commands:
 
 ```bash
 sudo apt remove helm
-# ou
+# or
 sudo rm /usr/local/bin/helm
 sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-Documentação: https://helm.sh/docs/
+Documentation: https://helm.sh/docs/
 
 ```bash
-VERSION="3.18.4"
+VERSION="4.3.0"
 
 asdf plugin list all | grep helm
 asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
@@ -398,24 +422,26 @@ asdf latest helm
 asdf install helm $VERSION
 asdf list helm
 
-# Definindo a versão padrão
-asdf global helm $VERSION
+# Setting the default version
+asdf set -u helm $VERSION
 asdf list helm
 ```
 
+> Helm 4 changed the plugin system: the plugins are verified by default and the ``--version`` flag of ``helm plugin install`` is not supported by some plugins. See the instructions of each plugin in the next sections.
+
 # helm-docs
 
-Execute os seguintes comandos para instalar o helm-docs.
+Run the following commands to install helm-docs.
 
-> Antes de continuar, se tiver o helm-docs instalado, remova-o com o seguinte comando:
+> Before continuing, if you have helm-docs installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/helm-docs
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-Documentação: https://github.com/norwoodj/helm-docs 
+Documentation: https://github.com/norwoodj/helm-docs
 
 ```bash
 VERSION="1.14.2"
@@ -427,31 +453,31 @@ asdf latest helm-docs
 asdf install helm-docs $VERSION
 asdf list helm-docs
 
-# Definindo a versão padrão
-asdf global helm-docs $VERSION
+# Setting the default version
+asdf set -u helm-docs $VERSION
 asdf list helm-docs
 ```
 
-A documentação gerado pelo helm-docs é com base no conteúdo do arquivo ``values.yaml`` e ``Chart.yaml``. Ele tenta sobrescrever o conteúdo do arquivo ``README.md`` dentro do diretório do chart.
+The documentation generated by helm-docs is based on the content of the ``values.yaml`` and ``Chart.yaml`` files. It tries to overwrite the content of the ``README.md`` file inside the chart directory.
 
-Para evitar este problema execute o comando ``helm-docs --dry-run`` (dentro do diretório de cada chart) e copie manualmente o conteúdo exibido na saída padrão para dentro do arquivo ``README.md``, evitando perda de dados.
+To avoid this problem, run the command ``helm-docs --dry-run`` (inside the directory of each chart) and manually copy the content shown in the standard output into the ``README.md`` file, avoiding data loss.
 
 # helmfile
 
-Execute os seguintes comandos para instalar o ``helmfile``.
+Run the following commands to install ``helmfile``.
 
-> Antes de continuar, se tiver o helmfile instalado, remova-o com o seguinte comando:
+> Before continuing, if you have helmfile installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/helmfile
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-Documentação: https://github.com/helmfile/helmfile
+Documentation: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="1.1.3"
+VERSION="1.8.1"
 
 asdf plugin list all | grep helmfile
 asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
@@ -460,42 +486,67 @@ asdf latest helmfile
 asdf install helmfile $VERSION
 asdf list helmfile
 
-# Definindo a versão padrão
-asdf global helmfile $VERSION
+# Setting the default version
+asdf set -u helmfile $VERSION
 asdf list helmfile
 ```
 
 # helm-diff - Plugin
 
-Execute os seguintes comandos para instalar o plugin ``helm-diff``.
+Run the following commands to install the ``helm-diff`` plugin.
 
-Documentação: https://github.com/databus23/helm-diff
+Documentation: https://github.com/databus23/helm-diff
+
+With Helm 4 (the plugin provenance is verified by default):
 
 ```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.12.4
+VERSION="3.15.15"
+
+curl -sL https://github.com/databus23.gpg | gpg --import
+gpg --list-keys --with-fingerprint EA17A2A206AFF8CD
+# Expected fingerprint: C5645EF4 7482257A 1F806D2B EA17A2A2 06AFF8CD
+helm plugin install "https://github.com/databus23/helm-diff/releases/download/v${VERSION}/helm-diff-linux-amd64.tgz"
+```
+
+With Helm 3:
+
+```bash
+helm plugin install https://github.com/databus23/helm-diff --version v3.15.15
 ```
 
 # helm-secrets - Plugin
 
-Execute os seguintes comandos para instalar o plugin ``helm-secrets``.
+Run the following commands to install the ``helm-secrets`` plugin.
 
-Documentação: https://github.com/jkroepke/helm-secrets
+Documentation: https://github.com/jkroepke/helm-secrets/wiki/Installation
+
+With Helm 4 the plugin is distributed as three plugins and the plugin signature is verified by default (public key: https://github.com/jkroepke.gpg):
 
 ```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.5
+VERSION="4.7.8"
+
+helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-${VERSION}.tgz"
+helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-getter-${VERSION}.tgz"
+helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-post-renderer-${VERSION}.tgz"
+```
+
+With Helm 3:
+
+```bash
+helm plugin install https://github.com/jkroepke/helm-secrets --version v4.7.8
 ```
 
 # jj
 
-Utilitário de linha de comando para edição de arquivo JSON:
+Command line utility to edit JSON files.
 
-Documentação: https://github.com/tidwall/jj
+Documentation: https://github.com/tidwall/jj
 
-Instale com os seguintes comandos:
+Install with the following commands:
 
 ```bash
 sudo su
-JJ_VERSION="1.9.2" 
+JJ_VERSION="1.9.2"
 JJ_URL="https://github.com/tidwall/jj/releases/download/v${JJ_VERSION}/jj-${JJ_VERSION}-linux-amd64.tar.gz"
 JJ_TAR_DIR="jj-${JJ_VERSION}-linux-amd64"
 
@@ -511,12 +562,12 @@ exit
 
 # kubectl
 
-Execute os seguintes comandos.
+Run the following commands.
 
-Documentação: https://kubernetes.io/docs/reference/kubectl/overview/
+Documentation: https://kubernetes.io/docs/reference/kubectl/
 
 ```bash
-VERSION_OPTION_1="1.33.3"
+VERSION_OPTION_1="1.37.1"
 
 asdf plugin list all | grep kubectl
 asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
@@ -525,21 +576,23 @@ asdf latest kubectl
 asdf install kubectl $VERSION_OPTION_1
 asdf list kubectl
 
-# Definindo a versão padrão
-asdf global kubectl $VERSION_OPTION_1
+# Setting the default version
+asdf set -u kubectl $VERSION_OPTION_1
 asdf list kubectl
 
-# Criando um link simbólico
+# Creating a symbolic link
 sudo ln -s $HOME/.asdf/shims/kubectl /usr/local/bin/kubectl
 ```
 
-# Plugins para kubectl
+> Use a kubectl version within one minor version (older or newer) of the Kubernetes cluster version. More info: https://kubernetes.io/releases/version-skew-policy/#kubectl
 
-A seguir são listados alguns plugins úteis para o Kubectl.
+# Plugins for kubectl
+
+Some useful plugins for kubectl are listed below.
 
 ## krew
 
-Documentação:
+Documentation:
 - https://github.com/kubernetes-sigs/krew/
 - https://krew.sigs.k8s.io/docs/user-guide/setup/install/
 
@@ -563,9 +616,9 @@ export PATH="\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH"
 FOE
 ```
 
-## kubectx e kubens
+## kubectx and kubens
 
-Documentação: https://github.com/ahmetb/kubectx#installation
+Documentation: https://github.com/ahmetb/kubectx#installation
 
 ```bash
 git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
@@ -580,34 +633,34 @@ export PATH=~/.kubectx:\$PATH
 FOE
 ```
 
-Comandos úteis:
+Useful commands:
 
 ```bash
-kubectx -u # para deslogar do cluster
-kubectx # para listar os clusters cadastrados na máquina local
-kubectx NOME_DO_CLUSTER # para logar num cluster previamente cadastrado na máquina local
-kubectx -d NOME_DO_CLUSTER # para remover um cluster previamente cadastrado na máquina local
-kubens # para listar os namespaces de um cluster
-kubens NAMESPACE # para mudar para um namespace previamente criado no cluster com o comando ``kubectl create ns NAMESPACE``
+kubectx -u # to unset the current context (disconnect from the cluster)
+kubectx # to list the clusters registered on the local machine
+kubectx CLUSTER_NAME # to switch to a cluster previously registered on the local machine
+kubectx -d CLUSTER_NAME # to remove a cluster previously registered on the local machine
+kubens # to list the namespaces of a cluster
+kubens NAMESPACE # to switch to a namespace previously created in the cluster with the command ``kubectl create ns NAMESPACE``
 ```
 
 ## Fuzzy
 
-Documentação: https://github.com/junegunn/fzf
+Documentation: https://github.com/junegunn/fzf
 
-Instale com o seguinte comando:
+Install with the following command:
 
 ```bash
 sudo apt install fzf
 ```
 
-> Basta abrir outro terminal para deixar funcionando em conjunto com kubectx e kubens
+> Just open another terminal to make it work together with kubectx and kubens
 
 ## kubectl-tree
 
-Documentação: https://github.com/ahmetb/kubectl-tree
+Documentation: https://github.com/ahmetb/kubectl-tree
 
-Instale com o seguinte comando:
+Install with the following command:
 
 ```bash
 kubectl krew install tree
@@ -615,55 +668,55 @@ kubectl krew install tree
 
 ## kubecolor
 
-Documentação: https://github.com/kubecolor/kubecolor
+Documentation: https://github.com/kubecolor/kubecolor
 
-Instale com os seguintes comandos.
+Install with the following commands.
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION_KUBECOLOR=0.5.1
+VERSION_KUBECOLOR=0.8.0
 asdf plugin list all | grep kubecolor
 asdf plugin add kubecolor https://github.com/dex4er/asdf-kubecolor.git
 asdf latest kubecolor
 
 asdf install kubecolor $VERSION_KUBECOLOR
 
-# Definindo a versão padrão
-asdf global kubecolor $VERSION_KUBECOLOR
+# Setting the default version
+asdf set -u kubecolor $VERSION_KUBECOLOR
 asdf list kubecolor
 
-# Mudando o alias do kubectl para o kubecolor
+# Changing the kubectl alias to kubecolor
 alias kubectl="kubecolor"
-echo "alias kubectl=\"kubecolor\"" >> ~/.bashrc 
+echo "alias kubectl=\"kubecolor\"" >> ~/.bashrc
 source ~/.bashrc
 ```
 
 ## node-shell
 
-Plugin para conectar ssh em um node k8s.
+Plugin to start a root shell in a k8s node.
 
-Instale com o seguinte comando:
+Install with the following command:
 
 ```bash
 kubectl krew install node-shell
 ```
 
-Documentação: https://github.com/kvaps/kubectl-node-shell
+Documentation: https://github.com/kvaps/kubectl-node-shell
 
 ## kubefwd
 
-Documentação:
+Documentation:
 - https://github.com/txn2/kubefwd
 - https://imti.co/kubernetes-port-forwarding
 - https://kubefwd.com
 
-Instale com os seguintes comandos:
+Install with the following commands:
 
 ```bash
-VERSION=1.22.5
+VERSION=1.25.16
 
-wget https://github.com/txn2/kubefwd/releases/download/$VERSION/kubefwd_amd64.deb
+wget https://github.com/txn2/kubefwd/releases/download/v$VERSION/kubefwd_amd64.deb
 sudo dpkg -i kubefwd_amd64.deb
 rm kubefwd_amd64.deb
 
@@ -672,17 +725,16 @@ kubefwd version
 
 ## kubepug
 
-Os seguintes softwares ajudam a identificar quais APIs foram alteradas/depreciadas em cada versão do k8s.
+The following software helps to identify which APIs were changed/deprecated in each k8s version.
 
-Documentação: https://github.com/kubepug/kubepug
+Documentation: https://github.com/kubepug/kubepug
 
-Instale com os seguintes comandos:
+Install with the following commands:
 
 ```bash
 VERSION=v1.7.1
 
 cd /tmp
-wget https://github.com/rikatz/kubepug/releases/download/$VERSION/kubepug_linux_amd64.tar.gz
 wget https://github.com/kubepug/kubepug/releases/download/$VERSION/kubepug_linux_amd64.tar.gz
 tar xzvf kubepug_linux_amd64.tar.gz
 sudo mv kubepug /usr/local/bin/
@@ -693,42 +745,42 @@ kubepug version
 
 ## kubent
 
-Documentação: https://github.com/swade1987/deprek8ion
+Documentation: https://github.com/doitintl/kube-no-trouble
 
 ```bash
 sh -c "$(curl -sSL https://git.io/install-kubent)"
 kubent --help
 ```
 
-## Outras Kubetools
+## Other Kubetools
 
 - http://dockerlabs.collabnix.com/kubernetes/kubetools/
 - https://caylent.com/50-useful-kubernetes-tools
 - https://caylent.com/50+-useful-kubernetes-tools-list-part-2
 - https://developer.sh/posts/kubernetes-client-tools-overview
 - https://github.com/kubernetes-sigs/kind
-- https://github.com/rancher/k3d
+- https://github.com/k3d-io/k3d
 - https://microk8s.io/
-- https://argoproj.github.io/argo-cd/
+- https://argo-cd.readthedocs.io/en/stable/
 
 # kubeshark
 
-Kubeshark (antigo Mizu) é uma ferramenta para observabilidade.
+Kubeshark (formerly Mizu) is an observability tool.
 
-O kubeshark é uma ferramenta intrusiva, que adiciona agents nos nodes que suportam os pods selecionados para monitoramento (tap). Esse tipo de ferramenta, certamente tem um custo computacional. Devemos usar com parcimônia, filtrando o máximo possível (consulte a doc para ver os filtros disponíveis).
+kubeshark is an intrusive tool, which adds agents to the nodes that run the pods selected for monitoring (tap). This kind of tool certainly has a computational cost. Use it sparingly, filtering as much as possible (see the documentation for the available filters).
 
-Documentação: https://kubeshark.co/
+Documentation: https://kubeshark.co/
 
-> Antes de continuar, se tiver o kubeshark instalado, remova-o com o seguinte comando:
+> Before continuing, if you have kubeshark installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/kubeshark
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="52.8.0"
+VERSION="72.3.83"
 
 asdf plugin list all | grep kubeshark
 asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
@@ -737,27 +789,27 @@ asdf latest kubeshark
 asdf install kubeshark $VERSION
 asdf list kubeshark
 
-# Definindo a versão padrão
-asdf global kubeshark $VERSION
+# Setting the default version
+asdf set -u kubeshark $VERSION
 asdf list kubeshark
 ```
 
 # k9s
 
-O k9s é uma ferramenta em CLI para gerenciamento de cluster kubernetes.
+k9s is a CLI tool to manage Kubernetes clusters.
 
-> Antes de continuar, se tiver o k9s instalado, remova-o com o seguinte comando:
+> Before continuing, if you have k9s installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/k9s
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-Documentação: https://k9scli.io/topics/commands/
+Documentation: https://k9scli.io/topics/commands/
 
 ```bash
-VERSION="0.50.9"
+VERSION="0.51.0"
 
 asdf plugin list all | grep k9s
 asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
@@ -766,27 +818,27 @@ asdf latest k9s
 asdf install k9s $VERSION
 asdf list k9s
 
-# Definindo a versão padrão
-asdf global k9s $VERSION
+# Setting the default version
+asdf set -u k9s $VERSION
 asdf list k9s
 ```
 
 # kustomize
 
-O Kustomize apresenta uma maneira de aplicar mudanças no Kubernetes alternativa ao trabalho realizado pelo Helm. O kustomize funciona integrado ao kubectl com o subcomando ``apply -k``.
+Kustomize provides a way to apply changes to Kubernetes as an alternative to the work done by Helm. kustomize is integrated with kubectl through the subcommand ``apply -k``.
 
-> Antes de continuar, se tiver o kustomize instalado, remova-o com o seguinte comando:
+> Before continuing, if you have kustomize installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/kustomize
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-Documentação: https://k9scli.io/topics/commands/
+Documentation: https://kubectl.docs.kubernetes.io/references/kustomize/
 
 ```bash
-VERSION="5.6.0"
+VERSION="5.8.2"
 
 asdf plugin list all | grep kustomize
 asdf plugin add kustomize https://github.com/Banno/asdf-kustomize.git
@@ -795,41 +847,48 @@ asdf latest kustomize
 asdf install kustomize $VERSION
 asdf list kustomize
 
-# Definindo a versão padrão
-asdf global kustomize $VERSION
+# Setting the default version
+asdf set -u kustomize $VERSION
 asdf list kustomize
 ```
 
 # lens
 
-Lens é uma IDE para controlar seus clusters Kubernetes. É de código aberto e gratuito.
+Lens is an IDE to control your Kubernetes clusters.
+
+Install Lens Desktop using the APT repository with the following commands:
 
 ```bash
-sudo snap install kontena-lens --classic
+curl -fsSL https://downloads.k8slens.dev/keys/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/lens-archive-keyring.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
+sudo apt update
+sudo apt install -y lens
 ```
 
-Mais informações em: https://k8slens.dev/
+More information at:
+- https://k8slens.dev/
+- https://docs.k8slens.dev/getting-started/install-lens/
 
 # Postman
 
-Execute o seguinte comando:
+Run the following command:
 
 ```bash
 sudo snap install postman
 ```
 
-Documentação:
+Documentation:
 - https://linuxize.com/post/how-to-install-postman-on-ubuntu-20-04/
 - https://www.postman.com
 
 # pre-commit
 
-Uma estrutura para gerenciar e manter ganchos de pré-confirmação multi linguagens. https://pre-commit.com/
+A framework for managing and maintaining multi-language pre-commit hooks. https://pre-commit.com/
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="4.2.0"
+VERSION="4.6.2"
 
 asdf plugin list all | grep pre-commit
 asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
@@ -837,21 +896,21 @@ asdf latest pre-commit
 asdf install pre-commit $VERSION
 asdf list pre-commit
 
-# Definindo a versão padrão
-asdf global pre-commit $VERSION
+# Setting the default version
+asdf set -u pre-commit $VERSION
 ```
 
-Fonte: https://asdf-vm.com/guide/introduction.html
+Source: https://asdf-vm.com/guide/getting-started.html
 
-# Prompt do Terminal Customizado
+# Custom Terminal Prompt
 
-Para mostrar o nome da branch, diretório atual, cluster k8s autenticado e namespace em uso, existem vários projetos open source que providenciam isso e você pode escolher o que mais lhe agradar.
+To show the branch name, the current directory, the authenticated k8s cluster and the namespace in use, there are several open source projects that provide this, and you can choose the one you like the most.
 
-Para zsh:
+For zsh:
 - https://ohmyz.sh/
 - https://www.2vcps.io/2020/07/02/oh-my-zsh-fix-my-command-prompt/
 
-Para bash:
+For bash:
 - https://github.com/ohmybash/oh-my-bash
 - https://github.com/jonmosco/kube-ps1
 
@@ -860,32 +919,32 @@ Para bash:
 ```bash
 curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
 chmod +x ~/.bash_prompt
-echo "source ~/.bash_prompt" >> ~/.bashrc 
+echo "source ~/.bash_prompt" >> ~/.bashrc
 source ~/.bashrc
 exec bash
 ```
 
-Resultado:
+Result:
 
-1. **cor lilás (ou roxo)**: o nome do usuário e o nome do host;
-2. **Na cor amarela**: o path do diretório atual;
-3. **cor verde**: o nome da branch, será exibida apenas se o diretório atual for relacionado a um repositório git;
-4. **cor vermelho**: o nome do cluster Kubernetes (k8s), ao qual você está autenticado;
-5. **cor azul**: o nome do namespace selecionado no cluster k8s. Caso esteja selecionado o namespace default, o nome não será exibido.
+1. **lilac (or purple) color**: the user name and the host name;
+2. **yellow color**: the path of the current directory;
+3. **green color**: the branch name, shown only if the current directory is related to a git repository;
+4. **red color**: the name of the Kubernetes (k8s) cluster you are authenticated to;
+5. **blue color**: the name of the namespace selected in the k8s cluster. If the default namespace is selected, the name will not be shown.
 
 # qq
 
-qq é um transcodificador de formato de configuração interoperável com sintaxe de consulta jq desenvolvido por gojq. qq é multimodal e pode ser usado como um substituto para jq ou interagir por meio de uma reposição com preenchimento automático e visualização de renderização em tempo real para construção de consultas.
+qq is an interoperable configuration format transcoder with jq query syntax powered by gojq. qq is multi modal, and can be used as a replacement for jq or be interacted with via a repl with autocomplete and realtime rendering preview for building queries.
 
-Documentação: https://github.com/JFryy/qq
+Documentation: https://github.com/JFryy/qq
 
-Execute os seguintes comandos para instalar o qq:
+Run the following commands to install qq:
 
 ```bash
-VERSION="v0.3.0"
+VERSION="v0.4.0"
 cd /tmp
 wget -O qq.tar.gz "https://github.com/JFryy/qq/releases/download/${VERSION}/qq-${VERSION}-linux-amd64.tar.gz"
-tar xzvf qq.tar.gz
+tar xzvf qq.tar.gz qq
 sudo mv qq /usr/local/bin/qq
 sudo chmod +x /usr/local/bin/qq
 rm qq.tar.gz
@@ -906,48 +965,48 @@ qq a.json -o tf
 
 # ShellCheck
 
-Execute os seguintes comandos:
+Run the following commands:
 
-> Antes de continuar, se tiver o shellcheck instalado, remova-o com o seguinte comando:
+> Before continuing, if you have shellcheck installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/bin/shellcheck
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="0.10.0"
+VERSION="0.11.0"
 asdf plugin list all | grep shellcheck
 asdf plugin add shellcheck https://github.com/luizm/asdf-shellcheck.git
 asdf latest shellcheck
 asdf install shellcheck $VERSION
 asdf list shellcheck
 
-# Definindo a versão padrão
-asdf global shellcheck $VERSION
+# Setting the default version
+asdf set -u shellcheck $VERSION
 ```
 
-Documentação: https://github.com/koalaman/shellcheck/
+Documentation: https://github.com/koalaman/shellcheck/
 
-Alternativamente é possível usar o site https://www.shellcheck.net para fazer o lint dos shell scripts.
+Alternatively, you can use the website https://www.shellcheck.net to lint shell scripts.
 
 # Sops
 
-Instale com os seguintes comandos.
+Install with the following commands.
 
-Documentação: https://github.com/getsops/sops/
+Documentation: https://github.com/getsops/sops/
 
-> Antes de continuar, se tiver o sops instalado, remova-o com o seguinte comando:
+> Before continuing, if you have sops installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/sops
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="v3.10.2"
+VERSION="3.13.3"
 
 asdf plugin list all | grep sops
 asdf plugin add sops https://github.com/feniix/asdf-sops.git
@@ -956,86 +1015,86 @@ asdf latest sops
 asdf install sops $VERSION
 asdf list sops
 
-# Definindo a versão padrão
-asdf global sops $VERSION
+# Setting the default version
+asdf set -u sops $VERSION
 asdf list sops
 sops --version
 ```
 
-Um exemplo do arquivo de configuração do sops que deve ficar em ``$HOME/.sops.yaml``.
+An example of the sops configuration file that should be in ``$HOME/.sops.yaml``.
 
 ```yaml
 creation_rules:
-# Para ambientes testing/staging
+# For testing/staging environments
 -   path_regex: .*/testing|staging/.*
     kms: arn:aws:kms:us-east-1:4564546546454:key/adsfasdfd-8c6c-sdfsadfdas
     aws_profile: default
-# Para ambientes production
+# For production environments
 -   kms: arn:aws:kms:sa-east-1:4123745646545:key/asdfsdfdsa-8a5b-sdafasdf
     aws_profile: default
 ```
 
-# terraform e tfenv
+# terraform and tfenv
 
-Execute os seguintes comandos para instalar o ``tfenv``, controlador de versões de do Terraform.
+Run the following commands to install ``tfenv``, the Terraform version manager.
 
-Documentação: https://github.com/tfutils/tfenv
+Documentation: https://github.com/tfutils/tfenv
 
 ```bash
 cd $HOME
-git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
 sudo ln -s ~/.tfenv/bin/* /usr/local/bin
 ```
 
-Liste versões que podem ser instaladas:
+List the versions that can be installed:
 
 ```bash
 tfenv list-remote
 ```
 
-Instale as seguintes versões do Terraform usando o tfenv:
+Install the following version of Terraform using tfenv:
 
 ```bash
-tfenv install 1.11.4
+tfenv install 1.16.5
 ```
 
-Defina como padrão a seguinte versão:
+Set the following version as the default:
 
 ```bash
-tfenv use 1.11.4
+tfenv use 1.16.5
 ```
 
-Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
+To uninstall a version of terraform with tfenv, use the following command:
 
 ```bash
-tfenv uninstall <VERSAO>
+tfenv uninstall <VERSION>
 ```
 
-Liste as versões instaladas:
+List the installed versions:
 
 ```bash
 tfenv list
 ```
 
-Apenas no desenvolvimento de um código que faz uso do terraform, você pode obrigar o projeto a usar uma versão específica:
+Only when developing code that uses terraform, you can force the project to use a specific version:
 
-Crie o arquivo ``.terraform-version`` na raiz do projeto com o número da versão desejada. Exemplo:
+Create the file ``.terraform-version`` in the root of the project with the desired version number. Example:
 
 ```bash
 cat .terraform-version
-1.11.4
+1.16.5
 ```
 
 # terraform-docs
 
-Execute os seguintes comandos para instalar o terraform-docs
+Run the following commands to install terraform-docs
 
-Documentação: https://github.com/segmentio/terraform-docs
+Documentation: https://github.com/terraform-docs/terraform-docs
 
 ```bash
-VERSION=v0.20.0
+VERSION=v0.24.0
 
-curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname)-amd64.tar.gz
+curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/$VERSION/terraform-docs-$VERSION-$(uname | tr '[:upper:]' '[:lower:]')-amd64.tar.gz
 tar -xzf terraform-docs.tar.gz terraform-docs
 chmod +x terraform-docs
 sudo mv terraform-docs /usr/local/bin/terraform-docs
@@ -1044,128 +1103,68 @@ rm terraform-docs.tar.gz
 terraform-docs --version
 ```
 
-# terragrunt e tgenv
+# terragrunt
 
-Execute os seguintes comandos para instalar o ``tgenv``, controlador de versões de do Terragrunt.
+Install Terragrunt using ``asdf`` and the ``asdf-terragrunt`` plugin, which is maintained by Gruntwork (the company that develops Terragrunt).
 
-Documentação:
-- https://github.com/cunymatthieu/tgenv
-- https://blog.gruntwork.io/how-to-manage-multiple-versions-of-terragrunt-and-terraform-as-a-team-in-your-iac-project-da5b59209f2d
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
-```bash
-cd $HOME
-git clone https://github.com/cunymatthieu/tgenv.git ~/.tgenv
-sudo ln -s ~/.tgenv/bin/* /usr/local/bin
-```
-
-## Problema conhecido
-
-Existe um problema nas versões do tgenv em que versões muito antigas do terragrunt não são instaladas/listadas remotamente. Isso ocorre devido uma query utilizada no código https://github.com/cunymatthieu/tgenv/blob/master/libexec/tgenv-list-remote#L12 que usa API do GitHub. Para isso, temos dois possíveis workarounds
-
-Workaround 3 (Fix proposto e revisado em PR em aberto):
-https://github.com/cunymatthieu/tgenv/pull/15/files
-
-Altere o arquivo ``~/.tgenv/libexec/tgenv-list-remote`` para que fique exatamente na seguinte forma, como abaixo:
+Documentation:
+- https://docs.terragrunt.com/getting-started/install/
+- https://github.com/gruntwork-io/asdf-terragrunt
 
 ```bash
-#!/usr/bin/env bash
-set -e
+VERSION="1.1.6"
 
-[ -n "${TGENV_DEBUG}" ] && set -x
-source "${TGENV_ROOT}/libexec/helpers"
+asdf plugin add terragrunt https://github.com/gruntwork-io/asdf-terragrunt.git
+asdf list all terragrunt
+asdf latest terragrunt
 
-if [ ${#} -ne 0 ];then
-  echo "usage: tgenv list-remote" 1>&2
-  exit 1
-fi
+asdf install terragrunt $VERSION
+asdf list terragrunt
 
-GITHUB_API_HEADER_ACCEPT="Accept: application/vnd.github.v3+json"
+# Setting the default version
+asdf set -u terragrunt $VERSION
+asdf list terragrunt
 
-temp=`basename $0`
-TMPFILE=`mktemp /tmp/${temp}.XXXXXX` || exit 1
-
-function rest_call {
-    curl --tlsv1.2 -sf $1 -H "${GITHUB_API_HEADER_ACCEPT}" | sed -e 's/^\[$//g' -e 's/^\]$/,/g' >> $TMPFILE
-}
-
-# single page result-s (no pagination), have no Link: section, the grep result is empty
-last_page=`curl -I --tlsv1.2 -s "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100" -H "${GITHUB_API_HEADER_ACCEPT}" | grep '^link:' | sed -e 's/^link:.*page=//g' -e 's/>.*$//g'`
-
-# does this result use pagination?
-if [ -z "$last_page" ]; then
-    # no - this result has only one page
-    rest_call "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100"
-else
-    # yes - this result is on multiple pages
-    for p in `seq 1 $last_page`; do
-        rest_call "https://api.github.com/repos/gruntwork-io/terragrunt/tags?per_page=100&page=$p"
-    done
-fi
-
-return_code=$?
-if [ $return_code -eq 22 ];then
-  warn_and_continue "Failed to get list verion on $link_release"
-  print=`cat ${TGENV_ROOT}/list_all_versions_offline`
-fi
-
-cat $TMPFILE | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+(-(rc|beta)[0-9]+)?" | uniq
+terragrunt --version
 ```
 
-Liste as versões que podem ser instaladas:
+To uninstall a version of terragrunt, use the following command:
 
 ```bash
-tgenv list-remote
+asdf uninstall terragrunt <VERSION>
 ```
 
-Instale as seguintes versões do Terragrunt usando o tgenv:
+Only when developing code that uses terragrunt, you can force the project to use a specific version:
 
-```bash
-tgenv install 0.77.2
-```
-
-Liste as versões instaladas:
-
-```bash
-tgenv list
-```
-
-Defina como padrão uma determinada versão:
-
-```bash
-tgenv use 0.77.2
-```
-
-Para desinstalar uma versão do terraform com o tfenv, use o seguinte comando:
-
-```bash
-tgenv uninstall <VERSAO>
-```
-
-Apenas no desenvolvimento de um código que faz uso do terragrunt, você pode obrigar o projeto a usar uma versão específica:
-
-Crie o arquivo ``.terragrunt-version`` na raiz do projeto com o número da versão desejada. Exemplo:
+Create the file ``.terragrunt-version`` in the root of the project with the desired version number. Example:
 
 ```bash
 cat .terragrunt-version
-0.77.2
+1.1.6
 ```
+
+> To asdf read the ``.terragrunt-version`` file, the line ``legacy_version_file = yes`` must be in the ``$HOME/.asdfrc`` file (see the [asdf](#asdf) section). Alternatively, use the ``.tool-versions`` file of asdf.
+
+> Terragrunt 1.0 changed the CLI. For example, ``terragrunt run-all plan`` was replaced by ``terragrunt run --all plan``. More info: https://docs.terragrunt.com/migrate/cli-redesign/
 
 # vault-cli
 
-Utilitário de linha de comando do Hashicorp Vault: https://developer.hashicorp.com/vault
+Command line utility of Hashicorp Vault: https://developer.hashicorp.com/vault
 
-> Antes de continuar, se tiver o yq instalado, remova-o com os seguintes comandos:
+> Before continuing, if you have vault installed, remove it with the following commands:
 
 ```bash
 sudo apt remove vault
-# ou
+# or
 sudo rm /usr/bin/vault
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="1.20.1"
+VERSION="2.1.1"
 
 asdf plugin list all | grep vault
 asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
@@ -1174,31 +1173,31 @@ asdf latest vault
 asdf install vault $VERSION
 asdf list vault
 
-# Definindo a versão padrão
-asdf global vault $VERSION
+# Setting the default version
+asdf set -u vault $VERSION
 asdf list vault
 ```
 
-Fonte: https://asdf-vm.com/guide/introduction.html
+Source: https://asdf-vm.com/guide/getting-started.html
 
 # yq
 
-Utilitário de linha de comando para edição de arquivos YAML: https://github.com/mikefarah/yq
+Command line utility to edit YAML files: https://github.com/mikefarah/yq
 
-> Antes de continuar, se tiver o yq instalado, remova-o com os seguintes comandos:
+> Before continuing, if you have yq installed, remove it with the following commands:
 
 ```bash
 sudo apt remove yq
-# ou
+# or
 sudo rm /usr/bin/yq
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-YQ_1="3.4.1"   # homologada
-YQ_2="4.35.1"  # homologada
-YQ_3="4.45.1"
+YQ_1="3.4.1"   # approved
+YQ_2="4.35.1"  # approved
+YQ_3="4.54.1"
 
 asdf plugin list all | grep yq
 asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
@@ -1208,16 +1207,16 @@ asdf install yq $YQ_2
 asdf install yq $YQ_3
 asdf list yq
 
-# Definindo a versão padrão
-asdf global yq $YQ_3
+# Setting the default version
+asdf set -u yq $YQ_3
 asdf list yq
 ```
 
-Fonte: https://asdf-vm.com/guide/introduction.html
+Source: https://asdf-vm.com/guide/getting-started.html
 
 # tig
 
-Utilitário em text-mode interface para git: https://jonas.github.io/tig/
+Text-mode interface for git: https://jonas.github.io/tig/
 
 ```bash
 sudo apt-get install -y tig
@@ -1225,28 +1224,28 @@ sudo apt-get install -y tig
 
 # ec2-instance-selector
 
-Uma ferramenta CLI e que recomenda tipos de instância com base em critérios de recursos como vcpus e memória.
+A CLI tool that recommends instance types based on resource criteria like vcpus and memory.
 
-Documentação: https://github.com/aws/amazon-ec2-instance-selector
+Documentation: https://github.com/aws/amazon-ec2-instance-selector
 
 ```bash
-VERSION=v3.1.1
+VERSION=v3.1.3
 sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/${VERSION}/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64
 sudo chmod +x /usr/local/bin/ec2-instance-selector
 ec2-instance-selector --help
 ```
 
-# [OPCIONAL] Aliases úteis
+# [OPTIONAL] Useful aliases
 
 ## bashrc
 
-Aliases úteis a serem cadastrados no arquivo ``$HOME/.bashrc``.
+Useful aliases to be added to the file ``$HOME/.bashrc``.
 
-> Após a inclusão executar o comando ``source ~/.bashrc`` para refletir as alterações.
+> After adding them, run the command ``source ~/.bashrc`` to apply the changes.
 
 ```bash
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws public.ecr.aws/aws-cli/aws-cli:2.27.62'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli:2.37.9'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -1267,8 +1266,9 @@ alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:2.1.0 -n NAMESPACE /bin/bash'
+alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:3.1.0 -n NAMESPACE /bin/bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
+alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
 # Ubuntu 22.04/24.04
 alias set-dns-cabeado='sudo resolvectl dns enp7s0 1.1.1.1'
 alias set-dns-wifi='sudo resolvectl dns wlp6s0 1.1.1.1'
@@ -1278,58 +1278,54 @@ alias terradocs='terraform-docs markdown table . > README.md'
 alias alertmanager='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE && kubectl port-forward alertmanager-monitor-alertmanager-0 9093:9093 -n monitoring ; kubectx -'
 alias prometheus='kubectl port-forward prometheus-monitor-prometheus-0 9090:9090 -n monitoring'
 alias sc="source $HOME/.bashrc"
-alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
-alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
-alias sc="source $HOME/.bashrc"
 alias python=python3
 alias pip=pip3
-alias kubepug="kubectl-depreciations"
 alias kind_create="kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml"
 alias kind_delete="kind delete clusters \$(kind get clusters)"
 ```
 
-# [OPCIONAL] Clipboard Indicator
+# [OPTIONAL] Clipboard Indicator
 
 - https://github.com/Tudmotu/gnome-shell-extension-clipboard-indicator
 
-# [OPCIONAL] Flameshot
+# [OPTIONAL] Flameshot
 
 - https://flameshot.org/
 
-Instale com o seguinte comando:
+Install with the following command:
 
 ```bash
 sudo apt install -y flameshot
 ```
 
-# [OPCIONAL] kind
+# [OPTIONAL] kind
 
-O kind (Kubernetes in Docker) é outra alternativa para executar o Kubernetes num ambiente local para testes e aprendizado, mas não é recomendado para uso em produção.
+kind (Kubernetes in Docker) is another alternative to run Kubernetes in a local environment for testing and learning, but it is not recommended for production use.
 
-Para instalar o kind execute os seguintes comandos.
+To install kind, run the following commands.
 
-> Antes de continuar, se tiver o kind instalado, remova-o com o seguinte comando:
+> Before continuing, if you have kind installed, remove it with the following command:
 
 ```bash
 sudo rm /usr/local/bin/kind
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="0.29.0"
+VERSION="0.33.0"
 asdf plugin list all | grep kind
 asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
 asdf latest kind
 asdf install kind $VERSION
 asdf list kind
-# Definindo a versão padrão
-asdf global kind $VERSION
+# Setting the default version
+asdf set -u kind $VERSION
 ```
 
-Para criar um cluster com múltiplos nós locais com o Kind, crie um arquivo do tipo YAML para definir a quantidade e o tipo de nós no cluster que você deseja.
+To create a cluster with multiple local nodes with kind, create a YAML file to define the number and the type of nodes in the cluster that you want.
 
-No exemplo a seguir, será criado o arquivo ``$HOME/kind-3nodes.yaml`` para especificar um cluster com 1 nó master (que executará o control plane do Kubernetes) e 2 workers (que executará o data plane do Kubernetes).
+In the following example, the file ``$HOME/kind-3nodes.yaml`` will be created to specify a cluster with 1 control-plane node (which will run the Kubernetes control plane) and 2 workers (which will run the Kubernetes data plane).
 
 ```bash
 cat << EOF > $HOME/kind-3nodes.yaml
@@ -1339,7 +1335,7 @@ cat << EOF > $HOME/kind-3nodes.yaml
 # Metal LB in Kind: https://kind.sigs.k8s.io/docs/user/loadbalancer
 # Ingress in Kind: https://kind.sigs.k8s.io/docs/user/ingress
 
-# Config compatible with kind v0.29.0
+# Config compatible with kind v0.33.0
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -1347,7 +1343,7 @@ networking:
   serviceSubnet: "10.96.0.0/12"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
     kubeadmConfigPatches:
     - |
       kind: InitConfiguration
@@ -1364,60 +1360,62 @@ nodes:
       listenAddress: "0.0.0.0" # Optional, defaults to "0.0.0.0"
       protocol: TCP
   - role: worker
-    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
   - role: worker
-    image: kindest/node:v1.33.1@sha256:050072256b9a903bd914c0b2866828150cb229cea0efe5892e2b644d5dd3b34f
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
 EOF
 ```
 
-Crie um cluster chamado ``kind-multinodes`` utilizando as especificações definidas no arquivo ``$HOME/kind-3nodes.yaml``.
+> The image ``kindest/node:v1.37.0`` is the default node image of kind v0.33.0. The kubelet of this image does not start on hosts that use cgroup v1 (error: "kubelet is configured to not run on a host using cgroup v1"). Use a host with cgroup v2.
+
+Create a cluster called ``kind-multinodes`` using the specifications defined in the file ``$HOME/kind-3nodes.yaml``.
 
 ```bash
 kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml
 ```
 
-Para visualizar os seus clusters utilizando o kind, execute o comando a seguir.
+To list your clusters created with kind, run the following command.
 
 ```bash
 kind get clusters
 ```
 
-Para destruir o cluster, execute o seguinte comando que irá selecionar e remover todos os clusters locais criados no Kind.
+To destroy the cluster, run the following command, which will select and remove all local clusters created with kind.
 
 ```bash
 kind delete clusters $(kind get clusters)
 ```
 
-Referências:
+References:
 - https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-1/DescomplicandoKubernetes-Day1.md#kind
 - https://kind.sigs.k8s.io/docs/user/quick-start/
 - https://github.com/kubernetes-sigs/kind/releases
 - https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/#kind-kubernetes-made-easy-in-a-container
 
-Repositório alternativo para uso do kind com nginx-controller, linkerd e outras ferramentas: https://github.com/rafaelperoco/kind
+Alternative repository to use kind with nginx-controller, linkerd and other tools: https://github.com/rafaelperoco/kind
 
-# [OPCIONAL] minikube
+# [OPTIONAL] minikube
 
-Existem alguns cenários (como o híbrido) em que é necessário a utilização de cluster dedicados agnósticos às cloud providers e com a necessidade de VMs dedicadas. Nesse caso a utilização do minikube, é bem vinda.
+There are some scenarios (such as hybrid) where you need dedicated clusters agnostic to the cloud providers and with dedicated VMs. In this case, minikube is a good choice.
 
-Documentação: https://minikube.sigs.k8s.io/docs/
+Documentation: https://minikube.sigs.k8s.io/docs/
 
-Execute os seguintes comandos para instalação:
+Run the following commands to install it:
 
-> Antes de continuar, se tiver o minikube instalado, remova-o com os seguintes comandos:
+> Before continuing, if you have minikube installed, remove it with the following commands:
 
 ```bash
 sudo apt remove minikube
-# ou
+# or
 sudo rm /usr/bin/minikube
-# ou
+# or
 sudo rm /usr/local/bin/minikube
 ```
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="1.36.0"
+VERSION="1.39.0"
 
 asdf plugin list all | grep minikube
 asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
@@ -1425,39 +1423,39 @@ asdf latest minikube
 asdf install minikube $VERSION
 asdf list minikube
 
-# Definindo a versão padrão
-asdf global minikube $VERSION
+# Setting the default version
+asdf set -u minikube $VERSION
 asdf list minikube
 ```
 
-Para iniciar um cluster com 2 nodes e utilizando a versão 1.30.2 do kubernetes, pode ser utilizado o seguinte comando:
+To start a cluster with 2 nodes using the version 1.37.0 of Kubernetes (the default version of minikube 1.39.0), you can use the following command:
 
-> O driver default do minikube é o docker.
+> The default driver of minikube is docker.
 
 ```bash
-minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.33.1
+minikube start --driver=docker --nodes 2 --profile multi-node --kubernetes-version=v1.37.0
 ```
 
-Para adicionar um novo node ao cluster execute:
+To add a new node to the cluster, run:
 
 ```bash
 minikube node add --worker --profile multi-node
 ```
 
-Para destruir o cluster execute o seguinte comando:
+To destroy the cluster, run the following command:
 
 ```bash
 minikube delete --all
 ```
 
-# [OPCIONAL] trivy
+# [OPTIONAL] trivy
 
-Instalando trivy via asdf
+Installing trivy via asdf
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="0.65.0"
+VERSION="0.75.0"
 
 asdf plugin list all | grep trivy
 asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
@@ -1466,30 +1464,30 @@ asdf latest trivy
 asdf install trivy $VERSION
 asdf list trivy
 
-# Definindo a versão padrão
-asdf global trivy $VERSION
+# Setting the default version
+asdf set -u trivy $VERSION
 asdf list trivy
 ```
 
-## Instalando trivy via Docker
+## Installing trivy via Docker
 
-Para realizar um scan de vulnerabilidades de imagens Docker localmente, antes de enviar para o Docker Hub, ECR, GCR ou outro registry remoto, você pode utilizar o trivy: https://github.com/aquasecurity/trivy
+To scan Docker images for vulnerabilities locally, before pushing them to Docker Hub, ECR, GCR or another remote registry, you can use trivy: https://github.com/aquasecurity/trivy
 
-A documentação no GitHub apresenta as informações sobre a instalação no Ubuntu e outras distribuições GNU/Linux e/ou outros sistemas operacionais, mas também é possível executar via Docker utilizando os seguintes comandos:
+The documentation on GitHub shows how to install it on Ubuntu and other GNU/Linux distributions and/or other operating systems, but it is also possible to run it via Docker using the following commands:
 
 ```bash
 mkdir /tmp/caches
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/root/.cache/ aquasec/trivy image IMAGE_NAME:IMAGE_TAG
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/root/.cache/ aquasec/trivy:0.75.0 image IMAGE_NAME:IMAGE_TAG
 ```
 
-# [OPCIONAL] tflint
+# [OPTIONAL] tflint
 
-Instalando tflint via asdf
+Installing tflint via asdf
 
-> Antes de prosseguir, certifique-se de ter instalado o comando [asdf](#asdf).
+> Before proceeding, make sure you have installed the [asdf](#asdf) command.
 
 ```bash
-VERSION="0.58.1"
+VERSION="0.64.0"
 
 asdf plugin list all | grep tflint
 asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
@@ -1498,7 +1496,7 @@ asdf latest tflint
 asdf install tflint $VERSION
 asdf list tflint
 
-# Definindo a versão padrão
-asdf global tflint $VERSION
+# Setting the default version
+asdf set -u tflint $VERSION
 asdf list tflint
 ```
