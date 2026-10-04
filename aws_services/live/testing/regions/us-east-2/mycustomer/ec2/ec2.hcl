@@ -13,11 +13,14 @@ terraform {
 inputs = {
   name   = local.instance_name
   create = true
-  # Ubuntu 24.04 64 bits AMD64 HVM SSD.
-  # References: 
-  #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
+  # Ubuntu 26.04 LTS 64 bits AMD64 HVM (gp3). The AMI ID is read from the public SSM parameter maintained
+  # by Canonical, which always points to the current Ubuntu 26.04 AMI of the region.
+  # References:
+  #   https://documentation.ubuntu.com/aws/aws-how-to/instances/find-ubuntu-images/
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  ami = "ami-0cb91c7de36eed2cb"
+  ami_ssm_parameter = "/aws/service/canonical/ubuntu/server/26.04/stable/current/amd64/hvm/ebs-gp3/ami-id"
+  # Do not replace the instance when Canonical publishes a new AMI
+  ignore_ami_changes = true
   # Reference: https://aws.amazon.com/ec2/instance-types/
   instance_type = "t3.medium"
 

@@ -36,7 +36,10 @@
   - [Other Kubetools](#other-kubetools)
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
-- [lens](#lens)
+- [Kubernetes desktop clients](#kubernetes-desktop-clients)
+  - [FreeLens](#freelens)
+  - [Headlamp](#headlamp)
+  - [kubeterm](#kubeterm)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
 - [qq](#qq)
@@ -258,7 +261,7 @@ Source:
 
 # Python and uv
 
-Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise:
+Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise. mise installs precompiled Python binaries (python-build-standalone), so it is not necessary to install the system dependencies to compile Python.
 
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
@@ -442,15 +445,29 @@ gcloud auth application-default login
 
 # Go
 
-Run the following command to install Go.
+Install Go with mise.
 
-> Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
-
-```bash
-brew install go
-```
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://go.dev/doc/
+
+```bash
+VERSION="1.27.1"
+
+mise ls-remote go | tail
+mise latest go
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g go@$VERSION
+mise ls go
+
+go version
+go env GOROOT GOBIN
+```
+
+> mise sets ``GOROOT`` and, by default, ``GOBIN`` to the ``bin`` directory of the Go version installed by mise, which is in the ``PATH`` while mise is active. So the binaries installed with ``go install`` are available without changing the ``PATH``. More info: https://mise.jdx.dev/lang/go.html
+
+> If you installed Go before in ``/usr/local/go`` (tarball) or with a package manager, remove it and the ``GOPATH``/``PATH`` lines added for it in the shell configuration file, to avoid using the wrong version.
 
 # Helm
 
@@ -800,19 +817,49 @@ mise use -g k9s@$VERSION
 mise ls k9s
 ```
 
-# lens
+# Kubernetes desktop clients
 
-Lens is an IDE to control your Kubernetes clusters.
-
-Install Lens with the following command:
+Desktop applications to view and manage Kubernetes clusters. They use the ``~/.kube/config`` file (the same contexts of ``kubectl``) and do not require anything installed in the cluster.
 
 > Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
 
+## FreeLens
+
+[FreeLens](https://freelensapp.github.io/) is a free and open source IDE for Kubernetes (a fork of the open source version of Lens).
+
 ```bash
-brew install --cask lens
+brew install --cask freelens
 ```
 
-More information at: https://k8slens.dev/
+More information at:
+- https://freelensapp.github.io/
+- https://github.com/freelensapp/freelens#macos
+
+## Headlamp
+
+[Headlamp](https://headlamp.dev/) is a Kubernetes web UI and desktop application of the Kubernetes project (``kubernetes-sigs``), extensible with plugins.
+
+```bash
+brew install --cask headlamp
+```
+
+More information at:
+- https://headlamp.dev/
+- https://headlamp.dev/docs/latest/installation/desktop/mac-installation
+
+## kubeterm
+
+[kubeterm](https://github.com/kbterm/kubeterm) is a graphical management tool for Kubernetes clusters, available for desktop and mobile devices.
+
+```bash
+brew install --cask kubeterm
+```
+
+> kubeterm is also available on the App Store, but that build runs in the App Sandbox and cannot run the credential plugins (``exec`` blocks) of the kubeconfig (for example, ``aws eks get-token`` and ``gke-gcloud-auth-plugin``). Use the Homebrew (or GitHub releases) build if you need them.
+
+More information at:
+- https://github.com/kbterm/kubeterm
+- https://www.kubeterm.com/
 
 # Postman
 

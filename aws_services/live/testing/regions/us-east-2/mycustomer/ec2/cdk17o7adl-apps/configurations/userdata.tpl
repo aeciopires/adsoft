@@ -27,8 +27,8 @@ sudo docker compose up -d --build
 cd ../app_crud_api || exit 1
 sudo docker compose up -d --build
 
-# Install Node Exporter
-curl -sSL https://cloudesire.github.io/node-exporter-installer/install.sh | sudo sh
+# Install Node Exporter (package of Ubuntu, listens on port 9100)
+sudo apt install -y prometheus-node-exporter
 
 # Install cAdvisor
 # https://github.com/google/cadvisor
