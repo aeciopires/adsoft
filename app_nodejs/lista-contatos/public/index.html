@@ -1,94 +1,91 @@
 <!-- index.html -->
 <!doctype html>
- 
-<!-- ESPECIFICANDO NOSSO MÓDULO ANGULAR listaContatos -->
-<html ng-app="listaContatos">
+
+<!-- DEFINE OUR ANGULAR MODULE contactList -->
+<html ng-app="contactList">
 <head>
     <!-- META -->
     <meta charset="utf-8">
-    <!-- Otimizar a exibição em dispositivos móveis -->
+    <!-- Optimize the view on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
- 
-    <title>Lista de Contatos</title>
- 
+
+    <title>Contact List</title>
+
     <!-- CSS -->
-    <!-- Carregando o bootstrap-->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <!-- Load Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
     <style>
         html                    { overflow-y:scroll; }
         body                    { padding-top:50px; }
-        #lista-contatos         { margin-bottom:30px; }
+        #contact-list           { margin-bottom:30px; }
         form button             { margin-top: 25px; }
         form .form-group:first-child { padding-left: 0; }
     </style>
- 
+
     <!-- JS -->
-    <!-- Carregando a biblioteca jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <!-- Carregando a biblioteca AngularJS -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <!-- Load the AngularJS library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="angularApp.js"></script>
- 
+
 </head>
-<!-- DEFINE O CONTROLLER E BUSCA TODOS OS CONTATOS -->
+<!-- DEFINE THE CONTROLLER AND GET ALL THE CONTACTS -->
 <body ng-controller="mainController">
     <div class="container">
- 
-        <!-- CABEÇALHO E TOTAL DE CONTATOS -->
+
+        <!-- HEADER AND TOTAL OF CONTACTS -->
         <div class="jumbotron text-center">
-            <h1>Lista de Contatos <span class="label label-info">{{ contatos.length }}</span></h1>
+            <h1>Contact List <span class="label label-info">{{ contacts.length }}</span></h1>
         </div>
- 
-        <!-- LISTA NOSSOS CONTATOS -->
-        <div id="lista-contatos">
+
+        <!-- LIST OUR CONTACTS -->
+        <div id="contact-list">
             <table class="table table-striped">
- 
+
                 <tr>
-                    <th>Nome</th>
+                    <th>Name</th>
                     <th>E-mail</th>
-                    <th>Telefone</th>
-                    <th>Opções</th>
+                    <th>Phone</th>
+                    <th>Options</th>
                 </tr>
- 
-                <!-- LOOP PARA CARREGAR TODOS OS CONTATOS EM $scope.contatos -->
-                <tr ng-repeat="contato in contatos">
-                    <td>{{ contato.nome }}</td>
-                    <td>{{ contato.email }}</td>
-                    <td>{{ contato.telefone }}</td>
+
+                <!-- LOOP TO SHOW ALL THE CONTACTS IN $scope.contacts -->
+                <tr ng-repeat="contact in contacts">
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.phone }}</td>
                     <td>
-                        <button type="button" class="btn btn-default" ng-click="editarContato(contato._id)">Editar</button>
-                        <button type="button" class="btn btn-primary" ng-click="deletarContato(contato._id)">Remover</button>
+                        <button type="button" class="btn btn-default" ng-click="editContact(contact._id)">Edit</button>
+                        <button type="button" class="btn btn-primary" ng-click="deleteContact(contact._id)">Remove</button>
                     </td>
                 </tr>
- 
+
             </table>
         </div>
- 
-        <!-- FORMULÁRIO PARA CRIARMOS UM NOVO CONTATO -->
-        <div id="contato-form">
+
+        <!-- FORM TO CREATE A NEW CONTACT -->
+        <div id="contact-form">
             <hr>
             <form>
                 <div class="form-group col-md-3">
-                    <label for="nomeContato">Nome</label>
-                    <input type="text" class="form-control" id="nomeContato" placeholder="Nome Sobrenome" ng-model="formContato.nome">
+                    <label for="contactName">Name</label>
+                    <input type="text" class="form-control" id="contactName" placeholder="First Last" ng-model="formContact.name">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="emailContato">E-mail</label>
-                    <input type="text" class="form-control" id="emailContato" placeholder="exemplo@exemplo.com" ng-model="formContato.email">
+                    <label for="contactEmail">E-mail</label>
+                    <input type="text" class="form-control" id="contactEmail" placeholder="example@example.com" ng-model="formContact.email">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="telefoneContato">Telefone</label>
-                    <input type="text" class="form-control" id="telefoneContato" placeholder="(00) 0000-0000" ng-model="formContato.telefone">
+                    <label for="contactPhone">Phone</label>
+                    <input type="text" class="form-control" id="contactPhone" placeholder="(00) 0000-0000" ng-model="formContact.phone">
                 </div>
                 <div class="form-group col-md-3">
-                    <!-- createToDo() WILL CREATE NEW TODOS -->
-                    <button type="submit" class="btn btn-primary" ng-click="criarContato()">Criar</button>
-                    <button type="submit" class="btn btn-info" ng-click="atualizarContato()">Atualizar</button>
+                    <button type="submit" class="btn btn-primary" ng-click="createContact()">Create</button>
+                    <button type="submit" class="btn btn-info" ng-click="updateContact()">Update</button>
                 </div>
             </form>
         </div>
- 
+
     </div>
- 
+
 </body>
 </html>

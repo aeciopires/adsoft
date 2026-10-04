@@ -1,12 +1,23 @@
 {
   "name": "crud-api",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.1.0",
+  "description": "Simple CRUD API with Node.js, Express and MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon -L --watch . index.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.10.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
 }

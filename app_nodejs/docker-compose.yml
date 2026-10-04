@@ -1,28 +1,29 @@
-version: '3.7'
 services:
   app:
     container_name: app
     build:
       context: '.'
       args:
-        APP_VERSION: "1.0.0"
+        APP_VERSION: "1.1.0"
         APP_PROFILE: "prod"
         ENABLE_SECURITY: "false"
-    image: adsoft/app:1.0.0
+    image: adsoft/app:1.1.0
+    environment:
+      MONGODB_URI: "mongodb://db:27017/contact"
     ports:
       - "8080:8080"
     depends_on:
       - "db"
+    restart: always
   db:
     container_name: db_app
-    image: mongo:4
-    # New sintax for declare ports for docker-compose 3.2 or major
-    # https://docs.docker.com/compose/compose-file/#ports
+    image: mongo:8.0
+    # Long syntax to declare ports
+    # https://docs.docker.com/reference/compose-file/services/#ports
     ports:
       - target: 27017    # container
         published: 27017 # host
         protocol: tcp
-        mode: bridge
     volumes:
       - /docker/adsoft/db_app_nodejs:/data/db
     restart: always

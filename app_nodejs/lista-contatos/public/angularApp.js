@@ -1,66 +1,58 @@
-// Criamos um módulo Angular chamado listaContatos
-var listaContatos = angular.module('listaContatos', []);
- 
-function mainController($scope, $http) {    
- 
-    // Quando acessar a página, carrega todos os contatos e envia para a view($scope)
-    var refresh = function (){
-        $http.get('/api/contatos')
-            .success(function(data) {
-                $scope.contatos = data;
-                $scope.formContato = {};
-                console.log("contatos: ", data);
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
+// Create an Angular module called contactList
+var contactList = angular.module('contactList', []);
+
+contactList.controller('mainController', ['$scope', '$http', function ($scope, $http) {
+
+    function logError(response) {
+        console.log('Error: ', response.data);
+    }
+
+    // When the page is loaded, get all the contacts and send them to the view ($scope)
+    var refresh = function () {
+        $http.get('/api/contacts')
+            .then(function (response) {
+                $scope.contacts = response.data;
+                $scope.formContact = {};
+                console.log('contacts: ', response.data);
+            }, logError);
     };
     refresh();
- 
-    // Quando clicar no botão Criar, envia informações para a API Node
-    $scope.criarContato = function() {
-        $http.post('/api/contatos', $scope.formContato)
-            .success(function(data) {
-                // Limpa o formulário para criação de outros contatos
-                $scope.formContato = {};
-                $scope.contatos = data;
-                console.log(data);
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
+
+    // When the Create button is clicked, send the data to the Node API
+    $scope.createContact = function () {
+        $http.post('/api/contacts', $scope.formContact)
+            .then(function (response) {
+                // Clear the form to create other contacts
+                $scope.formContact = {};
+                $scope.contacts = response.data;
+                console.log(response.data);
+            }, logError);
     };
- 
-    // Ao clicar no botão Remover, deleta o contato
-    $scope.deletarContato = function(id) {
-        $http.delete('/api/contatos/' + id)
-            .success(function(data) {
-                $scope.contatos = data;
-                console.log(data);
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
+
+    // When the Remove button is clicked, delete the contact
+    $scope.deleteContact = function (id) {
+        $http.delete('/api/contacts/' + id)
+            .then(function (response) {
+                $scope.contacts = response.data;
+                console.log(response.data);
+            }, logError);
     };
- 
-    // Ao clicar no botão Editar, edita o contato
-    $scope.editarContato = function(id) {
-        $http.get('/api/contatos/' + id)
-            .success(function(data) {
-                $scope.formContato = data;
-                console.log(data);
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
+
+    // When the Edit button is clicked, load the contact in the form
+    $scope.editContact = function (id) {
+        $http.get('/api/contacts/' + id)
+            .then(function (response) {
+                $scope.formContact = response.data;
+                console.log(response.data);
+            }, logError);
     };
- 
-    // Recebe o JSON do contato para edição e atualiza
-    $scope.atualizarContato = function() {        
-        $http.put('/api/contatos/' + $scope.formContato._id, $scope.formContato)
-        .success( function(response){
-            refresh();
-        });
+
+    // Send the contact being edited to the API and update the list
+    $scope.updateContact = function () {
+        $http.put('/api/contacts/' + $scope.formContact._id, $scope.formContact)
+            .then(function () {
+                refresh();
+            }, logError);
     };
- 
-}
+
+}]);
