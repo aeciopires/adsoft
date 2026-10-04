@@ -2,8 +2,9 @@
 fullnameOverride: blackbox-exporter
 
 image:
-  repository: prom/blackbox-exporter
-  tag: v0.23.0
+  registry: quay.io
+  repository: prometheus/blackbox-exporter
+  tag: v0.28.0
   pullPolicy: IfNotPresent
 
 config:

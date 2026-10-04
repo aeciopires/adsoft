@@ -17,6 +17,7 @@
 #####
 # COLORS
 #####
+# shellcheck disable=SC2034
 readonly        BLACK=$'\033[0;30m'
 readonly  LIGHT_BLACK=$'\033[1;30m'
 readonly          RED=$'\033[1;31m'
@@ -62,20 +63,19 @@ function retry() {
 
   # Creates a read-only local variable of integer type
   local -r -i max_attempts="$1"; shift
-  # Create a read-only local variable
-  local -r command="$@"
   # Create a local variable of integer type
   local -i attempt_num=1
   local -i time_seconds=30
 
 
-  until $command; do
+  until "$@"; do
     if (( attempt_num == max_attempts )); then
       echo "[ERROR] Attempt $attempt_num failed and there are no more attempts left!"
       return 1
     else
       echo "[WARNING] Attempt $attempt_num failed! Trying again in $time_seconds seconds..."
       sleep $time_seconds
+      attempt_num=$(( attempt_num + 1 ))
     fi
   done
 }
@@ -151,9 +151,9 @@ function checkCommand() {
   #####
   # Function variables
   #####
-  local commands="$@"
+  local commands=("$@")
 
-  for command in $commands ; do
+  for command in "${commands[@]}" ; do
     if ! type "$command" > /dev/null 2>&1; then
       echo "[ERROR] Command '$command' not found."
       exit 4
@@ -169,13 +169,9 @@ function checkCommand() {
 #
 existfiles(){
 
-  # echo --
-  # echo FILES=$@
-  OK=YES
   for file in "$@" ; do
     if [ ! -f "$file" ] ; then
       echo "[ERROR] File '$file' not found."
-      OK=NO
       exit 1
     fi
   done
@@ -200,7 +196,7 @@ function checkVariable() {
   local variable_name="$1";
   shift # will remove first arg from the "$@"
   local value=("$@");
-  local debug="${DEBUG}"
+  local debug="${DEBUG:-false}"
 
   if [ -z "${value[*]}" ] ; then
     echo "[ERROR] The variable $variable_name is empty."
@@ -242,7 +238,7 @@ function printRedMessage() {
 #
 function toupper() {
 
-  tr '[a-z]' '[A-Z]' <<< $*
+  tr '[:lower:]' '[:upper:]' <<< "$*"
 }
 
 
@@ -254,7 +250,7 @@ function toupper() {
 #
 function tolower() {
 
-  echo $* | tr '[A-Z]' '[a-z]'
+  echo "$*" | tr '[:upper:]' '[:lower:]'
 }
 
 
@@ -274,7 +270,8 @@ function createLockBucketS3() {
   local s3_bucket="$3"
   local lock_key="$4"
   local lock_string_content="$5"
-  local temp_file=$(mktemp)
+  local temp_file
+  temp_file=$(mktemp)
 
   # Checking if variable is empty
   checkVariable aws_account "$aws_account"
@@ -351,7 +348,7 @@ function listLockBucketS3() {
   string_lock=$(aws s3 cp --profile "$aws_account" --region "$aws_region" "s3://${s3_bucket}/${lock_key}" - | head)
   echo "[WARNING] Cluster in use: $string_lock."
   echo "Other script, pipeline, job or process is updating this cluster."
-  echo "Please wait some minutes. Take a coffe, coke, juice, beer, tea or other drink!!! Cheers :-) :-D ;-) :-P \o/"
+  echo "Please wait some minutes. Take a coffee, coke, juice, beer, tea or other drink!!! Cheers :-) :-D ;-) :-P \o/"
 }
 
 
@@ -383,30 +380,32 @@ function validateLockBucketS3() {
   # Check AWS access
   checkAWSAccess "$aws_account"
 
-  echo "[INFO] Valitating lock in AWS_S3_BUCKET='$s3_bucket', FILE='$lock_key', AWS_REGION='$aws_region', AWS_ACCOUNT='$aws_account'..."
+  echo "[INFO] Validating lock in AWS_S3_BUCKET='$s3_bucket', FILE='$lock_key', AWS_REGION='$aws_region', AWS_ACCOUNT='$aws_account'..."
 
   # Check if the file exists on S3
   if aws s3api head-object --profile "$aws_account" --region "$aws_region" --bucket "$s3_bucket" --key "$lock_key" 2>/dev/null; then
     # Gets the last modified date of the file
-    local last_modification=$(aws s3api head-object --profile "$aws_account" --region "$aws_region" --bucket "$s3_bucket" --key "$lock_key" --query "LastModified" --output text)
+    local last_modification
+    last_modification=$(aws s3api head-object --profile "$aws_account" --region "$aws_region" --bucket "$s3_bucket" --key "$lock_key" --query "LastModified" --output text)
 
     # Calculates the time elapsed since the last modification
-    local elapsed_time=$(( $(date +%s) - $(date -d "$last_modification" +%s) ))
+    local elapsed_time
+    elapsed_time=$(( $(date +%s) - $(date -d "$last_modification" +%s) ))
 
-    # Verifica se o tempo decorrido é menor que o tempo máximo permitido
+    # Check if the elapsed time is less than the maximum allowed time
     if [ "$elapsed_time" -le "$lock_max_time" ]; then
-      difference_time=$(echo "$lock_max_time" - "$elapsed_time" | bc)
+      difference_time=$(( lock_max_time - elapsed_time ))
       echo "[ERROR] The lock still is valid. Check again after $difference_time seconds."
       listLockBucketS3 "$aws_account" "$aws_region" "$s3_bucket" "$lock_key"
       exit 9
     else
       echo "[WARNING] The lock expired."
-      echo "[INFO] Trying to acquire lock in AWS_S3_BUCKET='$LOCK_S3_BUCKET', FILE='$LOCK_KEY_FILE', AWS_REGION='$LOCK_S3_REGION', AWS_ACCOUNT='$LOCK_AWS_S3_ACCOUNT'..."
+      echo "[INFO] Trying to acquire lock in AWS_S3_BUCKET='$s3_bucket', FILE='$lock_key', AWS_REGION='$aws_region', AWS_ACCOUNT='$aws_account'..."
       createLockBucketS3 "$aws_account" "$aws_region" "$s3_bucket" "$lock_key" "$lock_string_content"
     fi
   else
     echo "[WARNING] The lock not exists."
-    echo "[INFO] Trying to acquire lock in AWS_S3_BUCKET='$LOCK_S3_BUCKET', FILE='$LOCK_KEY_FILE', AWS_REGION='$LOCK_S3_REGION', AWS_ACCOUNT='$LOCK_AWS_S3_ACCOUNT'..."
+    echo "[INFO] Trying to acquire lock in AWS_S3_BUCKET='$s3_bucket', FILE='$lock_key', AWS_REGION='$aws_region', AWS_ACCOUNT='$aws_account'..."
     createLockBucketS3 "$aws_account" "$aws_region" "$s3_bucket" "$lock_key" "$lock_string_content"
   fi
 }
@@ -568,10 +567,11 @@ function checkK8sVersion() {
   # Function variables
   #####
   local versions_supported=("$@")
-  local debug="${DEBUG}"
+  local debug="${DEBUG:-false}"
 
   echo "[INFO] Check Kubernetes version..."
-  cluster_version=$(kubectl version --short 2> /dev/null | grep Server | cut -d":" -f2 | cut -d " " -f2)
+  # The '--short' flag was removed from 'kubectl version' in kubectl 1.28
+  cluster_version=$(kubectl version 2> /dev/null | awk '/^Server Version:/ {print $3}')
 
   if [ "$debug" == true ]; then
     echo "[DEBUG] KUBERNETES_VERSION_SUPPORTED: ${versions_supported[*]}"
