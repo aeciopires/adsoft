@@ -9,6 +9,7 @@
 - [ansible](#ansible)
 - [awscli](#awscli)
 - [bat](#bat)
+- [dbeaver (Database client)](#dbeaver-database-client)
 - [docker](#docker)
 - [docker compose](#docker-compose)
 - [gcloud](#gcloud)
@@ -34,7 +35,10 @@
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
 - [kustomize](#kustomize)
-- [lens](#lens)
+- [Kubernetes desktop clients](#kubernetes-desktop-clients)
+  - [FreeLens](#freelens)
+  - [Headlamp](#headlamp)
+  - [kubeterm](#kubeterm)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
 - [Custom Terminal Prompt](#custom-terminal-prompt)
@@ -291,6 +295,30 @@ echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
 ```
 
 More information at: https://github.com/sharkdp/bat
+
+# dbeaver (Database client)
+
+DBeaver is a free multi-platform database tool. It supports all popular SQL databases like MySQL, MariaDB, PostgreSQL, SQLite, Apache Family and more.
+
+Install DBeaver Community with the ``.deb`` package of the GitHub releases (``x86_64`` or ``aarch64``). The package includes the Java runtime (OpenJDK).
+
+```bash
+VERSION="26.2.1"
+ARCH="x86_64"   # use aarch64 on ARM
+
+cd /tmp
+curl -fLO https://github.com/dbeaver/dbeaver/releases/download/${VERSION}/dbeaver-ce-${VERSION}-linux-${ARCH}.deb
+sudo apt install -y ./dbeaver-ce-${VERSION}-linux-${ARCH}.deb
+rm dbeaver-ce-${VERSION}-linux-${ARCH}.deb
+
+dbeaver &
+```
+
+> Alternatively, install DBeaver with Snap: ``sudo snap install dbeaver-ce``.
+
+More information:
+- https://dbeaver.io/download/
+- https://github.com/dbeaver/dbeaver/wiki/Installation
 
 # docker
 
@@ -836,22 +864,71 @@ mise use -g kustomize@$VERSION
 mise ls kustomize
 ```
 
-# lens
+# Kubernetes desktop clients
 
-Lens is an IDE to control your Kubernetes clusters.
+Desktop applications to view and manage Kubernetes clusters. They use the ``~/.kube/config`` file (the same contexts of ``kubectl``) and do not require anything installed in the cluster.
 
-Install Lens Desktop using the APT repository with the following commands:
+## FreeLens
+
+[FreeLens](https://freelensapp.github.io/) is a free and open source IDE for Kubernetes (a fork of the open source version of Lens).
+
+Install FreeLens using the official APT repository with the following commands:
 
 ```bash
-curl -fsSL https://downloads.k8slens.dev/keys/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/lens-archive-keyring.gpg > /dev/null
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/lens-archive-keyring.gpg] https://downloads.k8slens.dev/apt/debian stable main" | sudo tee /etc/apt/sources.list.d/lens.list > /dev/null
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc > /dev/null
+curl -fsSL https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.sources | sudo tee /etc/apt/sources.list.d/freelens.sources > /dev/null
 sudo apt update
-sudo apt install -y lens
+sudo apt install -y freelens
 ```
 
+> Alternatively, install FreeLens with Snap (``sudo snap install freelens --classic``) or Flatpak (``flatpak install flathub app.freelens.Freelens``).
+
 More information at:
-- https://k8slens.dev/
-- https://docs.k8slens.dev/getting-started/install-lens/
+- https://freelensapp.github.io/
+- https://github.com/freelensapp/freelens#linux
+
+## Headlamp
+
+[Headlamp](https://headlamp.dev/) is a Kubernetes web UI and desktop application of the Kubernetes project (``kubernetes-sigs``), extensible with plugins.
+
+Install Headlamp with the ``.deb`` package (amd64) of the GitHub releases:
+
+```bash
+VERSION="0.45.0"
+
+cd /tmp
+curl -fLO https://github.com/kubernetes-sigs/headlamp/releases/download/v${VERSION}/headlamp_${VERSION}-1_amd64.deb
+sudo apt install -y ./headlamp_${VERSION}-1_amd64.deb
+rm headlamp_${VERSION}-1_amd64.deb
+```
+
+> Alternatively, install Headlamp with Flatpak (``flatpak install flathub io.kinvolk.Headlamp``) or use the AppImage and tarball files (amd64, arm64 and armv7l) of the [releases page](https://github.com/kubernetes-sigs/headlamp/releases).
+
+More information at:
+- https://headlamp.dev/
+- https://headlamp.dev/docs/latest/installation/desktop/linux-installation
+
+## kubeterm
+
+[kubeterm](https://github.com/kbterm/kubeterm) is a graphical management tool for Kubernetes clusters, available for desktop and mobile devices.
+
+Install kubeterm with the ``.deb`` package (x86_64) of the GitHub releases:
+
+```bash
+VERSION="2.8.1"
+
+cd /tmp
+curl -fLO https://github.com/kbterm/kubeterm/releases/download/v${VERSION}/kubeterm-${VERSION}-x86_64.deb
+sudo apt install -y ./kubeterm-${VERSION}-x86_64.deb
+rm kubeterm-${VERSION}-x86_64.deb
+```
+
+> An AppImage file (x86_64) is also available on the [releases page](https://github.com/kbterm/kubeterm/releases).
+
+More information at:
+- https://github.com/kbterm/kubeterm
+- https://www.kubeterm.com/
 
 # Postman
 

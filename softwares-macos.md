@@ -36,7 +36,10 @@
   - [Other Kubetools](#other-kubetools)
 - [kubeshark](#kubeshark)
 - [k9s](#k9s)
-- [lens](#lens)
+- [Kubernetes desktop clients](#kubernetes-desktop-clients)
+  - [FreeLens](#freelens)
+  - [Headlamp](#headlamp)
+  - [kubeterm](#kubeterm)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
 - [qq](#qq)
@@ -814,19 +817,49 @@ mise use -g k9s@$VERSION
 mise ls k9s
 ```
 
-# lens
+# Kubernetes desktop clients
 
-Lens is an IDE to control your Kubernetes clusters.
-
-Install Lens with the following command:
+Desktop applications to view and manage Kubernetes clusters. They use the ``~/.kube/config`` file (the same contexts of ``kubectl``) and do not require anything installed in the cluster.
 
 > Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
 
+## FreeLens
+
+[FreeLens](https://freelensapp.github.io/) is a free and open source IDE for Kubernetes (a fork of the open source version of Lens).
+
 ```bash
-brew install --cask lens
+brew install --cask freelens
 ```
 
-More information at: https://k8slens.dev/
+More information at:
+- https://freelensapp.github.io/
+- https://github.com/freelensapp/freelens#macos
+
+## Headlamp
+
+[Headlamp](https://headlamp.dev/) is a Kubernetes web UI and desktop application of the Kubernetes project (``kubernetes-sigs``), extensible with plugins.
+
+```bash
+brew install --cask headlamp
+```
+
+More information at:
+- https://headlamp.dev/
+- https://headlamp.dev/docs/latest/installation/desktop/mac-installation
+
+## kubeterm
+
+[kubeterm](https://github.com/kbterm/kubeterm) is a graphical management tool for Kubernetes clusters, available for desktop and mobile devices.
+
+```bash
+brew install --cask kubeterm
+```
+
+> kubeterm is also available on the App Store, but that build runs in the App Sandbox and cannot run the credential plugins (``exec`` blocks) of the kubeconfig (for example, ``aws eks get-token`` and ``gke-gcloud-auth-plugin``). Use the Homebrew (or GitHub releases) build if you need them.
+
+More information at:
+- https://github.com/kbterm/kubeterm
+- https://www.kubeterm.com/
 
 # Postman
 
