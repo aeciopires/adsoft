@@ -48,6 +48,7 @@
 - [yq](#yq)
 - [tig](#tig)
 - [ec2-instance-selector](#ec2-instance-selector)
+- [Claude Code (claude CLI)](#claude-code-claude-cli)
 - [\[OPTIONAL\] Useful aliases](#optional-useful-aliases)
   - [bashrc](#bashrc)
 - [\[OPTIONAL\] Clipboard Indicator](#optional-clipboard-indicator)
@@ -1156,6 +1157,46 @@ sudo curl -Lo /usr/local/bin/ec2-instance-selector https://github.com/aws/amazon
 sudo chmod +x /usr/local/bin/ec2-instance-selector
 ec2-instance-selector --help
 ```
+
+# Claude Code (claude CLI)
+
+[Claude Code](https://code.claude.com/docs/en/overview) is the AI coding assistant of Anthropic that runs in the terminal (command ``claude``). It requires a Pro, Max, Team, Enterprise or Console account.
+
+Install with the native installer (recommended, updates automatically in the background):
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Alternatively, install with the apt repository of Anthropic (stable channel, updated with ``sudo apt update && sudo apt upgrade claude-code``):
+
+```bash
+sudo apt install -y curl gnupg
+sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSL https://downloads.claude.ai/keys/claude-code.asc -o /etc/apt/keyrings/claude-code.asc
+# The fingerprint must be 31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE
+gpg --show-keys /etc/apt/keyrings/claude-code.asc
+
+echo "deb [signed-by=/etc/apt/keyrings/claude-code.asc] https://downloads.claude.ai/claude-code/apt/stable stable main" \
+  | sudo tee /etc/apt/sources.list.d/claude-code.list
+sudo apt update
+sudo apt install -y claude-code
+```
+
+Check the installation and log in:
+
+```bash
+claude --version
+claude doctor
+
+# Start Claude Code in the directory of a project and follow the instructions to log in
+cd ~/git/adsoft
+claude
+```
+
+> If the ``claude`` command is not found after the native installation, add ``$HOME/.local/bin`` to the ``PATH`` in ``$HOME/.bashrc``: ``echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc``.
+
+Source: https://code.claude.com/docs/en/setup
 
 # [OPTIONAL] Useful aliases
 

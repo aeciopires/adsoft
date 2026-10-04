@@ -2,14 +2,17 @@
 
 - [MacOS](#macos)
   - [Homebrew](#homebrew)
-  - [Essentials](#essentials)
+- [iTerm2](#iterm2)
+- [Zsh and oh-my-zsh](#zsh-and-oh-my-zsh)
+  - [Spaceship theme](#spaceship-theme)
+- [Essentials](#essentials)
 - [Git](#git)
 - [mise](#mise)
+- [Python and uv](#python-and-uv)
 - [awscli](#awscli)
 - [bat](#bat)
 - [dbeaver (Database client)](#dbeaver-database-client)
-- [docker](#docker)
-- [docker compose](#docker-compose)
+- [Colima, docker and docker compose](#colima-docker-and-docker-compose)
 - [gcloud](#gcloud)
 - [Go](#go)
 - [Helm](#helm)
@@ -36,8 +39,6 @@
 - [lens](#lens)
 - [Postman](#postman)
 - [pre-commit](#pre-commit)
-- [Custom Terminal Prompt](#custom-terminal-prompt)
-  - [bash\_prompt](#bash_prompt)
 - [qq](#qq)
 - [ShellCheck](#shellcheck)
 - [Sops](#sops)
@@ -47,8 +48,10 @@
 - [Vault](#vault)
 - [yq](#yq)
 - [tig](#tig)
+- [Claude Code (claude CLI)](#claude-code-claude-cli)
+- [Keka](#keka)
 - [\[OPTIONAL\] Useful aliases](#optional-useful-aliases)
-  - [bashrc](#bashrc)
+  - [zshrc](#zshrc)
 - [\[OPTIONAL\] Lightshot](#optional-lightshot)
 - [\[OPTIONAL\] kind](#optional-kind)
 - [\[OPTIONAL\] minikube](#optional-minikube)
@@ -67,14 +70,81 @@ Install Homebrew with the following command:
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "/Users/$USER/.bash_profile"
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "/Users/$USER/.zprofile"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
 Source: https://brew.sh/
 
-## Essentials
+# iTerm2
+
+[iTerm2](https://iterm2.com) is the terminal used in this guide (it replaces the Terminal app of macOS).
+
+> Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
+
+```bash
+brew install --cask iterm2
+```
+
+Open iTerm2 and use it to run the commands of the next sections.
+
+# Zsh and oh-my-zsh
+
+Zsh is the default shell of macOS since macOS Catalina. This guide uses Zsh and its configuration file ``$HOME/.zshrc``. Check the shell in use and, if needed, change it to Zsh:
+
+```bash
+echo $SHELL
+chsh -s /bin/zsh
+```
+
+Install [oh-my-zsh](https://ohmyz.sh), a framework to manage the Zsh configuration (themes and plugins):
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+> The installer creates a new ``$HOME/.zshrc`` file (the old one is saved as ``$HOME/.zshrc.pre-oh-my-zsh``). Run the oh-my-zsh installer before adding the configurations of the other sections of this guide to ``$HOME/.zshrc``.
+
+Enable the following oh-my-zsh plugins, changing the line ``plugins=(git)`` of the ``$HOME/.zshrc`` file to:
+
+```bash
+plugins=(git mise kubectl docker helm terraform uv)
+```
+
+> Each plugin adds aliases and completions for the respective command. The list of plugins is available at: https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
+
+Source: https://github.com/ohmyzsh/ohmyzsh
+
+## Spaceship theme
+
+[Spaceship](https://spaceship-prompt.sh) is a Zsh prompt that shows, among other things, the current directory, the git branch, the Kubernetes context and namespace, and the versions of the tools in use.
+
+Spaceship requires a Powerline Font or a Nerd Font. Install the FiraCode Nerd Font:
+
+```bash
+brew install --cask font-fira-code-nerd-font
+```
+
+Select the font in iTerm2: **Settings** > **Profiles** > **Text** > **Font** > ``FiraCode Nerd Font``.
+
+Install the Spaceship theme for oh-my-zsh:
+
+```bash
+git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+```
+
+Set ``ZSH_THEME="spaceship"`` in the ``$HOME/.zshrc`` file and reload the configuration:
+
+```bash
+sed -i '' 's/^ZSH_THEME=.*/ZSH_THEME="spaceship"/' ~/.zshrc
+source ~/.zshrc
+```
+
+Source: https://spaceship-prompt.sh/getting-started/
+
+# Essentials
 
 Run the following commands:
 
@@ -82,28 +152,25 @@ Run the following commands:
 # Rosetta 2 is required to run x86_64 applications on Apple silicon
 softwareupdate --install-rosetta --agree-to-license
 
-brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools python3 meld openjdk jq make gnupg coreutils visual-studio-code
+brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools meld openjdk jq make gnupg coreutils visual-studio-code
 
-echo 'export PATH="/opt/homebrew/opt/curl/bin:$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/curl/bin:$PATH"' >> "/Users/$USER/.zshrc"
 
 export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
 
 sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 
-echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> "/Users/$USER/.zshrc"
 
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 
-echo 'export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"' >> "/Users/$USER/.bash_profile"
+echo 'export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"' >> "/Users/$USER/.zshrc"
 
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-
-alias python=python3
-alias pip=pip3
 ```
 
-Install python3-pip following the instructions of the page: https://docs.brew.sh/Homebrew-and-Python
+> Python and pip are installed with mise and uv. See the [Python and uv](#python-and-uv) section.
 
 Install the following software:
 
@@ -120,7 +187,7 @@ Install the following software:
   - Markdown-all-in-one: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
   - Markdown-lint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
   - Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
-  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requires the python3 command shown in the previous section).
+  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requires the python command shown in the [Python and uv](#python-and-uv) section).
   - shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requires the shellcheck command shown in the following sections).
   - terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requires the terraform command shown in the following sections).
   - YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
@@ -155,23 +222,18 @@ cd ~
 
 [mise](https://mise.jdx.dev) is a polyglot tool version manager (it replaces asdf). It installs the tools of this guide and pins their versions in the ``mise.toml`` file (per project) or in the ``~/.config/mise/config.toml`` file (global defaults of the user).
 
-Install mise with the official installer (recommended by the mise documentation) and add the activation to ``$HOME/.bash_profile``:
+Install mise with the official installer (recommended by the mise documentation), which also adds the activation of mise to ``$HOME/.zshrc``:
 
 ```bash
-curl -fsSL https://mise.run | sh
-
-echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bash_profile
-source ~/.bash_profile
+curl -fsSL https://mise.run/zsh | sh
+source ~/.zshrc
 
 mise --version
-
-# Installing the bash completion
-mise completion bash --install
 ```
 
-> Alternatively, install mise with Homebrew: ``brew install mise``. In this case, add the activation with the command: ``echo 'eval "$(mise activate bash)"' >> ~/.bash_profile``.
+> The ``mise`` plugin of oh-my-zsh (see the [Zsh and oh-my-zsh](#zsh-and-oh-my-zsh) section) enables the completion of the ``mise`` command.
 
-> The default shell of macOS Catalina or newer is ZSH. If you use ZSH, follow the instructions for ZSH in https://mise.jdx.dev/installing-mise.html
+> Alternatively, install mise with Homebrew: ``brew install mise``. In this case, add the activation with the command: ``echo 'eval "$(mise activate zsh)"' >> ~/.zshrc``.
 
 Useful commands:
 
@@ -187,12 +249,50 @@ mise trust                 # trust the mise.toml file of a project (required the
 mise self-update           # update mise (installations made with mise.run)
 ```
 
-> If you are migrating from asdf: mise reads the ``.tool-versions`` files of asdf, but this repository uses ``mise.toml`` files. After installing the tools with mise, remove the asdf lines from ``$HOME/.bash_profile`` (``. /opt/homebrew/opt/asdf/libexec/asdf.sh`` or ``export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"``) to avoid conflicts between the shims of asdf and mise.
+> If you are migrating from asdf: mise reads the ``.tool-versions`` files of asdf, but this repository uses ``mise.toml`` files. After installing the tools with mise, remove the asdf lines from ``$HOME/.zshrc`` and ``$HOME/.bash_profile`` (``. /opt/homebrew/opt/asdf/libexec/asdf.sh`` or ``export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"``) to avoid conflicts between the shims of asdf and mise.
 
 Source:
 - https://mise.jdx.dev/installing-mise.html
 - https://mise.jdx.dev/getting-started.html
 - https://mise.jdx.dev/configuration.html
+
+# Python and uv
+
+Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise:
+
+> Before proceeding, make sure you have installed the [mise](#mise) command.
+
+```bash
+PYTHON_VERSION="3.14.8"
+UV_VERSION="0.12.23"
+
+mise ls-remote python | tail
+mise ls-remote uv | tail
+
+# Installing and setting the default versions (saved in ~/.config/mise/config.toml)
+mise use -g python@$PYTHON_VERSION
+mise use -g uv@$UV_VERSION
+mise ls python uv
+
+python --version
+pip --version
+uv --version
+```
+
+Examples of uv usage:
+
+```bash
+# Create a virtual environment in the .venv directory and install packages
+uv venv
+uv pip install requests
+
+# Run a Python CLI tool without installing it
+uvx pre-commit --version
+```
+
+Source:
+- https://mise.jdx.dev/lang/python.html
+- https://docs.astral.sh/uv/
 
 # awscli
 
@@ -244,7 +344,7 @@ mise ls bat
 A usage tip for terminals with dark/light themes is to use the option ``--theme ansi``. You can create an alias, so that whenever the command is invoked, it uses this parameter:
 
 ```bash
-echo "alias bat='bat --theme ansi'" >> ~/.bashrc && . ~/.bashrc
+echo "alias bat='bat --theme ansi'" >> ~/.zshrc && source ~/.zshrc
 ```
 
 More information at: https://github.com/sharkdp/bat
@@ -261,29 +361,52 @@ brew install --cask dbeaver-community
 
 More information: https://dbeaver.io/download/
 
-# docker
+# Colima, docker and docker compose
 
-More information on the page: https://docs.docker.com/desktop/setup/install/mac-install/
-
-Install Docker Desktop with the following command:
+[Colima](https://github.com/abiosoft/colima) runs the Docker engine in a Linux VM on macOS (it replaces Docker Desktop). Install Colima, the Docker client and the Docker Compose and Buildx plugins:
 
 > Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
 
 ```bash
-brew install --cask docker
+brew install colima docker docker-compose docker-buildx
 ```
 
-# docker compose
+For the Docker client to find the ``compose`` and ``buildx`` plugins installed by Homebrew, add ``cliPluginsExtraDirs`` to the ``$HOME/.docker/config.json`` file:
 
-Documentation: https://docs.docker.com/compose/
+```json
+{
+  "cliPluginsExtraDirs": [
+    "/opt/homebrew/lib/docker/cli-plugins"
+  ]
+}
+```
 
-Docker Compose v2 is included in Docker Desktop. Use the command ``docker compose`` (with a space) instead of ``docker-compose``. The standalone ``docker-compose`` v1 is no longer supported.
+> On Intel Macs, the Homebrew prefix is ``/usr/local`` (use ``/usr/local/lib/docker/cli-plugins``). Run ``brew --prefix`` to check it.
+
+Start Colima (the default VM has 2 CPUs, 2GiB of memory and 100GiB of disk) and test Docker:
 
 ```bash
+colima start
+# or, with more resources
+colima start --cpu 4 --memory 8
+
+docker run hello-world
+docker ps
 docker compose version
+docker buildx version
+
+colima status
+colima stop
 ```
 
-Source: https://docs.docker.com/compose/install/
+> Use the command ``docker compose`` (with a space). The standalone ``docker-compose`` v1 is no longer supported.
+
+> Colima sets itself as the default Docker context. Applications that use the socket ``/var/run/docker.sock`` directly need the variable ``DOCKER_HOST``: ``export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"``.
+
+Source:
+- https://github.com/abiosoft/colima
+- https://github.com/abiosoft/colima/blob/main/docs/FAQ.md
+- https://docs.docker.com/compose/
 
 # gcloud
 
@@ -564,8 +687,8 @@ alias k=kubecolor
 alias kubectl=kubecolor
 
 # Changing the kubectl alias to kubecolor
-echo "alias kubectl=\"kubecolor\"" >> ~/.bash_profile
-echo "alias k=\"kubecolor\"" >> ~/.bash_profile
+echo "alias kubectl=\"kubecolor\"" >> ~/.zshrc
+echo "alias k=\"kubecolor\"" >> ~/.zshrc
 ```
 
 > If you previously installed kubecolor from a tap (for example ``hidetatz/tap/kubecolor`` or ``kubecolor/tap/kubecolor``), uninstall it first. More info: https://kubecolor.github.io/setup/install/
@@ -581,7 +704,7 @@ kubectl krew install node-shell
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> /Users/$USER/.bash_profile
+echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> ~/.zshrc
 ```
 
 Documentation: https://github.com/kvaps/kubectl-node-shell
@@ -722,54 +845,6 @@ mise ls pre-commit
 ```
 
 Source: https://mise.jdx.dev/getting-started.html
-
-# Custom Terminal Prompt
-
-To show the branch name, the current directory, the authenticated k8s cluster and the namespace in use, there are several open source projects that provide this, and you can choose the one you like the most.
-
-For zsh:
-- https://ohmyz.sh/
-- https://github.com/jonmosco/kube-ps1
-
-For bash:
-- https://github.com/ohmybash/oh-my-bash
-- https://github.com/jonmosco/kube-ps1
-
-## bash_prompt
-
-```bash
-curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
-chmod +x ~/.bash_prompt
-echo "source ~/.bash_prompt" >> ~/.bashrc
-source ~/.bashrc
-exec bash
-```
-
-Result:
-
-1. **lilac (or purple) color**: the user name and the host name;
-2. **yellow color**: the path of the current directory;
-3. **green color**: the branch name, shown only if the current directory is related to a git repository;
-4. **red color**: the name of the Kubernetes (k8s) cluster you are authenticated to;
-5. **blue color**: the name of the namespace selected in the k8s cluster. If the default namespace is selected, the name will not be shown.
-
-## bash_prompt
-
-```bash
-curl -o ~/.bash_prompt https://gist.githubusercontent.com/aeciopires/6738c602e2d6832555d32df78aa3b9bb/raw/b96be4dcaee6db07690472aecbf73fcf953a7e91/.bash_prompt
-chmod +x ~/.bash_prompt
-echo "source ~/.bash_prompt" >> ~/.bashrc
-source ~/.bashrc
-exec /bin/bash
-```
-
-Result:
-
-1. **lilac (or purple) color**: the user name and the host name;
-2. **yellow color**: the path of the current directory;
-3. **green color**: the branch name, shown only if the current directory is related to a git repository;
-4. **red color**: the name of the Kubernetes (k8s) cluster you are authenticated to;
-5. **blue color**: the name of the namespace selected in the k8s cluster. If the default namespace is selected, the name will not be shown.
 
 # qq
 
@@ -989,16 +1064,56 @@ Install with the following command:
 brew install tig
 ```
 
-# [OPTIONAL] Useful aliases
+# Claude Code (claude CLI)
 
-## bashrc
+[Claude Code](https://code.claude.com/docs/en/overview) is the AI coding assistant of Anthropic that runs in the terminal (command ``claude``). It requires a Pro, Max, Team, Enterprise or Console account.
 
-Useful aliases to be added to the file ``$HOME/.bashrc``.
-
-> After adding them, run the command ``source ~/.bashrc`` to apply the changes.
+Install with the native installer (recommended, updates automatically in the background):
 
 ```bash
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Or install with Homebrew (does not update automatically, use ``brew upgrade claude-code``):
+
+```bash
+brew install --cask claude-code
+```
+
+Check the installation and log in:
+
+```bash
+claude --version
+claude doctor
+
+# Start Claude Code in the directory of a project and follow the instructions to log in
+cd ~/git/adsoft
+claude
+```
+
+> If the ``claude`` command is not found after the native installation, add ``$HOME/.local/bin`` to the ``PATH`` in ``$HOME/.zshrc``: ``echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc``.
+
+Source: https://code.claude.com/docs/en/setup
+
+# Keka
+
+[Keka](https://www.keka.io) is a file archiver for macOS (7z, zip, tar, gzip, rar extraction and others).
+
+> Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
+
+```bash
+brew install --cask keka
+```
+
+# [OPTIONAL] Useful aliases
+
+## zshrc
+
+Useful aliases to be added to the file ``$HOME/.zshrc``.
+
+> After adding them, run the command ``source ~/.zshrc`` to apply the changes.
+
+```bash
 alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli:2.37.9'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
@@ -1006,7 +1121,7 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 alias k='kubecolor'
-source <(kubectl completion bash)
+source <(kubectl completion zsh)
 export PATH="${PATH}:${HOME}/.krew/bin"
 alias kubectl='kubecolor'
 alias kmongo='kubectl run --rm -it mongoshell-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=mongo:4.0.28 -n default -- bash'
@@ -1028,9 +1143,7 @@ alias ssm='aws ssm start-session --target CHANGE_EC2_ID --region CHANGE_REGION -
 alias terradocs='terraform-docs markdown table . > README.md'
 alias alertmanager='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE && kubectl port-forward alertmanager-monitor-alertmanager-0 9093:9093 -n monitoring ; kubectx -'
 alias prometheus='kubectl port-forward prometheus-monitor-prometheus-0 9090:9090 -n monitoring'
-alias sc="source $HOME/.bashrc"
-alias python=python3
-alias pip=pip3
+alias sc="source $HOME/.zshrc"
 alias kind_create="kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml"
 alias kind_delete="kind delete clusters \$(kind get clusters)"
 alias kubepug="kubectl deprecations"

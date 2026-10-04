@@ -23,6 +23,7 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 - Versions must come from official sources (GitHub tags/releases of the project, the official Helm chart index, PyPI, npm, Docker Hub, `releases.hashicorp.com`, `dl.k8s.io`, official documentation). Do not guess versions, image tags, chart keys or module inputs: check them in the chart `values.yaml`, the module `variables.tf` or the upgrade guides (`docs/UPGRADE-*.md`, `docs/upgrading_to_*.md`) of the module repository.
 - Tools are installed with [mise](https://mise.jdx.dev) (not asdf). Use `mise use -g TOOL@VERSION` for user defaults (saved in `~/.config/mise/config.toml`) and `mise.toml` files to pin versions per project (not `.tool-versions`, `.terraform-version` or `.terragrunt-version`). Check that a tool exists in the mise registry (`registry/` of https://github.com/jdx/mise) before using it: some names differ (`aws-cli`) or point to other projects (`jj` is Jujutsu, not tidwall/jj).
 - Use `docker compose` (Compose v2 plugin). The Compose files do not have the obsolete `version` key.
+- `softwares-macos.md` uses iTerm2, Zsh (`~/.zshrc`) with oh-my-zsh and the Spaceship theme, and Colima (not Docker Desktop) with the Homebrew `docker`, `docker-compose` and `docker-buildx` packages. `softwares-ubuntu.md` uses Bash (`~/.bashrc`). Both guides install Claude Code (`claude`).
 - Do not commit `node_modules` (it is in `.gitignore`); commit the `package-lock.json` files, used by `npm ci` in the Dockerfiles.
 
 ## Pinned versions (where to change them)
