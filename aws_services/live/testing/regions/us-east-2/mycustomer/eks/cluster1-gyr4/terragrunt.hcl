@@ -3,7 +3,7 @@ include "root" {
 }
 
 include "eks" {
-  path   = find_in_parent_folders("eks-1-32.hcl")
+  path   = find_in_parent_folders("eks-1-36.hcl")
   expose = true
 }
 
@@ -22,7 +22,7 @@ locals {
   cluster_endpoint_public_access_cidrs = local.customer_vars.locals.cluster1_endpoint_public_access_cidrs
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/vpc/net-${local.suffix}/",
@@ -56,7 +56,7 @@ inputs = {
   #--------------------------
   # General
   #--------------------------
-  cluster_name = local.cluster_name
+  name = local.cluster_name
 
 
   #--------------------------
@@ -73,28 +73,28 @@ inputs = {
   cloudwatch_log_group_class  = "INFREQUENT_ACCESS"
 
   # After a cost analysis with cloudwatch it is recommended to keep the authenticator log only
-  cluster_enabled_log_types                = ["authenticator"]
-  cloudwatch_log_group_retention_in_days   = 1
+  enabled_log_types                      = ["authenticator"]
+  cloudwatch_log_group_retention_in_days = 1
 
 
   #--------------------------
   # Security
   #--------------------------
-  cluster_endpoint_public_access       = true
-  cluster_endpoint_public_access_cidrs = local.cluster_endpoint_public_access_cidrs
-  cluster_endpoint_private_access      = true
+  endpoint_public_access       = true
+  endpoint_public_access_cidrs = local.cluster_endpoint_public_access_cidrs
+  endpoint_private_access      = true
 
-  create_kms_key            = false
-  cluster_encryption_config = {
+  create_kms_key = false
+  encryption_config = {
     provider_key_arn = dependency.kms.outputs.key_arn,
     resources        = ["secrets"]
   }
 
-  create_cluster_security_group           = true
-  cluster_security_group_additional_rules = {}
-  node_security_group_additional_rules    = {}
-  node_security_group_tags                = {}
-  cluster_additional_security_group_ids   = []
+  create_security_group                = true
+  security_group_additional_rules      = {}
+  node_security_group_additional_rules = {}
+  node_security_group_tags             = {}
+  additional_security_group_ids        = []
 
 
   #--------------------------
@@ -110,7 +110,7 @@ inputs = {
     #  min_size          = 2
     #  max_size          = 20
     #  desired_size      = 2
-    #  # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+    #  # See page https://aws.amazon.com/ec2/instance-types/ to find type, resources and price of instance
     #  # Other sites: 
     #  # https://spot.cloudpilot.ai/aws?instance=m5a.large#region=us-east-1
     #  # https://learnk8s.io/kubernetes-instance-calculator
@@ -151,13 +151,13 @@ inputs = {
     #  ]
     #},
     "on-demand" = {
-      name              = "${local.cluster_shortname}-ondemand"
-      capacity_type     = "ON_DEMAND"
-      key_name          = dependency.keypair.outputs.key_pair_name
-      min_size          = 2
-      max_size          = 20
-      desired_size      = 2
-      # See page https://aws.amazon.com/pt/ec2/instance-types/ to find type, resources and price of instance
+      name          = "${local.cluster_shortname}-ondemand"
+      capacity_type = "ON_DEMAND"
+      key_name      = dependency.keypair.outputs.key_pair_name
+      min_size      = 2
+      max_size      = 20
+      desired_size  = 2
+      # See page https://aws.amazon.com/ec2/instance-types/ to find type, resources and price of instance
       # Other sites: 
       # https://spot.cloudpilot.ai/aws?instance=m5a.large#region=us-east-1
       # https://learnk8s.io/kubernetes-instance-calculator
@@ -167,7 +167,7 @@ inputs = {
       #
       # Example:
       # ec2-instance-selector --memory 8 --vcpus 2 --cpu-architecture x86_64 --hypervisor nitro --usage-class on-demand --region us-east-2 --profile myaccount
-      instance_types    = [
+      instance_types = [
         "m5.large",
         "m5a.large",
         "m5ad.large",
@@ -216,15 +216,21 @@ inputs = {
   # https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
   # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-vendors.html
   # https://docs.aws.amazon.com/eks/latest/userguide/community-addons.html
-  cluster_addons = {
-    coredns                = {}
-    eks-pod-identity-agent = {}
-    kube-proxy             = {}
-    vpc-cni                = {}
-    aws-ebs-csi-driver     = {}
+  addons = {
+    coredns = {}
+    # Install vpc-cni and eks-pod-identity-agent before the node groups
+    # https://github.com/terraform-aws-modules/terraform-aws-eks#usage
+    eks-pod-identity-agent = {
+      before_compute = true
+    }
+    kube-proxy = {}
+    vpc-cni = {
+      before_compute = true
+    }
+    aws-ebs-csi-driver = {}
     #aws-efs-csi-driver           = {}
     #aws-mountpoint-s3-csi-driver = {}
-    metrics-server         = {}
+    metrics-server = {}
   }
 
 
@@ -243,7 +249,7 @@ inputs = {
   # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest#cluster-access-entry
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-eks-accessentry.html
   access_entries = local.access_entries
-  tags           = merge(
+  tags = merge(
     local.customer_tags,
   )
 }

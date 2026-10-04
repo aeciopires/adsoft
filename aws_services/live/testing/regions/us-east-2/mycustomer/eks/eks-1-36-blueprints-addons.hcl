@@ -4,7 +4,7 @@ locals {}
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///aws-ia/eks-blueprints-addons/aws//?version=1.19.0"
+  source = "tfr:///aws-ia/eks-blueprints-addons/aws//?version=1.24.3"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

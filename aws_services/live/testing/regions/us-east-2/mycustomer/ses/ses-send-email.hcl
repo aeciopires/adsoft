@@ -8,7 +8,7 @@ locals {
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///cloudposse/ses/aws//?version=0.25.1"
+  source = "tfr:///cloudposse/ses/aws//?version=0.25.2"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -22,12 +22,12 @@ inputs = {
   domain                         = ""
   environment                    = ""
   iam_allowed_resources          = []
-  iam_permissions                = [
+  iam_permissions = [
     "ses:SendRawEmail"
   ]
-  zone_id                        = local.dns_zone_id
-  verify_domain                  = true
-  verify_dkim                    = true
+  zone_id       = local.dns_zone_id
+  verify_domain = true
+  verify_dkim   = true
   # Commented to avoid bug/error: peration error IAM: CreateUser, 
   # InvalidInput: Duplicate tag keys found. Please note that Tag keys are case insensitive.
   #tags         = {}

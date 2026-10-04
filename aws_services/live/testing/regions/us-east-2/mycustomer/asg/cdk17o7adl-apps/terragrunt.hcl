@@ -18,7 +18,7 @@ locals {
   suffix           = local.customer_vars.locals.suffix1
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/vpc/net-${local.suffix}/",
@@ -46,7 +46,7 @@ inputs = {
   # References: 
   #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  image_id          = "ami-0cb91c7de36eed2cb"
+  image_id = "ami-0cb91c7de36eed2cb"
   # Reference: https://aws.amazon.com/ec2/instance-types/
   instance_type     = "t3.medium"
   ebs_optimized     = true
@@ -56,7 +56,7 @@ inputs = {
 
   # IAM role & instance profile
   create_iam_instance_profile = true
-  iam_role_policies           = {
+  iam_role_policies = {
     AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
 

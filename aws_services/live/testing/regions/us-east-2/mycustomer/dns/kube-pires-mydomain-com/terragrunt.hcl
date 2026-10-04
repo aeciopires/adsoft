@@ -13,12 +13,11 @@ locals {
   customer_vars    = read_terragrunt_config(find_in_parent_folders("customer.hcl"))
   region           = local.region_vars.locals.region
   environment      = local.environment_vars.locals.environment_name
-  dns_zone_id      = local.environment_vars.locals.dns_zone_id
   dns_domain_name  = local.environment_vars.locals.dns_domain_name
   customer_id      = local.customer_vars.locals.customer_id
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/loadbalancer/${local.customer_id}-apps/"
@@ -30,18 +29,17 @@ dependency "loadbalancer" {
 }
 
 inputs = {
+  create      = true
+  create_zone = false
+  name        = local.dns_domain_name
 
-  create              = true
-  zone_id             = local.dns_zone_id
-  zone_name           = local.dns_domain_name
-  records_jsonencoded = jsonencode([
-    {
-      name    = "kube-pires"
-      type    = "CNAME"
-      ttl     = 60
+  records = {
+    kube-pires = {
+      type = "CNAME"
+      ttl  = 60
       records = [
         dependency.loadbalancer.outputs.dns_name
       ]
     }
-  ])
+  }
 }

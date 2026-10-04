@@ -16,19 +16,19 @@ locals {
 }
 
 inputs = {
-  create_route53_records    = false
-  dns_ttl                   = 60
-  validate_certificate      = false
-  validation_method         = "DNS"
-  domain_name               = local.dns_domain_name
-  zone_id                   = local.dns_zone_id
+  create_route53_records = false
+  dns_ttl                = 60
+  validate_certificate   = false
+  validation_method      = "DNS"
+  domain_name            = local.dns_domain_name
+  zone_id                = local.dns_zone_id
   subject_alternative_names = [
     "*.${local.dns_domain_name}",
     "app.subdomain.${local.dns_domain_name}",
   ]
 
   wait_for_validation = false
-  tags                = merge(
+  tags = merge(
     local.customer_tags,
   )
 }

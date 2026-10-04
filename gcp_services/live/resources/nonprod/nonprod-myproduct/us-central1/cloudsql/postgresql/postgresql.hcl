@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=25.0.2"
+  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=28.3.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -32,8 +32,8 @@ inputs = {
   disk_type                       = "PD_SSD"
   zone                            = "${local.region}-a"
   availability_type               = "REGIONAL"
-  maintenance_window_day          = 7     # Sunday
-  maintenance_window_hour         = 23    # GMT-3 => 8 AM
+  maintenance_window_day          = 7  # Sunday
+  maintenance_window_hour         = 23 # GMT-3 => 8 AM
   maintenance_window_update_track = "stable"
 
   deletion_protection         = false
@@ -44,17 +44,16 @@ inputs = {
   user_labels = local.default_tags
 
   ip_configuration = {
-    ipv4_enabled       = true
-    require_ssl        = false
-    ssl_mode           = "ENCRYPTED_ONLY"
-    private_network    = null
-    allocated_ip_range = null
+    ipv4_enabled        = true
+    ssl_mode            = "ENCRYPTED_ONLY"
+    private_network     = null
+    allocated_ip_range  = null
     authorized_networks = []
   }
 
   backup_configuration = {
     enabled                        = true
-    start_time                     = "23:00"   # GMT-3 => 8 PM
+    start_time                     = "23:00" # GMT-3 => 8 PM
     location                       = "us"
     point_in_time_recovery_enabled = true
     transaction_log_retention_days = 7

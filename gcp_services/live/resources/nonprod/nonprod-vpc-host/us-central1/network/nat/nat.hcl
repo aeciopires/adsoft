@@ -7,7 +7,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/cloud-nat/google?version=5.3.0"
+  source = "tfr:///terraform-google-modules/cloud-nat/google?version=7.1.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

@@ -15,7 +15,7 @@ locals {
 
 inputs = {
   public_key = local.public_key_content
-  tags       = merge(
+  tags = merge(
     local.customer_tags,
   )
 }

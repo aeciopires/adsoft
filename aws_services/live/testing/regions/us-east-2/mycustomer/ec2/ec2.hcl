@@ -6,18 +6,18 @@ locals {
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///terraform-aws-modules/ec2-instance/aws//?version=5.7.1"
+  source = "tfr:///terraform-aws-modules/ec2-instance/aws//?version=6.4.1"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  name          = local.instance_name
-  create        = true
+  name   = local.instance_name
+  create = true
   # Ubuntu 24.04 64 bits AMD64 HVM SSD.
   # References: 
   #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  ami           = "ami-0cb91c7de36eed2cb"
+  ami = "ami-0cb91c7de36eed2cb"
   # Reference: https://aws.amazon.com/ec2/instance-types/
   instance_type = "t3.medium"
 
@@ -31,7 +31,7 @@ inputs = {
   key_name                    = ""
   create_iam_instance_profile = true
   iam_role_description        = "IAM role for EC2 instance"
-  iam_role_policies           = {
+  iam_role_policies = {
     AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
 
@@ -42,18 +42,21 @@ inputs = {
   user_data_base64            = ""
   user_data_replace_on_change = true
 
+  # Since v6.0.0 of the module a security group is created by default. Use only the security groups informed
+  # in vpc_security_group_ids, like the previous versions of the module.
+  create_security_group = false
+
   enable_volume_tags = false
-  root_block_device  = [
-    {
-      encrypted   = true
-      volume_type = "gp3"
-      throughput  = 200
-      volume_size = 20
-      tags        = {
-        Name = "${local.instance_name}-root-ebs"
-      }
-    },
-  ]
+  # Since v6.0.0 of the module, root_block_device is an object and uses the attributes 'size' and 'type'
+  root_block_device = {
+    encrypted  = true
+    type       = "gp3"
+    throughput = 200
+    size       = 20
+    tags = {
+      Name = "${local.instance_name}-root-ebs"
+    }
+  }
 
   tags = {}
 }

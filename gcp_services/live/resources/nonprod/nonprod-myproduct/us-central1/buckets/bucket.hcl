@@ -9,13 +9,13 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/cloud-storage/google//modules/simple_bucket?version=9.0.1"
+  source = "tfr:///terraform-google-modules/cloud-storage/google//modules/simple_bucket?version=12.4.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
   location                 = "us"
-  name                    = local.bucket_name
+  name                     = local.bucket_name
   storage_class            = "MULTI_REGIONAL"
   bucket_policy_only       = true
   project_id               = local.project_id

@@ -24,7 +24,7 @@ inputs = {
   enable_key_rotation     = false
   is_enabled              = true
   multi_region            = false
-  tags                    = merge(
+  tags = merge(
     local.customer_tags,
   )
 }

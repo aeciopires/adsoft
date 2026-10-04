@@ -6,7 +6,7 @@ locals {
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///terraform-aws-modules/autoscaling/aws//?version=8.0.1"
+  source = "tfr:///terraform-aws-modules/autoscaling/aws//?version=9.3.2"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
@@ -69,7 +69,7 @@ inputs = {
   # References: 
   #   https://aws.amazon.com/marketplace/b/c3bc6a75-0c3a-46ce-8fdd-498b6fd88577
   #   https://cloud-images.ubuntu.com/locator/ec2/
-  image_id          = "ami-0cb91c7de36eed2cb"
+  image_id = "ami-0cb91c7de36eed2cb"
   # Reference: https://aws.amazon.com/ec2/instance-types/
   instance_type     = "t3.medium"
   ebs_optimized     = true
@@ -82,10 +82,10 @@ inputs = {
   iam_role_name               = "asg-${local.asg_name}"
   iam_role_path               = "/ec2/"
   iam_role_description        = "IAM role for ASG ${local.asg_name}"
-  iam_role_tags               = {
+  iam_role_tags = {
     CustomIamRole = "Yes"
   }
-  iam_role_policies           = {
+  iam_role_policies = {
     AdministratorAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
 
@@ -94,14 +94,11 @@ inputs = {
       # Root volume
       device_name = "/dev/xvda"
       no_device   = 0
-      ebs         = {
+      ebs = {
         delete_on_termination = true
         encrypted             = true
         volume_size           = 50
         volume_type           = "gp3"
-        tags                  = {
-          Name = "${local.asg_name}-root-ebs"
-        }
       }
     },
   ]

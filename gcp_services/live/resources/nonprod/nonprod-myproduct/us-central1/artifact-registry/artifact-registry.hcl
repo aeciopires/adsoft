@@ -9,13 +9,13 @@ locals {
 }
 
 terraform {
-  source = "tfr:///GoogleCloudPlatform/artifact-registry/google?version=0.3.0"
+  source = "tfr:///GoogleCloudPlatform/artifact-registry/google?version=0.8.2"
 }
 
 inputs = {
 
-  project_id    = local.project_id
-  location      = local.region
+  project_id = local.project_id
+  location   = local.region
   # Page with all supported formats:
   # https://cloud.google.com/artifact-registry/docs/supported-formats
   format        = "DOCKER"
@@ -24,5 +24,5 @@ inputs = {
   # The mode configures the repository to serve artifacts from different sources.
   # Default value is STANDARD_REPOSITORY. 
   # Possible values are: STANDARD_REPOSITORY, VIRTUAL_REPOSITORY, REMOTE_REPOSITORY
-  mode          = "STANDARD_REPOSITORY"
+  mode = "STANDARD_REPOSITORY"
 }

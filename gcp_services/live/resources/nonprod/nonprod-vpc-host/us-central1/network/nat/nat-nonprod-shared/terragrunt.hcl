@@ -10,10 +10,10 @@ include "nat" {
 locals {
   region_vars          = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   region               = local.region_vars.locals.region
-  dependency_base_path = "${dirname(find_in_parent_folders())}/${local.region}"
+  dependency_base_path = dirname(find_in_parent_folders("region.hcl"))
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${local.dependency_base_path}/network/vpc/vpc-nonprod-shared",
@@ -23,7 +23,7 @@ dependencies {
   ]
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependency "vpc" {
   config_path = "${local.dependency_base_path}/network/vpc/vpc-nonprod-shared"
 }
@@ -56,10 +56,10 @@ inputs = {
   # Valid values include: ALL_SUBNETWORKS_ALL_IP_RANGES, ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, LIST_OF_SUBNETWORKS. Changing this forces a new NAT to be created.
   source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
 
-  subnetworks                        = [
+  subnetworks = [
     {
-      name                     = dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].self_link
-      source_ip_ranges_to_nat  = ["LIST_OF_SECONDARY_IP_RANGES", "PRIMARY_IP_RANGE"]
+      name                    = dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].self_link
+      source_ip_ranges_to_nat = ["LIST_OF_SECONDARY_IP_RANGES", "PRIMARY_IP_RANGE"]
       secondary_ip_range_names = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].range_name,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].range_name

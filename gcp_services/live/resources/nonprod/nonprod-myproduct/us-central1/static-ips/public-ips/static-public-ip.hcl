@@ -8,12 +8,12 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/address/google?version=4.1.0"
+  source = "tfr:///terraform-google-modules/address/google?version=5.1.0"
 }
 
 inputs = {
 
-  names  = [
+  names = [
     local.ip_name
   ]
   project_id   = local.project_id

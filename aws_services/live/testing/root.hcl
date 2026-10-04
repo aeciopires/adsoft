@@ -16,30 +16,31 @@ locals {
   })
 
   # Extract the variables we need for easy access
-  aws_profile             = local.environment_vars.locals.aws_profile
-  region_bucket           = local.environment_vars.locals.region_bucket
-  bucket_remote_tfstate   = local.environment_vars.locals.bucket_remote_tfstate
-  dynamodb_remote_tfstate = local.environment_vars.locals.dynamodb_remote_tfstate
-  default_tags            = local.environment_vars.locals.default_tags
-  region                  = local.region_vars.locals.region
+  aws_profile           = local.environment_vars.locals.aws_profile
+  region_bucket         = local.environment_vars.locals.region_bucket
+  bucket_remote_tfstate = local.environment_vars.locals.bucket_remote_tfstate
+  default_tags          = local.environment_vars.locals.default_tags
+  region                = local.region_vars.locals.region
 }
 
-# Configure Terragrunt to automatically store tfstate files in S3 bucket
-# https://terragrunt.gruntwork.io/docs/features/keep-your-remote-state-configuration-dry/#create-remote-state-and-locking-resources-automatically
+# Configure Terragrunt to store tfstate files in S3 bucket.
+# The state lock uses a lock file in the S3 bucket (use_lockfile). The DynamoDB table for state locking
+# (dynamodb_table) is deprecated in the S3 backend of Terraform.
+# Since Terragrunt 1.0 the S3 bucket is created only if the flag --backend-bootstrap is used
+# (or with the command 'terragrunt backend bootstrap').
+# https://docs.terragrunt.com/features/units/state-backend/
+# https://developer.hashicorp.com/terraform/language/backend/s3
 remote_state {
   backend = "s3"
 
   config = {
-    bucket         = local.bucket_remote_tfstate
-    dynamodb_table = local.dynamodb_remote_tfstate
-    key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = local.region_bucket
-    encrypt        = true
-    profile        = local.aws_profile
+    bucket       = local.bucket_remote_tfstate
+    use_lockfile = true
+    key          = "${path_relative_to_include()}/terraform.tfstate"
+    region       = local.region_bucket
+    encrypt      = true
+    profile      = local.aws_profile
     s3_bucket_tags = merge(
-      local.default_tags,
-    )
-    dynamodb_table_tags = merge(
       local.default_tags,
     )
   }

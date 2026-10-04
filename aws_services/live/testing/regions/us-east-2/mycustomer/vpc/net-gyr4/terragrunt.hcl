@@ -27,12 +27,6 @@ inputs = {
   public_subnet_tags  = local.public_subnet_tags
   private_subnet_tags = local.private_subnet_tags
   vpc_tags            = local.customer_tags
-  vpc_endpoint_tags   = merge(
-    local.customer_tags,
-    {
-      Name = include.vpc.inputs.name
-    }
-  )
 
   tags = merge(
     local.customer_tags,
