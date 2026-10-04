@@ -31,7 +31,7 @@ Access https://docs.terragrunt.com/getting-started/quick-start/ for more informa
 
 Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple Terraform modules, and managing remote state.
 
-The versions of Terraform and Terragrunt used by this code are defined in the files ``gcp_services/live/.terraform-version`` and ``gcp_services/live/.terragrunt-version``.
+The versions of Terraform and Terragrunt used by this code are defined in the file ``gcp_services/live/mise.toml``. Install them with [mise](https://mise.jdx.dev) running ``mise trust`` and ``mise install`` inside the ``gcp_services/live`` directory.
 
 To run the commands described in this document, you need the following:
 

@@ -4,7 +4,7 @@
   - [Essentials](#essentials)
   - [Optional](#optional)
 - [Git](#git)
-- [asdf](#asdf)
+- [mise](#mise)
 - [ansible](#ansible)
 - [awscli](#awscli)
 - [bat](#bat)
@@ -41,7 +41,7 @@
 - [qq](#qq)
 - [ShellCheck](#shellcheck)
 - [Sops](#sops)
-- [terraform and tfenv](#terraform-and-tfenv)
+- [terraform](#terraform)
 - [terraform-docs](#terraform-docs)
 - [terragrunt](#terragrunt)
 - [vault-cli](#vault-cli)
@@ -137,60 +137,61 @@ cd ~
 ./updateGit pull -G git/
 ```
 
-# asdf
+# mise
 
-Since version 0.16.0, asdf is a binary written in Go (the old versions were Bash scripts). Run the following commands to install it:
+[mise](https://mise.jdx.dev) is a polyglot tool version manager (it replaces asdf). It installs the tools of this guide and pins their versions in the ``mise.toml`` file (per project) or in the ``~/.config/mise/config.toml`` file (global defaults of the user).
+
+Install mise with the official installer, which also adds the activation of mise to ``$HOME/.bashrc``:
 
 ```bash
-ASDF_VERSION="v0.20.2"
-
-cd /tmp
-curl -fsSL -o asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz"
-tar -xzf asdf.tar.gz asdf
-sudo mv asdf /usr/local/bin/asdf
-rm asdf.tar.gz
-
-type -a asdf
-asdf version
-
-# Adding the shims directory and the completions in $HOME/.bashrc
-cat << 'FOE' >> ~/.bashrc
-
-# asdf
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-. <(asdf completion bash)
-FOE
-
+curl -fsSL https://mise.run/bash | sh
 source ~/.bashrc
+
+mise --version
+
+# Installing the bash completion
+mise completion bash --install
 ```
 
-Allow asdf to read the version files of other tools (example: ``.terraform-version`` and ``.terragrunt-version``):
+> Alternatively, on Ubuntu 26.04+ you can install mise with the PPA: ``sudo add-apt-repository -y ppa:jdxcode/mise && sudo apt update && sudo apt install -y mise``. In this case, add the activation to ``$HOME/.bashrc`` with the command: ``echo 'eval "$(mise activate bash)"' >> ~/.bashrc``.
+
+Useful commands:
 
 ```bash
-echo "legacy_version_file = yes" >> ~/.asdfrc
+mise use -g TOOL@VERSION   # install a tool and set the default version in ~/.config/mise/config.toml
+mise use TOOL@VERSION      # install a tool and pin the version in the mise.toml file of the current directory
+mise install               # install all tools defined in the mise.toml files of the current directory and its parents
+mise ls                    # list the installed tools and where each version is defined
+mise ls-remote TOOL        # list the versions that can be installed
+mise latest TOOL           # show the latest version of a tool
+mise uninstall TOOL@VERSION
+mise trust                 # trust the mise.toml file of a project (required the first time it is used)
+mise self-update           # update mise (installations made with mise.run)
 ```
 
-> Attention!!! The command ``asdf update`` was removed. To update asdf, download the binary of the new version again with the commands above.
-
-> Attention!!! The commands ``asdf global`` and ``asdf local`` were replaced by ``asdf set``. Use ``asdf set -u TOOL VERSION`` to define the default version of a tool in the ``$HOME/.tool-versions`` file.
-
-> If you are upgrading from asdf 0.15.0 or older, remove the old lines (``. "$HOME/.asdf/asdf.sh"`` and ``. "$HOME/.asdf/completions/asdf.bash"``) from ``$HOME/.bashrc`` and run ``asdf reshim``. More info: https://asdf-vm.com/guide/upgrading-to-v0-16.html
+> If you are migrating from asdf: mise reads the ``.tool-versions`` files of asdf, but this repository uses ``mise.toml`` files. After installing the tools with mise, remove the asdf lines from ``$HOME/.bashrc`` (``. "$HOME/.asdf/asdf.sh"`` or ``export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"``) to avoid conflicts between the shims of asdf and mise.
 
 Source:
-- https://asdf-vm.com/guide/getting-started.html
-- https://github.com/asdf-vm/asdf/releases
+- https://mise.jdx.dev/installing-mise.html
+- https://mise.jdx.dev/getting-started.html
+- https://mise.jdx.dev/configuration.html
 
 # ansible
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="14.4.0"
 
-ASDF_PYAPP_INCLUDE_DEPS=1 asdf plugin add ansible https://github.com/amrox/asdf-pyapp.git
-asdf latest ansible
-asdf install ansible $VERSION
-asdf set -u ansible $VERSION
+# The ansible package is installed by the pypi backend of mise, which uses uv
+mise use -g uv@latest
+
+mise ls-remote ansible | tail
+mise latest ansible
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g ansible@$VERSION
+mise ls ansible
 
 ansible --version
 ```
@@ -199,7 +200,7 @@ ansible --version
 
 # awscli
 
-Install ``awscli`` using ``asdf``:
+Install ``awscli`` using ``mise`` (the tool is called ``aws-cli`` in mise):
 
 > Before continuing, if you have awscli installed, remove it with the following commands:
 
@@ -210,28 +211,21 @@ sudo rm -rf /usr/local/aws-cli
 sudo rm -rf /usr/local/aws
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 AWS_CLI_V2="2.37.9"
 
-asdf plugin list all | grep aws
-asdf plugin add awscli https://github.com/MetricMike/asdf-awscli.git
-asdf latest awscli
+mise ls-remote aws-cli | tail
+mise latest aws-cli
 
-asdf install awscli $AWS_CLI_V2
-asdf list awscli
-
-# Setting the default version
-asdf set -u awscli $AWS_CLI_V2
-asdf list awscli
-
-# Creating a symbolic link
-sudo ln -s $HOME/.asdf/shims/aws /usr/local/bin/aws
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g aws-cli@$AWS_CLI_V2
+mise ls aws-cli
 ```
 
 Source:
-- https://asdf-vm.com/guide/getting-started.html
+- https://mise.jdx.dev/getting-started.html
 - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 # bat
@@ -244,21 +238,17 @@ bat is a ``cat`` clone with syntax highlighting and Git integration. It is very 
 sudo rm /usr/bin/bat
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="0.26.1"
 
-asdf plugin list all | grep bat
-asdf plugin add bat https://gitlab.com/wt0f/asdf-bat.git
-asdf latest bat
+mise ls-remote bat | tail
+mise latest bat
 
-asdf install bat $VERSION
-asdf list bat
-
-# Setting the default version
-asdf set -u bat $VERSION
-asdf list bat
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g bat@$VERSION
+mise ls bat
 ```
 
 A usage tip for terminals with dark/light themes is to use the option ``--theme ansi``. You can create an alias, so that whenever the command is invoked, it uses this parameter:
@@ -311,21 +301,17 @@ sudo apt remove google-cloud-sdk
 sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="587.0.0"
 
-asdf plugin list all | grep gcloud
-asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud.git
-asdf latest gcloud
+mise ls-remote gcloud | tail
+mise latest gcloud
 
-asdf install gcloud $VERSION
-asdf list gcloud
-
-# Setting the default version
-asdf set -u gcloud $VERSION
-asdf list gcloud
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g gcloud@$VERSION
+mise ls gcloud
 
 gcloud init # (alternatively, gcloud init --console-only)
 gcloud components install gke-gcloud-auth-plugin
@@ -408,23 +394,19 @@ sudo rm /usr/local/bin/helm
 sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://helm.sh/docs/
 
 ```bash
 VERSION="4.3.0"
 
-asdf plugin list all | grep helm
-asdf plugin add helm https://github.com/Antiarchitect/asdf-helm.git
-asdf latest helm
+mise ls-remote helm | tail
+mise latest helm
 
-asdf install helm $VERSION
-asdf list helm
-
-# Setting the default version
-asdf set -u helm $VERSION
-asdf list helm
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g helm@$VERSION
+mise ls helm
 ```
 
 > Helm 4 changed the plugin system: the plugins are verified by default and the ``--version`` flag of ``helm plugin install`` is not supported by some plugins. See the instructions of each plugin in the next sections.
@@ -439,23 +421,19 @@ Run the following commands to install helm-docs.
 sudo rm /usr/local/bin/helm-docs
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://github.com/norwoodj/helm-docs
 
 ```bash
 VERSION="1.14.2"
 
-asdf plugin list all | grep helm-docs
-asdf plugin add helm-docs https://github.com/sudermanjr/asdf-helm-docs.git
-asdf latest helm-docs
+mise ls-remote helm-docs | tail
+mise latest helm-docs
 
-asdf install helm-docs $VERSION
-asdf list helm-docs
-
-# Setting the default version
-asdf set -u helm-docs $VERSION
-asdf list helm-docs
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g helm-docs@$VERSION
+mise ls helm-docs
 ```
 
 The documentation generated by helm-docs is based on the content of the ``values.yaml`` and ``Chart.yaml`` files. It tries to overwrite the content of the ``README.md`` file inside the chart directory.
@@ -472,23 +450,19 @@ Run the following commands to install ``helmfile``.
 sudo rm /usr/local/bin/helmfile
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://github.com/helmfile/helmfile
 
 ```bash
 VERSION="1.8.1"
 
-asdf plugin list all | grep helmfile
-asdf plugin add helmfile https://github.com/feniix/asdf-helmfile.git
-asdf latest helmfile
+mise ls-remote helmfile | tail
+mise latest helmfile
 
-asdf install helmfile $VERSION
-asdf list helmfile
-
-# Setting the default version
-asdf set -u helmfile $VERSION
-asdf list helmfile
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g helmfile@$VERSION
+mise ls helmfile
 ```
 
 # helm-diff - Plugin
@@ -569,19 +543,12 @@ Documentation: https://kubernetes.io/docs/reference/kubectl/
 ```bash
 VERSION_OPTION_1="1.37.1"
 
-asdf plugin list all | grep kubectl
-asdf plugin add kubectl https://github.com/asdf-community/asdf-kubectl.git
-asdf latest kubectl
+mise ls-remote kubectl | tail
+mise latest kubectl
 
-asdf install kubectl $VERSION_OPTION_1
-asdf list kubectl
-
-# Setting the default version
-asdf set -u kubectl $VERSION_OPTION_1
-asdf list kubectl
-
-# Creating a symbolic link
-sudo ln -s $HOME/.asdf/shims/kubectl /usr/local/bin/kubectl
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g kubectl@$VERSION_OPTION_1
+mise ls kubectl
 ```
 
 > Use a kubectl version within one minor version (older or newer) of the Kubernetes cluster version. More info: https://kubernetes.io/releases/version-skew-policy/#kubectl
@@ -672,19 +639,17 @@ Documentation: https://github.com/kubecolor/kubecolor
 
 Install with the following commands.
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION_KUBECOLOR=0.8.0
-asdf plugin list all | grep kubecolor
-asdf plugin add kubecolor https://github.com/dex4er/asdf-kubecolor.git
-asdf latest kubecolor
 
-asdf install kubecolor $VERSION_KUBECOLOR
+mise ls-remote kubecolor | tail
+mise latest kubecolor
 
-# Setting the default version
-asdf set -u kubecolor $VERSION_KUBECOLOR
-asdf list kubecolor
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g kubecolor@$VERSION_KUBECOLOR
+mise ls kubecolor
 
 # Changing the kubectl alias to kubecolor
 alias kubectl="kubecolor"
@@ -777,21 +742,17 @@ Documentation: https://kubeshark.co/
 sudo rm /usr/local/bin/kubeshark
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="72.3.83"
 
-asdf plugin list all | grep kubeshark
-asdf plugin add kubeshark https://github.com/carnei-ro/asdf-kubeshark.git
-asdf latest kubeshark
+mise ls-remote kubeshark | tail
+mise latest kubeshark
 
-asdf install kubeshark $VERSION
-asdf list kubeshark
-
-# Setting the default version
-asdf set -u kubeshark $VERSION
-asdf list kubeshark
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g kubeshark@$VERSION
+mise ls kubeshark
 ```
 
 # k9s
@@ -804,23 +765,19 @@ k9s is a CLI tool to manage Kubernetes clusters.
 sudo rm /usr/local/bin/k9s
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://k9scli.io/topics/commands/
 
 ```bash
 VERSION="0.51.0"
 
-asdf plugin list all | grep k9s
-asdf plugin add k9s https://github.com/looztra/asdf-k9s.git
-asdf latest k9s
+mise ls-remote k9s | tail
+mise latest k9s
 
-asdf install k9s $VERSION
-asdf list k9s
-
-# Setting the default version
-asdf set -u k9s $VERSION
-asdf list k9s
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g k9s@$VERSION
+mise ls k9s
 ```
 
 # kustomize
@@ -833,23 +790,19 @@ Kustomize provides a way to apply changes to Kubernetes as an alternative to the
 sudo rm /usr/local/bin/kustomize
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://kubectl.docs.kubernetes.io/references/kustomize/
 
 ```bash
 VERSION="5.8.2"
 
-asdf plugin list all | grep kustomize
-asdf plugin add kustomize https://github.com/Banno/asdf-kustomize.git
-asdf latest kustomize
+mise ls-remote kustomize | tail
+mise latest kustomize
 
-asdf install kustomize $VERSION
-asdf list kustomize
-
-# Setting the default version
-asdf set -u kustomize $VERSION
-asdf list kustomize
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g kustomize@$VERSION
+mise ls kustomize
 ```
 
 # lens
@@ -885,22 +838,20 @@ Documentation:
 
 A framework for managing and maintaining multi-language pre-commit hooks. https://pre-commit.com/
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="4.6.2"
 
-asdf plugin list all | grep pre-commit
-asdf plugin add pre-commit https://github.com/jonathanmorley/asdf-pre-commit.git
-asdf latest pre-commit
-asdf install pre-commit $VERSION
-asdf list pre-commit
+mise ls-remote pre-commit | tail
+mise latest pre-commit
 
-# Setting the default version
-asdf set -u pre-commit $VERSION
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g pre-commit@$VERSION
+mise ls pre-commit
 ```
 
-Source: https://asdf-vm.com/guide/getting-started.html
+Source: https://mise.jdx.dev/getting-started.html
 
 # Custom Terminal Prompt
 
@@ -973,18 +924,17 @@ Run the following commands:
 sudo rm /usr/bin/shellcheck
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="0.11.0"
-asdf plugin list all | grep shellcheck
-asdf plugin add shellcheck https://github.com/luizm/asdf-shellcheck.git
-asdf latest shellcheck
-asdf install shellcheck $VERSION
-asdf list shellcheck
 
-# Setting the default version
-asdf set -u shellcheck $VERSION
+mise ls-remote shellcheck | tail
+mise latest shellcheck
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g shellcheck@$VERSION
+mise ls shellcheck
 ```
 
 Documentation: https://github.com/koalaman/shellcheck/
@@ -1003,21 +953,18 @@ Documentation: https://github.com/getsops/sops/
 sudo rm /usr/local/bin/sops
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="3.13.3"
 
-asdf plugin list all | grep sops
-asdf plugin add sops https://github.com/feniix/asdf-sops.git
-asdf latest sops
+mise ls-remote sops | tail
+mise latest sops
 
-asdf install sops $VERSION
-asdf list sops
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g sops@$VERSION
+mise ls sops
 
-# Setting the default version
-asdf set -u sops $VERSION
-asdf list sops
 sops --version
 ```
 
@@ -1034,56 +981,45 @@ creation_rules:
     aws_profile: default
 ```
 
-# terraform and tfenv
+# terraform
 
-Run the following commands to install ``tfenv``, the Terraform version manager.
+Install Terraform with mise.
 
-Documentation: https://github.com/tfutils/tfenv
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
-```bash
-cd $HOME
-git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
-sudo ln -s ~/.tfenv/bin/* /usr/local/bin
-```
-
-List the versions that can be installed:
+Documentation: https://developer.hashicorp.com/terraform
 
 ```bash
-tfenv list-remote
+VERSION="1.16.5"
+
+mise ls-remote terraform | tail
+mise latest terraform
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g terraform@$VERSION
+mise ls terraform
+
+terraform version
 ```
 
-Install the following version of Terraform using tfenv:
+To uninstall a version of terraform, use the following command:
 
 ```bash
-tfenv install 1.16.5
+mise uninstall terraform@<VERSION>
 ```
 
-Set the following version as the default:
+Only when developing code that uses terraform, you can force the project to use a specific version with the ``mise.toml`` file in the root of the project. Example:
 
 ```bash
-tfenv use 1.16.5
+cd PROJECT_DIRECTORY
+mise use terraform@1.16.5
+
+cat mise.toml
+[tools]
+terraform = "1.16.5"
 ```
 
-To uninstall a version of terraform with tfenv, use the following command:
-
-```bash
-tfenv uninstall <VERSION>
-```
-
-List the installed versions:
-
-```bash
-tfenv list
-```
-
-Only when developing code that uses terraform, you can force the project to use a specific version:
-
-Create the file ``.terraform-version`` in the root of the project with the desired version number. Example:
-
-```bash
-cat .terraform-version
-1.16.5
-```
+> The ``aws_services/live`` and ``gcp_services/live`` directories of this repository have a ``mise.toml`` file with the versions of terraform and terragrunt. Run ``mise trust`` and ``mise install`` inside these directories.
 
 # terraform-docs
 
@@ -1105,27 +1041,21 @@ terraform-docs --version
 
 # terragrunt
 
-Install Terragrunt using ``asdf`` and the ``asdf-terragrunt`` plugin, which is maintained by Gruntwork (the company that develops Terragrunt).
+Install Terragrunt with mise (installation method documented by Terragrunt).
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
-Documentation:
-- https://docs.terragrunt.com/getting-started/install/
-- https://github.com/gruntwork-io/asdf-terragrunt
+Documentation: https://docs.terragrunt.com/getting-started/install/
 
 ```bash
 VERSION="1.1.6"
 
-asdf plugin add terragrunt https://github.com/gruntwork-io/asdf-terragrunt.git
-asdf list all terragrunt
-asdf latest terragrunt
+mise ls-remote terragrunt | tail
+mise latest terragrunt
 
-asdf install terragrunt $VERSION
-asdf list terragrunt
-
-# Setting the default version
-asdf set -u terragrunt $VERSION
-asdf list terragrunt
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g terragrunt@$VERSION
+mise ls terragrunt
 
 terragrunt --version
 ```
@@ -1133,19 +1063,19 @@ terragrunt --version
 To uninstall a version of terragrunt, use the following command:
 
 ```bash
-asdf uninstall terragrunt <VERSION>
+mise uninstall terragrunt@<VERSION>
 ```
 
-Only when developing code that uses terragrunt, you can force the project to use a specific version:
-
-Create the file ``.terragrunt-version`` in the root of the project with the desired version number. Example:
+Only when developing code that uses terragrunt, you can force the project to use a specific version with the ``mise.toml`` file in the root of the project. Example:
 
 ```bash
-cat .terragrunt-version
-1.1.6
-```
+cd PROJECT_DIRECTORY
+mise use terragrunt@1.1.6
 
-> To asdf read the ``.terragrunt-version`` file, the line ``legacy_version_file = yes`` must be in the ``$HOME/.asdfrc`` file (see the [asdf](#asdf) section). Alternatively, use the ``.tool-versions`` file of asdf.
+cat mise.toml
+[tools]
+terragrunt = "1.1.6"
+```
 
 > Terragrunt 1.0 changed the CLI. For example, ``terragrunt run-all plan`` was replaced by ``terragrunt run --all plan``. More info: https://docs.terragrunt.com/migrate/cli-redesign/
 
@@ -1161,24 +1091,20 @@ sudo apt remove vault
 sudo rm /usr/bin/vault
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="2.1.1"
 
-asdf plugin list all | grep vault
-asdf plugin add vault https://github.com/asdf-community/asdf-hashicorp.git
-asdf latest vault
+mise ls-remote vault | tail
+mise latest vault
 
-asdf install vault $VERSION
-asdf list vault
-
-# Setting the default version
-asdf set -u vault $VERSION
-asdf list vault
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g vault@$VERSION
+mise ls vault
 ```
 
-Source: https://asdf-vm.com/guide/getting-started.html
+Source: https://mise.jdx.dev/getting-started.html
 
 # yq
 
@@ -1192,27 +1118,23 @@ sudo apt remove yq
 sudo rm /usr/bin/yq
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 YQ_1="3.4.1"   # approved
 YQ_2="4.35.1"  # approved
 YQ_3="4.54.1"
 
-asdf plugin list all | grep yq
-asdf plugin add yq https://github.com/sudermanjr/asdf-yq.git
-asdf latest yq
-asdf install yq $YQ_1
-asdf install yq $YQ_2
-asdf install yq $YQ_3
-asdf list yq
+mise ls-remote yq | tail
+mise latest yq
+mise install yq@$YQ_1 yq@$YQ_2
 
-# Setting the default version
-asdf set -u yq $YQ_3
-asdf list yq
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g yq@$YQ_3
+mise ls yq
 ```
 
-Source: https://asdf-vm.com/guide/getting-started.html
+Source: https://mise.jdx.dev/getting-started.html
 
 # tig
 
@@ -1310,17 +1232,17 @@ To install kind, run the following commands.
 sudo rm /usr/local/bin/kind
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="0.33.0"
-asdf plugin list all | grep kind
-asdf plugin add kind https://github.com/johnlayton/asdf-kind.git
-asdf latest kind
-asdf install kind $VERSION
-asdf list kind
-# Setting the default version
-asdf set -u kind $VERSION
+
+mise ls-remote kind | tail
+mise latest kind
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g kind@$VERSION
+mise ls kind
 ```
 
 To create a cluster with multiple local nodes with kind, create a YAML file to define the number and the type of nodes in the cluster that you want.
@@ -1412,20 +1334,17 @@ sudo rm /usr/bin/minikube
 sudo rm /usr/local/bin/minikube
 ```
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="1.39.0"
 
-asdf plugin list all | grep minikube
-asdf plugin add minikube https://github.com/alvarobp/asdf-minikube.git
-asdf latest minikube
-asdf install minikube $VERSION
-asdf list minikube
+mise ls-remote minikube | tail
+mise latest minikube
 
-# Setting the default version
-asdf set -u minikube $VERSION
-asdf list minikube
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g minikube@$VERSION
+mise ls minikube
 ```
 
 To start a cluster with 2 nodes using the version 1.37.0 of Kubernetes (the default version of minikube 1.39.0), you can use the following command:
@@ -1450,23 +1369,19 @@ minikube delete --all
 
 # [OPTIONAL] trivy
 
-Installing trivy via asdf
+Installing trivy via mise
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="0.75.0"
 
-asdf plugin list all | grep trivy
-asdf plugin add trivy https://github.com/zufardhiyaulhaq/asdf-trivy.git
-asdf latest trivy
+mise ls-remote trivy | tail
+mise latest trivy
 
-asdf install trivy $VERSION
-asdf list trivy
-
-# Setting the default version
-asdf set -u trivy $VERSION
-asdf list trivy
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g trivy@$VERSION
+mise ls trivy
 ```
 
 ## Installing trivy via Docker
@@ -1482,21 +1397,17 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/roo
 
 # [OPTIONAL] tflint
 
-Installing tflint via asdf
+Installing tflint via mise
 
-> Before proceeding, make sure you have installed the [asdf](#asdf) command.
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
 VERSION="0.64.0"
 
-asdf plugin list all | grep tflint
-asdf plugin add tflint https://github.com/skyzyx/asdf-tflint.git
-asdf latest tflint
+mise ls-remote tflint | tail
+mise latest tflint
 
-asdf install tflint $VERSION
-asdf list tflint
-
-# Setting the default version
-asdf set -u tflint $VERSION
-asdf list tflint
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g tflint@$VERSION
+mise ls tflint
 ```

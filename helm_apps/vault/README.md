@@ -10,7 +10,7 @@
 
 Install the following binaries following the instructions on the [REQUIREMENTS.md](../../REQUIREMENTS.md) file.
 
-- asdf
+- mise
 - docker
 - kind cluster
 - helm

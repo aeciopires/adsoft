@@ -33,7 +33,7 @@ Create EKS Kubernetes cluster using Terragrunt and Terraform code.
 # Requirements
 
 - Configure the AWS Credentials and install all packages and binaries following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
-- The versions of Terraform and Terragrunt used by this code are defined in the files ``live/.terraform-version`` and ``live/.terragrunt-version``.
+- The versions of Terraform and Terragrunt used by this code are defined in the file ``live/mise.toml``. Install them with [mise](https://mise.jdx.dev) running ``mise trust`` and ``mise install`` inside the ``live`` directory.
 
 Access https://docs.terragrunt.com/getting-started/quick-start/ for more information about Terragrunt commands.
 
@@ -51,8 +51,7 @@ Terragrunt forwards the most common commands (``init``, ``validate``, ``plan``, 
 
 ```bash
 ├── live # Directory with Terragrunt code
-│   ├── .terraform-version # Terraform version used by this code
-│   ├── .terragrunt-version # Terragrunt version used by this code
+│   ├── mise.toml # Terraform and Terragrunt versions used by this code (mise)
 │   ├── default.hcl
 │   ├── empty.yaml
 │   └── testing # Directory with environment code

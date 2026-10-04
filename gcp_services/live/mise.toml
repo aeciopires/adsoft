@@ -1,0 +1,6 @@
+# Versions of the tools used by this Terragrunt/Terraform code.
+# Install them with: mise trust && mise install
+# https://mise.jdx.dev/configuration.html
+[tools]
+terraform = "1.16.5"
+terragrunt = "1.1.6"

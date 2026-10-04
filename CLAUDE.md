@@ -21,13 +21,13 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 
 - Write everything in English (en-US). Keep the Markdown TOC (`<!-- TOC -->` blocks) in sync with the headings.
 - Versions must come from official sources (GitHub tags/releases of the project, the official Helm chart index, PyPI, npm, Docker Hub, `releases.hashicorp.com`, `dl.k8s.io`, official documentation). Do not guess versions, image tags, chart keys or module inputs: check them in the chart `values.yaml`, the module `variables.tf` or the upgrade guides (`docs/UPGRADE-*.md`, `docs/upgrading_to_*.md`) of the module repository.
-- Tools are installed with asdf >= 0.16 (Go binary). Use `asdf set -u TOOL VERSION`; `asdf global`, `asdf local` and `asdf update` no longer exist.
+- Tools are installed with [mise](https://mise.jdx.dev) (not asdf). Use `mise use -g TOOL@VERSION` for user defaults (saved in `~/.config/mise/config.toml`) and `mise.toml` files to pin versions per project (not `.tool-versions`, `.terraform-version` or `.terragrunt-version`). Check that a tool exists in the mise registry (`registry/` of https://github.com/jdx/mise) before using it: some names differ (`aws-cli`) or point to other projects (`jj` is Jujutsu, not tidwall/jj).
 - Use `docker compose` (Compose v2 plugin). The Compose files do not have the obsolete `version` key.
 - Do not commit `node_modules` (it is in `.gitignore`); commit the `package-lock.json` files, used by `npm ci` in the Dockerfiles.
 
 ## Pinned versions (where to change them)
 
-- Terraform/Terragrunt: `aws_services/live/.terraform-version`, `aws_services/live/.terragrunt-version` and the same files in `gcp_services/live/` (Terraform 1.16.5, Terragrunt 1.1.6).
+- Terraform/Terragrunt: `aws_services/live/mise.toml` and `gcp_services/live/mise.toml` (Terraform 1.16.5, Terragrunt 1.1.6). Run `mise trust && mise install` in these directories.
 - Terraform modules: the `source = "tfr:///...?version=X"` line of each template `.hcl` file (for example `vpc/vpc.hcl`, `eks/eks-1-36.hcl`).
 - kube-prometheus-stack chart: `CHART_VERSION` in `prometheus/install_prometheus-operator_k8s/deploy.sh`.
 - Argo CD chart: `helm_apps/argocd/README.md`. Zabbix chart: `targetRevision` in `helm_apps/argocd/zabbix/application.yaml`. Vault chart: `helm_apps/vault/README.md` (`values.yaml` is the chart default values plus the injector customizations).
