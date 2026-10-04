@@ -7,14 +7,14 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/cloud-router/google?version=6.2.0"
+  source = "tfr:///terraform-google-modules/cloud-router/google?version=9.1.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  name    = local.router_name
-  project = local.project_id
-  region  = local.region
-  network = ""
-  bgp     = null
+  name       = local.router_name
+  project_id = local.project_id
+  region     = local.region
+  network    = ""
+  bgp        = null
 }

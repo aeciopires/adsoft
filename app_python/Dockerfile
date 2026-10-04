@@ -2,23 +2,26 @@
 # https://github.com/andreyev/prometheus_hands-on/blob/demo/demo/Dockerfile
 # Thanks Andreyev ;-)
 
-FROM python:3
 # Base image
+FROM python:3.14-slim
 
 # Image Information
-LABEL maintener="AD Soft" \
+LABEL maintainer="AD Soft" \
       author="Aécio Pires, Andre Déo and Andreyev Melo" \
       create="2020/01/03" \
-      version="1.0.0" \
-      description="Especify the image Docker of app" \
+      version="1.1.0" \
+      description="Docker image of the Prometheus instrumentation demo app" \
       license="gpl-v3"
 
 # Getting the app
 WORKDIR /usr/src/app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 COPY demo.py .
-RUN pip install prometheus_client
 
-# Expose the app port
+# Expose the app ports
+# 8001: Prometheus metrics
+# 8002: Demo HTTP server
 EXPOSE 8001
 EXPOSE 8002
 

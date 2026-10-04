@@ -1,48 +1,48 @@
-// INICIANDO ==========================================
+// STARTING ===========================================
 
-var express  = require('express');
-// cria nossa aplicação Express
-var app      = express();
+const path = require('path');
+const express = require('express');
 // mongoose for mongodb
-var mongoose = require('mongoose');
-// solicitações para log no console (express4)
-var logger = require('morgan');
-// puxar informações por POST HTML (express4)
-var bodyParser = require('body-parser');
-// simular DELETE e PUT (express4)
-var methodOverride = require('method-override');
- 
- 
+const mongoose = require('mongoose');
+// log requests to the console
+const logger = require('morgan');
+// simulate DELETE and PUT
+const methodOverride = require('method-override');
+
+// create our Express application
+const app = express();
+
 // MONGODB ============================================
-// conectando ao mongodb no 172.17.0.1, criando o banco de dados contato
-mongoose.connect('mongodb://172.17.0.1:27017/contato');
-// Requisição ao arquivo que cria nosso model Contato
-require('./models/Contato');
- 
- 
-// DEFININDO A APLICAÇÃO ==============================
-// definindo local de arquivos públicos
-app.use(express.static(__dirname + '/public'));
-// logando todas as requisições no console
+// Connection string of MongoDB. It can be changed with the MONGODB_URI environment variable.
+const mongodbUri = process.env.MONGODB_URI || 'mongodb://db:27017/contact';
+const port = process.env.PORT || 8080;
+
+// Load the file that creates the Contact model
+require('./models/Contact');
+
+// DEFINING THE APPLICATION ===========================
+// location of the public files
+app.use(express.static(path.join(__dirname, 'public')));
+// log all requests to the console
 app.use(logger('dev'));
-// parse application/x-www-form-urlencoded                                    
-app.use(bodyParser.urlencoded({'extended':'true'}));
-// parse application/json          
-app.use(bodyParser.json());
-// parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+// parse application/json and application/vnd.api+json as json
+app.use(express.json({ type: ['application/json', 'application/vnd.api+json'] }));
 app.use(methodOverride());
- 
- 
-// ROTAS ===============================================
-// Incluindo nossas rotas definidas no arquivo routes/index.js
-var index = require('./routes/index');
-// definindo nossas rotas na aplicação
-app.use('/', index);
- 
- 
-// LISTEN (iniciando nossa aplicação em node) ==========
-// Define a porta 8080 onde será executada nossa aplicação
-app.listen(8080);
-// Imprime uma mensagem no console
-console.log("Aplicação executada na porta 8080");
+
+// ROUTES ==============================================
+// Include the routes defined in the file routes/index.js
+app.use('/', require('./routes/index'));
+
+// LISTEN (starting our node application) =============
+mongoose
+  .connect(mongodbUri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(port, () => console.log(`Application running on port ${port}`));
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error.message);
+    process.exit(1);
+  });

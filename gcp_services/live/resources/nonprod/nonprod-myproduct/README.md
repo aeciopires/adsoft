@@ -19,28 +19,23 @@ The general directory structure is:
 ```bash
 ├── account.hcl # definitions of project name previous created in GCP and file location of credentials of service account of GCP
 ├── README.md # this documentation
-├── .sops.yaml # file with configuation KMS used to encrypt/decrypt secrets
-├── root.hcl # file with configuation of GCS bucket to storage terragrunt state
-├── .terraform-version # file with terraform version used by tf-env application
-├── .terragrunt-version # file with terragrunt version used by tg-env application
-└── us-central1 # directory with the region where the infra will be create
-    ├── region.hcl # region where the infra will be create
+├── .sops.yaml # file with configuration KMS used to encrypt/decrypt secrets
+├── root.hcl # file with configuration of GCS bucket to storage terragrunt state
+└── us-central1 # directory with the region where the infrastructure will be created
+    ├── region.hcl # region where the infrastructure will be created
 ```
 
 # Prerequisites
 
-Access https://terragrunt.gruntwork.io/docs/#getting-started for more informations about Terragrunt commands.
+Access https://docs.terragrunt.com/getting-started/quick-start/ for more information about Terragrunt commands.
 
 Terragrunt is a thin wrapper that provides extra tools for keeping your configurations DRY, working with multiple Terraform modules, and managing remote state.
 
-Terragrunt will forward almost all commands, arguments, and options directly to Terraform, but based on the settings in your ``terragrunt.hcl`` file.
+The versions of Terraform and Terragrunt used by this code are defined in the file ``gcp_services/live/mise.toml``. Install them with [mise](https://mise.jdx.dev) running ``mise trust`` and ``mise install`` inside the ``gcp_services/live`` directory.
 
 To run the commands described in this document, you need the following:
 
-- Install all packages and binaries following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
-
-To run the commands described in this document, you need the following:
-
+- Install all packages and binaries following the instructions on the [REQUIREMENTS.md](../../../../../REQUIREMENTS.md) file.
 - Get permissions of Owner in project GCP.
 - Login in GCP using gcloud:
 
@@ -59,27 +54,34 @@ gcloud auth application-default login
 > ATTENTION!!!
 > Pay attention in order/dependency of resource before apply changes.
 
-- Run ``terragrunt init``.
+- Run ``terragrunt init --backend-bootstrap`` (only in the first time). Since Terragrunt 1.0 the GCS bucket used to store the Terraform state is created only when the flag ``--backend-bootstrap`` is used (or with the command ``terragrunt backend bootstrap``).
 - Run ``terragrunt plan`` and review the output.
 - Run ``terragrunt apply``.
 
-Order to apply directory resources to manage the organization:
+Reference: https://docs.terragrunt.com/features/units/state-backend/
+
+Order to apply directory resources of the project:
+
+> The network resources (VPC and subnets) are created in the ``nonprod-vpc-host`` project. Apply them before the resources of this project.
 
 ```bash
 └── us-central1
     ├── buckets
-    │   ├── nonprod-gyr4
+    │   └── nonprod-gyr4
     ├── kms
-    │   ├── nonprod-gyr4
+    │   └── nonprod-gyr4
+    ├── artifact-registry
+    │   └── examples
+    │       └── docker-repository
     ├── cloudsql
-    │   └── postgresql
-    │       ├── nonprod-psql-gyr4
-    ├── gke
-    │   └── standard
-    │       ├── nonprod-gyr4
-    └── static-ips
-        └── public-ips
-            ├── nonprod-gyr4
-    ├── cdn-bucket
-    │   └── nonprod-gyr4
+    │   └── postgresql
+    │       └── nonprod-gyr4
+    ├── static-ips
+    │   └── public-ips
+    │       └── nonprod-gyr4
+    └── gke
+        ├── standard
+        │   └── nonprod-gyr4
+        └── autopilot
+            └── nonprod-gyr4
 ```

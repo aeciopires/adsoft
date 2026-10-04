@@ -9,15 +9,15 @@ locals {
 # working directory, into a temporary folder, and execute your Terraform commands in that folder.
 terraform {
   # Added double slash terragrunt: https://ftclausen.github.io/dev/infra/terraform-solving-the-double-slash-mystery/
-  source = "tfr:///terraform-aws-modules/key-pair/aws//?version=2.0.3"
+  source = "tfr:///terraform-aws-modules/key-pair/aws//?version=3.0.1"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  create_key_pair = true
-  key_name        = local.key_name
-  public_key      = local.public_key_content
-  tags            = merge(
+  create     = true
+  key_name   = local.key_name
+  public_key = local.public_key_content
+  tags = merge(
     local.customer_tags,
   )
 }

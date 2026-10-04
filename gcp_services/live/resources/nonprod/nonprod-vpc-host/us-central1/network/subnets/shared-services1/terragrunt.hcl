@@ -10,10 +10,10 @@ include "subnet" {
 locals {
   region_vars          = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   region               = local.region_vars.locals.region
-  dependency_base_path = "${dirname(find_in_parent_folders())}/${local.region}"
+  dependency_base_path = dirname(find_in_parent_folders("region.hcl"))
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${local.dependency_base_path}/network/vpc/vpc-nonprod-shared"
@@ -28,13 +28,13 @@ dependency "vpc" {
 inputs = {
 
   network_name = dependency.vpc.outputs.network_name
-  subnets      = [
+  subnets = [
     {
-      subnet_name               = "shared-services1"
-      subnet_ip                 = "10.0.0.0/16"
-      subnet_region             = local.region
+      subnet_name   = "shared-services1"
+      subnet_ip     = "10.0.0.0/16"
+      subnet_region = local.region
       # Enable to allow privante instances access GCP Services
-      subnet_private_access     = true
+      subnet_private_access = true
       # Enable only for troubleshooting
       subnet_flow_logs_sampling = "0.5"
       subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"

@@ -8,7 +8,7 @@ locals {
   network_project_id = "nonprod-vpc-host"  # CHANGE_HERE
 
   default_tags = {
-    cost        = "myproduct"              # CHANGE_HERE
+    cost        = "myproduct" # CHANGE_HERE
     environment = local.environment
     terraform   = "true"
     iac         = "true"

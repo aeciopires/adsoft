@@ -6,7 +6,8 @@ nameOverride: "mycompany"
 defaultRules:
   rules:
     etcd: false
-    kubeScheduler: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
 
 ## Alertmanager
 alertmanager:
@@ -71,7 +72,7 @@ prometheus:
     image:
       registry: quay.io
       repository: prometheus/prometheus
-      tag: v3.3.0
+      tag: v3.15.0
     resources:
       limits:
         cpu: 1024m

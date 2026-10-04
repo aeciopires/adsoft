@@ -14,7 +14,7 @@ locals {
 }
 
 inputs = {
-  
+
   tier                            = "db-custom-2-8192"
   disk_size                       = 100
   disk_type                       = "PD_SSD"
@@ -38,13 +38,12 @@ inputs = {
 
   ip_configuration = {
     ipv4_enabled       = true
-    require_ssl        = false
     ssl_mode           = "ENCRYPTED_ONLY"
     private_network    = null
     allocated_ip_range = null
     authorized_networks = [
       {
-        name  = "Home" # CHANGE_HERE
+        name  = "Home"       # CHANGE_HERE
         value = "X.X.X.X/32" # CHANGE_HERE
       },
     ]

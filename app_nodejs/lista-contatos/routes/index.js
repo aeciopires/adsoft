@@ -1,94 +1,83 @@
-// INICIANDO ==============================================
-// Define as bibliotecas que iremos utilizar
-var express = require('express');
-var mongoose = require('mongoose');
-var router = express.Router();
-var Contato = mongoose.model('Contato');
- 
-// ROTA BUSCAR ============================================
-router.get('/api/contatos', function(req, res) {
-    // utilizaremos o mongoose para buscar todos os contatos no BD
-    Contato.find(function(err, contatos) {
-        // Em caso de erros, envia o erro na resposta
-        if (err)
-            res.send(err)
-        // Retorna todos os contatos encontrados no BD
-        res.json(contatos); 
+// STARTING ===============================================
+// Define the libraries used
+const path = require('path');
+const express = require('express');
+const mongoose = require('mongoose');
+
+const router = express.Router();
+const Contact = mongoose.model('Contact');
+
+// Return the error in the response
+function sendError(res, error) {
+  res.status(500).json({ error: error.message });
+}
+
+// LIST ROUTE =============================================
+router.get('/api/contacts', async (req, res) => {
+  try {
+    // Use mongoose to find all the contacts in the database
+    res.json(await Contact.find());
+  } catch (error) {
+    sendError(res, error);
+  }
+});
+
+// CREATE ROUTE ===========================================
+router.post('/api/contacts', async (req, res) => {
+  try {
+    // Create a contact. The data is sent by an AJAX request from Angular
+    await Contact.create({
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
     });
+    // Return all the contacts after inserting the new record
+    res.json(await Contact.find());
+  } catch (error) {
+    sendError(res, error);
+  }
 });
- 
-// ROTA CRIAR =============================================
-router.post('/api/contatos', function(req, res) {
-    // Cria um contato, as informações são enviadas por uma requisição AJAX pelo Angular
-    Contato.create({
-        nome : req.body.nome,
-        email : req.body.email,
-        telefone : req.body.telefone,
-        done : false
-    }, function(err, contato) {
-        if (err)
-            res.send(err);
-        // Busca novamente todos os contatos após termos inserido um novo registro
-        Contato.find(function(err, contatos) {
-            if (err)
-                res.send(err)
-            res.json(contatos);
-        });
-    });
- 
+
+// DELETE ROUTE ===========================================
+router.delete('/api/contacts/:contact_id', async (req, res) => {
+  try {
+    // Remove the contact using the _id parameter
+    await Contact.deleteOne({ _id: req.params.contact_id });
+    // Return all the contacts after removing the record
+    res.json(await Contact.find());
+  } catch (error) {
+    sendError(res, error);
+  }
 });
- 
-// ROTA DELETAR ============================================
-router.delete('/api/contatos/:contato_id', function(req, res) {
-    // Remove o contato no Model pelo parâmetro _id
-    Contato.remove({
-        _id : req.params.contato_id
-    }, function(err, contato) {
-        if (err)
-            res.send(err);
-        // Busca novamente todos os contatos após termos removido o registro
-        Contato.find(function(err, contatos) {
-            if (err)
-                res.send(err)
-            res.json(contatos);
-        });
-    });
+
+// GET ONE ROUTE (used by the edit form) ==================
+router.get('/api/contacts/:contact_id', async (req, res) => {
+  try {
+    res.json(await Contact.findById(req.params.contact_id));
+  } catch (error) {
+    sendError(res, error);
+  }
 });
- 
-// ROTA EDITAR =============================================
-router.get('/api/contatos/:contato_id', function(req, res) {
-    // Busca o contato no Model pelo parâmetro id
-    Contato.findOne({
-        _id : req.params.contato_id
-    }, function(err, contato) {
-        if (err)
-            res.send(err);
-        res.json(contato);
-    });
+
+// UPDATE ROUTE ===========================================
+router.put('/api/contacts/:contact_id', async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.contact_id,
+      { name: req.body.name, email: req.body.email, phone: req.body.phone },
+      { returnDocument: 'after' }
+    );
+    res.json(contact);
+  } catch (error) {
+    sendError(res, error);
+  }
 });
- 
-// ROTA ATUALIZAR ==========================================
-router.put('/api/contatos/:contato_id', function(req, res) {
-    // Busca o contato no Model pelo parâmetro id
-    var contatoData = req.body;
-    var id = req.params.contato_id;
- 
-    Contato.update( 
-        {_id: id }, 
-        contatoData, 
-        { upsert: true}, 
-        function(err, contato) {
-            if (err) res.send(err);
-            res.json(contato);
-    });
-    
+
+// ROUTE FOR THE ANGULARJS FRONT-END ======================
+router.get('/{*splat}', (req, res) => {
+  // Load the index.html view, the only one of the application.
+  // Angular handles the page changes in the front-end.
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
- 
-// DEFININDO NOSSA ROTA PARA O ANGULARJS/FRONT-END =========
-router.get('*', function(req, res) {
-    // Carrega nossa view index.html que será a única da nossa aplicação
-    // O Angular irá lidar com as mudanças de páginas no front-end
-    res.sendfile('./public/index.html');
-});
- 
+
 module.exports = router;

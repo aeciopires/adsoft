@@ -123,7 +123,7 @@ locals {
   # http://jodies.de/ipcalc?host=172.31.240.0&mask1=20&mask2=22
   cidr = "172.31.240.0/20"
 
-  public_subnets  = [
+  public_subnets = [
     "172.31.240.0/22",
     "172.31.244.0/22"
   ]

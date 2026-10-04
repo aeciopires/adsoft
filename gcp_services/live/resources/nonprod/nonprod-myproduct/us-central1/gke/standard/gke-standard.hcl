@@ -10,7 +10,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=35.0.1"
+  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=45.0.0"
 }
 
 
@@ -40,7 +40,7 @@ inputs = {
   # https://cloud.google.com/kubernetes-engine/versioning
   kubernetes_version = ""
   # The release channel of this cluster. Accepted values are `UNSPECIFIED`, `RAPID`, `REGULAR` and `STABLE`. Defaults to `REGULAR`.
-  release_channel    = "REGULAR"
+  release_channel = "REGULAR"
 
 
   #--------------------------
@@ -73,7 +73,7 @@ inputs = {
   #--------------------------
   remove_default_node_pool = true
   initial_node_count       = 0
-  # Reference: https://cloud.google.com/compute/docs/general-purpose-machines?hl=pt-br
+  # Reference: https://cloud.google.com/compute/docs/general-purpose-machines
   # Node pool names must start with a lowercase letter followed by up to 39 lowercase
   node_pools = []
 

@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/kms/google?version=3.2.0"
+  source = "tfr:///terraform-google-modules/kms/google?version=4.2.0"
 }
 
 inputs = {

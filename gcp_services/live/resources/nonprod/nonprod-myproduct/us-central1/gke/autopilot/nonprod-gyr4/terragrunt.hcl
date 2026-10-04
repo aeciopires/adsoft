@@ -1,5 +1,5 @@
 include "root" {
-  path   = find_in_parent_folders("root.hcl")
+  path = find_in_parent_folders("root.hcl")
 }
 
 include "gke-autopilot" {
@@ -25,7 +25,7 @@ locals {
 }
 
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${get_repo_root()}/gcp_services/live/resources/nonprod/${local.network_project_id}/${local.region}/network/vpc/vpc-nonprod-shared",
@@ -73,7 +73,6 @@ inputs = {
   #--------------------------
   http_load_balancing             = true
   enable_l4_ilb_subsetting        = true
-  gce_pd_csi_driver               = true
   filestore_csi_driver            = true
   enable_vertical_pod_autoscaling = true
   horizontal_pod_autoscaling      = true
@@ -103,10 +102,10 @@ inputs = {
   enable_private_nodes          = true
   network_tags                  = ["terraform", local.cluster_shortname]
   deletion_protection           = false
-  master_authorized_networks    = [
+  master_authorized_networks = [
     {
-      name  = "Home" # CHANGE_HERE
-      value = "X.X.X.X/32" # CHANGE_HERE
+      display_name = "Home"       # CHANGE_HERE
+      cidr_block   = "X.X.X.X/32" # CHANGE_HERE
     },
   ]
 
@@ -114,9 +113,8 @@ inputs = {
   #--------------------------
   # Storage, log and monitoring
   #--------------------------
-  logging_service    = "logging.googleapis.com/kubernetes"
-  monitoring_service = "monitoring.googleapis.com/kubernetes"
-
+  # Logging and monitoring are managed by GKE Autopilot.
+  # Use logging_enabled_components and monitoring_enabled_components to customize them.
 
   cluster_resource_labels = merge(
     local.default_tags,

@@ -10,10 +10,10 @@ include "rule" {
 locals {
   region_vars          = read_terragrunt_config(find_in_parent_folders("region.hcl"))
   region               = local.region_vars.locals.region
-  dependency_base_path = "${dirname(find_in_parent_folders())}/${local.region}"
+  dependency_base_path = dirname(find_in_parent_folders("region.hcl"))
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${local.dependency_base_path}/network/vpc/vpc-nonprod-shared",
@@ -37,20 +37,20 @@ inputs = {
   # The firewall rule priority is an integer from 0 to 65535, inclusive. Lower integers indicate higher priorities.
   # If you do not specify a priority when creating a rule, it is assigned a priority of 1000.
 
-  network_name  = dependency.vpc.outputs.network_name
+  network_name = dependency.vpc.outputs.network_name
 
   ingress_rules = [
     {
       # Reference: https://letsencrypt.org/docs/integration-guide/#firewall-configuration
       # For the “http-01” ACME challenge, you need to allow inbound port 80 traffic.
-      name                    = "allow-web-traffic-nonprod-nginx-ingress"
-      description             = "Use temporaly to challenge HTTP/HTTPS with nginx and certmanager"
-      disabled                = false
-      priority                = 9999
-      destination_ranges      = [
+      name        = "allow-web-traffic-nonprod-nginx-ingress"
+      description = "Use temporaly to challenge HTTP/HTTPS with nginx and certmanager"
+      disabled    = false
+      priority    = 9999
+      destination_ranges = [
         "X.X.X.X/32", # CHANGE_HERE
       ]
-      source_ranges           = [
+      source_ranges = [
         "0.0.0.0/0",
       ]
       source_tags             = null
@@ -60,7 +60,7 @@ inputs = {
       allow = [
         {
           protocol = "tcp"
-          ports    = [80,443]
+          ports    = [80, 443]
         },
       ]
       deny = []
@@ -70,16 +70,16 @@ inputs = {
       #}
     },
     {
-      name                    = "allow-intra-traffic"
-      description             = "Allow intra traffic in internal subnets"
-      disabled                = false
-      priority                = 1
-      destination_ranges      = [
+      name        = "allow-intra-traffic"
+      description = "Allow intra traffic in internal subnets"
+      disabled    = false
+      priority    = 1
+      destination_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range,
       ]
-      source_ranges           = [
+      source_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range,
@@ -101,18 +101,18 @@ inputs = {
       #}
     },
     {
-      name                    = "allow-gcp-loadbalancer-health-check"
-      description             = "This is an ingress rule that allows traffic from the Google Cloud and Loadbalancer health checking systems (130.211.0.0/22 and 35.191.0.0/16)"
-      disabled                = false
-      priority                = 1
-      destination_ranges      = [
+      name        = "allow-gcp-loadbalancer-health-check"
+      description = "This is an ingress rule that allows traffic from the Google Cloud and Loadbalancer health checking systems (130.211.0.0/22 and 35.191.0.0/16)"
+      disabled    = false
+      priority    = 1
+      destination_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range,
       ]
-      source_ranges           = [
-        "130.211.0.0/22",   # Google Cloud and Loadbalancer health checking systems
-        "35.191.0.0/16",    # Google Cloud and Loadbalancer health checking systems
+      source_ranges = [
+        "130.211.0.0/22", # Google Cloud and Loadbalancer health checking systems
+        "35.191.0.0/16",  # Google Cloud and Loadbalancer health checking systems
       ]
       source_tags             = null
       source_service_accounts = null
@@ -131,17 +131,17 @@ inputs = {
       #}
     },
     {
-      name                    = "allow-vpc-nonprod-shared-icmp"
-      description             = null
-      disabled                = false
-      priority                = 1
-      destination_ranges      = [
+      name        = "allow-vpc-nonprod-shared-icmp"
+      description = null
+      disabled    = false
+      priority    = 1
+      destination_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range,
       ]
-      source_ranges           = [
-        "X.X.X.X/Y",     # CHANGE_HERE
+      source_ranges = [
+        "X.X.X.X/Y", # CHANGE_HERE
       ]
       source_tags             = null
       source_service_accounts = null
@@ -160,16 +160,16 @@ inputs = {
       #}
     },
     {
-      name                    = "allow-vpc-nonprod-shared-ssh"
-      description             = "Allow connect GCP services to private instance using SSH/IAP connections"
-      disabled                = false
-      priority                = 1
-      destination_ranges      = [
+      name        = "allow-vpc-nonprod-shared-ssh"
+      description = "Allow connect GCP services to private instance using SSH/IAP connections"
+      disabled    = false
+      priority    = 1
+      destination_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range,
       ]
-      source_ranges           = [
+      source_ranges = [
         "35.235.240.0/20",
       ]
       source_tags             = null
@@ -192,12 +192,12 @@ inputs = {
 
   egress_rules = [
     {
-      name                    = "allow-output-traffic"
-      description             = "Allow output traffic"
-      disabled                = false
-      priority                = 65535
-      destination_ranges      = ["0.0.0.0/0"]
-      source_ranges           = [
+      name               = "allow-output-traffic"
+      description        = "Allow output traffic"
+      disabled           = false
+      priority           = 65535
+      destination_ranges = ["0.0.0.0/0"]
+      source_ranges = [
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[0].ip_cidr_range,
         dependency.subnet-shared-services1.outputs.subnets["${local.region}/shared-services1"].secondary_ip_range[1].ip_cidr_range

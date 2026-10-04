@@ -1,6 +1,6 @@
 # References:
 #
-# https://blog.argoproj.io/draft-argo-cd-v2-6-release-candidate-ced1853bbfdb
+# https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
 # https://github.com/argoproj/argo-cd/issues/2531
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -18,16 +18,16 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
-  # https://argo-cd.readthedocs.io/en/release-2.6/user-guide/projects/
+  # https://argo-cd.readthedocs.io/en/stable/user-guide/projects/
   project: default
-  # https://argo-cd.readthedocs.io/en/release-2.6/user-guide/multiple_sources/
+  # https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
   sources:
   - repoURL: https://zabbix-community.github.io/helm-zabbix
     chart: zabbix
-    targetRevision: 7.0.6
+    targetRevision: 7.1.0
     helm:
       valueFiles:
-      - $values/argocd/zabbix/zabbix_values.yaml
+      - $values/helm_apps/argocd/zabbix/zabbix_values.yaml
   - repoURL: https://github.com/aeciopires/adsoft.git
     # Branch or tag name
     targetRevision: master

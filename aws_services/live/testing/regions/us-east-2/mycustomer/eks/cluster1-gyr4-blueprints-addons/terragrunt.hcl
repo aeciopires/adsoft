@@ -8,7 +8,7 @@ include "root" {
 }
 
 include "eks-blueprints-addons" {
-  path   = find_in_parent_folders("eks-1-32-blueprints-addons.hcl")
+  path   = find_in_parent_folders("eks-1-36-blueprints-addons.hcl")
   expose = true
 }
 
@@ -60,7 +60,7 @@ locals {
     replicaCount: 2
 
     image:
-      tag: "v1.32.0"
+      tag: "v1.36.1"
 
     priorityClassName: "system-cluster-critical"
 
@@ -94,7 +94,7 @@ locals {
   EOF
 }
 
-# When applying this terragrunt config in an `run-all` command, make sure the modules below are handled first.
+# When applying this terragrunt config with the `run --all` command, make sure the modules below are handled first.
 dependencies {
   paths = [
     "${get_repo_root()}/aws_services/live/${local.environment}/regions/${local.region}/mycustomer/eks/${local.cluster_shortname}-${local.suffix}/",
@@ -117,13 +117,15 @@ inputs = {
   # https://github.com/aws-ia/terraform-aws-eks-blueprints-addons/blob/main/docs/addons/aws-load-balancer-controller.md
   # https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
   aws_load_balancer_controller = {
-    name          = "aws-load-balancer-controller"
-    # Install version v2.11.0 of aws-load-balancer-controller.
+    name = "aws-load-balancer-controller"
+    # Install version v3.5.0 of aws-load-balancer-controller.
+    # Since v3.0.0 the chart version matches the application version.
+    # Helm does not upgrade CRDs: when upgrading an existing installation, apply the CRDs first.
     # See new changes on release notes of application: https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases
-    chart_version = "1.11.0"
+    chart_version = "3.5.0"
     repository    = "https://aws.github.io/eks-charts"
     namespace     = "kube-system"
-        values        = [
+    values = [
       local.aws_load_balancer_controller_yaml
     ]
   }
@@ -134,18 +136,19 @@ inputs = {
   # https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
   #
   cluster_autoscaler = {
-    name          = "cluster-autoscaler"
-    # Install version 1.32.0 of cluster-autoscaler chart. 
+    name = "cluster-autoscaler"
+    # Install version 9.59.0 of cluster-autoscaler chart.
+    # The image tag of cluster-autoscaler must match the minor version of Kubernetes (see cluster_autoscaler_yaml).
     # See new changes on release notes of application: https://github.com/kubernetes/autoscaler/releases
-    chart_version = "9.46.0"
+    chart_version = "9.59.0"
     repository    = "https://kubernetes.github.io/autoscaler"
     namespace     = "kube-system"
-    values        = [
+    values = [
       local.cluster_autoscaler_yaml
     ]
   }
 
-  tags           = merge(
+  tags = merge(
     local.customer_tags,
   )
 }

@@ -8,7 +8,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster?version=35.0.1"
+  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster?version=45.0.0"
 }
 
 
@@ -44,7 +44,6 @@ inputs = {
   #--------------------------
   http_load_balancing             = true
   enable_l4_ilb_subsetting        = true
-  gce_pd_csi_driver               = true
   filestore_csi_driver            = true
   enable_vertical_pod_autoscaling = true
   horizontal_pod_autoscaling      = true
@@ -61,9 +60,8 @@ inputs = {
   #--------------------------
   # Storage, log and monitoring
   #--------------------------
-  logging_service    = "logging.googleapis.com/kubernetes"
-  monitoring_service = "monitoring.googleapis.com/kubernetes"
-
+  # Logging and monitoring are managed by GKE Autopilot.
+  # Use logging_enabled_components and monitoring_enabled_components to customize them.
 
   cluster_resource_labels = merge(
     local.default_tags,

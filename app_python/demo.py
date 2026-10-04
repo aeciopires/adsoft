@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding:utf-8
-'''Exemplo de instrumentação do Prometheus.'''
+'''Example of Prometheus instrumentation.'''
 
 import http.server
 import random
@@ -15,10 +15,10 @@ EXCEPTIONS = Counter('demo_exceptions_count', 'Exceptions serving Demo.')
 LAST = Gauge('demo_last_time_seconds', 'The last time a Demo was served.')
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
-    '''Classe de exemplo.'''
+    '''Example HTTP handler.'''
 
     def do_GET(self):
-        '''Função com todos os exemplos propostos.'''
+        '''Handle GET requests and update all the example metrics.'''
         rand = random.randrange(10)
         time.sleep(rand)
         SUM.inc(rand)

@@ -21,10 +21,10 @@ inputs = {
   domain                         = local.dns_domain_name
   environment                    = local.environment
   iam_allowed_resources          = []
-  iam_permissions                = [
+  iam_permissions = [
     "ses:SendRawEmail"
   ]
-  zone_id                        = local.dns_zone_id
-  verify_domain                  = true
-  verify_dkim                    = true
+  zone_id       = local.dns_zone_id
+  verify_domain = true
+  verify_dkim   = true
 }

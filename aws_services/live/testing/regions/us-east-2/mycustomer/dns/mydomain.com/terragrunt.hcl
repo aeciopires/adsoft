@@ -15,13 +15,12 @@ locals {
 }
 
 inputs = {
-  zones = {
-    "${local.dns_domain_name}" = {
-      comment = "${local.dns_domain_name} (production)"
-      tags = {
-        Name = "${local.dns_domain_name}"
-      }
+  name    = local.dns_domain_name
+  comment = "${local.dns_domain_name} (production)"
+  tags = merge(
+    local.customer_tags,
+    {
+      Name = local.dns_domain_name
     }
-  }
-  tags = local.customer_tags
+  )
 }

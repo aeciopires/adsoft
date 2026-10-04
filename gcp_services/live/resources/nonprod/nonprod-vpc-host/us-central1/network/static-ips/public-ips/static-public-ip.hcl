@@ -8,12 +8,12 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/address/google?version=4.1.0"
+  source = "tfr:///terraform-google-modules/address/google?version=5.1.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  names  = [
+  names = [
     local.ip_name
   ]
   project_id   = local.project_id

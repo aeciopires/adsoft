@@ -29,22 +29,23 @@ cat <<EOF
 
   Usage: $PROGPATHNAME <[options]>
   Options:
-      -a, --action          The action name. Supported values: install, upgrade, unistall
+      -a, --action          The action name. Supported values: install, upgrade, uninstall
       -h, --help            This message.
       -c, --cluster_name    Cluster name. Example: kind-kind-multinodes
       -e, --environment     Environment name. Supported values: testing, staging, production
       -p, --cloud_provider  Cloud provider. Supported values: aws, gcp
+      --dry-run             Simulate the action (helm --dry-run=server). Nothing is changed in the cluster.
 
   Examples:
 
   # Install prometheus-operator
-  $PROGPATHNAME -a install -p aws -e testing -c myawscluster [--dry-run]"
+  $PROGPATHNAME -a install -p aws -e testing -c myawscluster [--dry-run]
 
   # Upgrade prometheus-operator
-  $PROGPATHNAME -a upgrade -p gcp -e staging -c mygcpcluster [--dry-run]"
+  $PROGPATHNAME -a upgrade -p gcp -e staging -c mygcpcluster [--dry-run]
 
   # Uninstall prometheus-operator
-  $PROGPATHNAME -a uninstall -c mygcpcluster [--dry-run]"
+  $PROGPATHNAME -a uninstall -c mygcpcluster [--dry-run]
 EOF
 }
 
@@ -58,16 +59,17 @@ function install_prometheus_operator() {
 # Disable create resource CRD
 # https://github.com/helm/charts/issues/19452
 
-  helm secrets upgrade --install $APP_NAME \
-  $HELM_REPO_NAME/$HELM_CHART_NAME \
-  --version $CHART_VERSION \
-  --namespace $NAMESPACE \
+  # shellcheck disable=SC2086
+  helm secrets upgrade --install "$APP_NAME" \
+  "$HELM_REPO_NAME/$HELM_CHART_NAME" \
+  --version "$CHART_VERSION" \
+  --namespace "$NAMESPACE" \
   $DRY_RUN_HELM_OPTION \
   $DEBUG_DEPLOY \
   $SKIP_CRD \
-  -f $DEFAULT_VALUES \
-  -f $CLOUD_VALUES \
-  -f $CLUSTER_VALUES
+  -f "$DEFAULT_VALUES" \
+  -f "$CLOUD_VALUES" \
+  -f "$CLUSTER_VALUES"
 }
 
 
@@ -77,7 +79,8 @@ function install_prometheus_operator() {
 #
 function uninstall_prometheus_operator() {
 
-  helm uninstall $APP_NAME --namespace $NAMESPACE
+  # shellcheck disable=SC2086
+  helm uninstall "$APP_NAME" --namespace "$NAMESPACE" $DRY_RUN_HELM_OPTION
 }
 
 
@@ -91,15 +94,16 @@ function uninstall_prometheus_operator() {
 
 #------------------------
 # Variables
-readonly PROGPATHNAME=$(readlink -f $0)
-readonly PROGPATHNAME_RELATIVE=$BASH_SOURCE
-PROGFILENAME=$(basename $PROGPATHNAME)
-PROGDIRNAME=$(dirname $PROGPATHNAME)
+PROGPATHNAME=$(readlink -f "$0")
+readonly PROGPATHNAME
+PROGDIRNAME=$(dirname "$PROGPATHNAME")
 LIB_FILE="${PROGDIRNAME}/lib.sh"
 DEBUG=true
 _DEBUG_COMMAND="on"
-_OPTIONS_FOR_USAGE="${@}"
 _COUNT_ARGS_FOR_ERROR="${#}"
+DRY_RUN=false
+DRY_RUN_HELM_OPTION=''
+
 
 #--- Version new of chart
 #    https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
@@ -107,7 +111,7 @@ _COUNT_ARGS_FOR_ERROR="${#}"
 HELM_REPO_NAME='prometheus-community'
 HELM_REPO_URL='https://prometheus-community.github.io/helm-charts'
 HELM_CHART_NAME='kube-prometheus-stack'
-CHART_VERSION='71.1.0'
+CHART_VERSION='91.9.0'
 APP_NAME='monitor'
 NAMESPACE='monitoring'
 # Use true to add helm repo always, use false to don't install helm repo
@@ -125,6 +129,7 @@ SKIP_CRD=''
 
 
 # Load scripts with our libs and variables defaults
+# shellcheck source-path=SCRIPTDIR source=lib.sh
 if [ ! -f "$LIB_FILE" ] ; then
     echo "[ERROR] File '$LIB_FILE' not found."
     exit 1
@@ -149,7 +154,7 @@ needs_arg() { if [[ -z "${OPTARG}" ]]; then die "No arg for --${OPT} option"; fi
 no_arg() { if [[ -n "${OPTARG}" ]]; then die "No arg allowed for --${OPT} option"; fi; }
 help() { usage; die; }
 
-while getopts a:c:e:h:p:-: OPT; do
+while getopts a:c:e:hp:-: OPT; do
   # support long options: https://stackoverflow.com/a/28466267/519360
   if [[ "${OPT}" = "-" ]]; then   # long option: reformulate OPT and OPTARG
     OPT="${OPTARG%%=*}"           # extract long option name
@@ -161,6 +166,7 @@ while getopts a:c:e:h:p:-: OPT; do
     c | cluster_name )         needs_arg; CLUSTER_NAME="${OPTARG}" ;;
     e | environment )          needs_arg; ENVIRONMENT="${OPTARG}" ;;
     h | help )                 help ;;
+    dry-run )                  no_arg; DRY_RUN=true; DRY_RUN_HELM_OPTION='--dry-run=server' ;;
     p | cloud_provider )       needs_arg; CLOUD_PROVIDER="${OPTARG}" ;;
     ??* )                      die "Illegal option --$OPT" ;;  # bad long option
     ? )                        exit 2 ;;  # bad short option (error reported via getopts)
@@ -194,6 +200,17 @@ checkVariable ACTION "$ACTION"
 checkVariable CLUSTER_NAME "$CLUSTER_NAME"
 
 ACTION=$(tolower "$ACTION")
+
+# Check if action is supported
+case "$ACTION" in
+  install|upgrade|uninstall)
+  ;;
+  *)
+    echo "[ERROR] '$ACTION' action not supported."
+    usage
+    exit 3
+  ;;
+esac
 
 if [ "$ACTION" != "uninstall" ]; then
   checkVariable ENVIRONMENT "$ENVIRONMENT"
@@ -234,15 +251,6 @@ if [ "$ACTION" != "uninstall" ]; then
   # Testing if files existis
   existfiles "$DEFAULT_VALUES" "$CLOUD_VALUES" "$CLUSTER_VALUES"
 
-  # Check if should enable dry-run mode
-  if [ "$5" == "--dry-run" ] ; then
-    DRY_RUN=true
-    DRY_RUN_HELM_OPTION='--dry-run'
-  else
-    DRY_RUN=false
-    DRY_RUN_HELM_OPTION=''
-  fi
-
   if [ "$ADD_HELM_REPO" == true ]; then
     echo "[INFO] Add Helm repo '$HELM_REPO_NAME'"
     helm repo add "$HELM_REPO_NAME" "$HELM_REPO_URL"
@@ -255,9 +263,7 @@ echo "[INFO] Testing access a kubernetes cluster."
 testAccessKubernetes
 
 # Get short cluster-name
-if ``kubectl cluster-info > /dev/null 2>&1``; then
-  CONTEXT_NAME=$(kubectl config current-context)
-fi
+CONTEXT_NAME=$(kubectl config current-context)
 
 SHORT_CLUSTER_NAME=$(echo "$CONTEXT_NAME" | grep -o "$CLUSTER_NAME")
 if [ "$ACTION" != "uninstall" ]; then
@@ -269,6 +275,7 @@ if [ "$DEBUG" == true ]; then
   echo "[DEBUG] CONTEXT_NAME         => $CONTEXT_NAME"
   echo "[DEBUG] CLUSTER_NAME         => $CLUSTER_NAME"
   echo "[DEBUG] NAMESPACE            => $NAMESPACE"
+  echo "[DEBUG] DRY_RUN              => $DRY_RUN"
   echo "[DEBUG] SHORT_CLUSTER_NAME   => $SHORT_CLUSTER_NAME"
   if [ "$ACTION" != "uninstall" ]; then
     echo "[DEBUG] CLUSTER_VALUES       => $CLUSTER_VALUES"
@@ -296,7 +303,9 @@ if [ "$ACTION" != "uninstall" ]; then
 fi
 
 # Create namespace if not exist
-createNameSpace "$NAMESPACE"
+if [ "$ACTION" != "uninstall" ] && [ "$DRY_RUN" != true ]; then
+  createNameSpace "$NAMESPACE"
+fi
 
 # Execute action
 case "$ACTION" in
@@ -306,9 +315,4 @@ case "$ACTION" in
   uninstall)
     uninstall_prometheus_operator
     ;;
-  *)
-    echo "[ERROR] '$ACTION' action not supported."
-    usage
-    exit 3
-  ;;
 esac

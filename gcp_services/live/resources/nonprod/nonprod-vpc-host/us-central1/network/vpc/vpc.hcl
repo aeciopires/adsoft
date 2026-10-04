@@ -5,7 +5,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/network/google//modules/vpc?version=10.0.0"
+  source = "tfr:///terraform-google-modules/network/google//modules/vpc?version=18.3.0"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

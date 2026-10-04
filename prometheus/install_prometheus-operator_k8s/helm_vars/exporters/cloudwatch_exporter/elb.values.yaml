@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: prom/cloudwatch-exporter
-  tag: v0.15.3
+  tag: v0.18.0
 
 resources:
   limits:

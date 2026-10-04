@@ -5,7 +5,7 @@
 - [install-argocd](#install-argocd)
 - [Requirements](#requirements)
 - [Installing ArgoCD in kind](#installing-argocd-in-kind)
-- [References:](#references)
+- [References](#references)
 
 <!-- TOC -->
 
@@ -33,10 +33,10 @@ Search for all the Helm chart versions.
 helm search repo argo/argo-cd --versions
 ```
 
-Install the using the follow command:
+Install ArgoCD using the following command:
 
 ```bash
-ARGOCD_CHART_VERSION=7.9.0
+ARGOCD_CHART_VERSION=10.9.6
 
 helm upgrade --install argocd \
   argo/argo-cd --version "$ARGOCD_CHART_VERSION" \
@@ -52,10 +52,10 @@ kubectl get all -n argocd
 Create a port-forward to access ArgoCD web interface:
 
 ```bash
-kubectl -n argocd port-forward svc/argocd-server 8443:80
+kubectl -n argocd port-forward svc/argocd-server 8443:443
 ```
 
-This will create a forward from the application running in the Kubernetes cluster on port 443/TCP to port 8443/TCP on the local host. This way, you can open a browser at the address: http://localhost:8443. If you close the terminal or press CRTL+C, the port-forward will be terminated and you will lose access.
+This will create a forward from the application running in the Kubernetes cluster on port 443/TCP to port 8443/TCP on the local host. This way, you can open a browser at the address: https://localhost:8443 (ArgoCD uses a self-signed certificate by default, so accept it in the browser). If you close the terminal or press CTRL+C, the port-forward will be terminated and you will lose access.
 
 The default login is admin and a random password will be generated. To obtain it, run the following command in another terminal:
 
@@ -63,7 +63,7 @@ The default login is admin and a random password will be generated. To obtain it
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
-After logging into Argo CD, change your password at the following address: http://localhost:8443/user-info?changePassword=true
+After logging into Argo CD, change your password at the following address: https://localhost:8443/user-info?changePassword=true
 
 After changing the password in the web interface, you can remove the secret ``argocd-initial-admin-secret``, which contains the initial password, with the following command:
 
@@ -71,11 +71,9 @@ After changing the password in the web interface, you can remove the secret ``ar
 kubectl -n argocd delete secret argocd-initial-admin-secret
 ```
 
-After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
+You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli
 
-(You should delete the initial secret afterwards as suggested by the Getting Started Guide: http://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
-
-# References:
+# References
 
 - https://artifacthub.io/packages/helm/argo/argo-cd
 - https://blog.aeciopires.com/usando-o-argo-cd-para-implementar-a-abordagem-gitops-nos-clusters-kubernetes/
