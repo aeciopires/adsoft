@@ -14,3 +14,4 @@ vendor
 .terraform.lock.hcl
 *kubeconfig_*
 node_modules
+__pycache__

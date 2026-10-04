@@ -129,7 +129,7 @@ SKIP_CRD=''
 
 
 # Load scripts with our libs and variables defaults
-# shellcheck source=lib.sh
+# shellcheck source-path=SCRIPTDIR source=lib.sh
 if [ ! -f "$LIB_FILE" ] ; then
     echo "[ERROR] File '$LIB_FILE' not found."
     exit 1
