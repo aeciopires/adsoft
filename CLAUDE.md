@@ -23,7 +23,7 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 - Versions must come from official sources (GitHub tags/releases of the project, the official Helm chart index, PyPI, npm, Docker Hub, `releases.hashicorp.com`, `dl.k8s.io`, official documentation). Do not guess versions, image tags, chart keys or module inputs: check them in the chart `values.yaml`, the module `variables.tf` or the upgrade guides (`docs/UPGRADE-*.md`, `docs/upgrading_to_*.md`) of the module repository.
 - Tools are installed with [mise](https://mise.jdx.dev) (not asdf). Use `mise use -g TOOL@VERSION` for user defaults (saved in `~/.config/mise/config.toml`) and `mise.toml` files to pin versions per project (not `.tool-versions`, `.terraform-version` or `.terragrunt-version`). Check that a tool exists in the mise registry (`registry/` of https://github.com/jdx/mise) before using it: some names differ (`aws-cli`) or point to other projects (`jj` is Jujutsu, not tidwall/jj).
 - Use `docker compose` (Compose v2 plugin). The Compose files do not have the obsolete `version` key.
-- `softwares-macos.md` uses iTerm2, Zsh (`~/.zshrc`) with oh-my-zsh and the Spaceship theme, and Colima (not Docker Desktop) with the Homebrew `docker`, `docker-compose` and `docker-buildx` packages. `softwares-ubuntu.md` uses Bash (`~/.bashrc`). Both guides install Claude Code (`claude`).
+- `softwares-macos.md` uses iTerm2, Zsh (`~/.zshrc`) with oh-my-zsh and the Spaceship theme, and Colima (not Docker Desktop) with the Homebrew `docker`, `docker-compose` and `docker-buildx` packages. `softwares-ubuntu.md` uses Bash (`~/.bashrc`) and supports Ubuntu 26.04, 24.04 and 22.04 LTS. Both guides install Claude Code (`claude`), and Go, Python and uv with mise.
 - Do not commit `node_modules` (it is in `.gitignore`); commit the `package-lock.json` files, used by `npm ci` in the Dockerfiles.
 
 ## Pinned versions (where to change them)
@@ -85,3 +85,4 @@ Units with `dependency` blocks have no `mock_outputs`, so `terragrunt validate`/
 - `kubectl version --short` was removed in kubectl 1.28.
 - The Argo CD UI is served with TLS: port-forward `svc/argocd-server` port 443.
 - The kubelet of recent `kindest/node` images (v1.37.0) does not start on hosts with cgroup v1.
+- The EC2 and ASG examples use Ubuntu 26.04 through the public SSM parameter of Canonical (`/aws/service/canonical/ubuntu/server/26.04/stable/current/amd64/hvm/ebs-gp3/ami-id`): `ami_ssm_parameter` in the EC2 module and `image_id = "resolve:ssm:..."` in the ASG launch template. No AMI ID is hardcoded.

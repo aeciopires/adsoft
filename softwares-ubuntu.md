@@ -5,6 +5,7 @@
   - [Optional](#optional)
 - [Git](#git)
 - [mise](#mise)
+- [Python and uv](#python-and-uv)
 - [ansible](#ansible)
 - [awscli](#awscli)
 - [bat](#bat)
@@ -65,23 +66,14 @@
 
 ## Essentials
 
-Run the following commands on Ubuntu 24.04/22.04:
+This guide supports Ubuntu 26.04 LTS, 24.04 LTS and 22.04 LTS. Run the following commands:
 
 ```bash
-sudo apt install -y vim traceroute telnet netcat-openbsd git tcpdump elinks curl wget openssl net-tools python3 python3-pip meld python3-venv default-jdk jq make gnupg
+sudo apt update
+sudo apt install -y vim traceroute telnet netcat-openbsd git tcpdump elinks curl wget openssl net-tools python3 meld default-jdk jq make gnupg
 ```
 
-With Python "3.10.*" (Ubuntu 22.04) run the following command to create the symbolic link:
-
-```bash
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
-```
-
-With Python "3.12.*" (Ubuntu 24.04) run the following command to create the symbolic link:
-
-```bash
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
-```
+> Python (and pip) for development and Go are managed by mise. See the [Python and uv](#python-and-uv) and [Go](#go) sections.
 
 ## Optional
 
@@ -107,7 +99,7 @@ Install the following software:
   - Markdown-all-in-one: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
   - Markdown-lint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
   - Markdown-toc: https://marketplace.visualstudio.com/items?itemName=CharlesWan.markdown-toc
-  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requires the python3 command shown in the previous section).
+  - python: https://marketplace.visualstudio.com/items?itemName=ms-python.python (Requires the python command shown in the [Python and uv](#python-and-uv) section).
   - shellcheck: https://marketplace.visualstudio.com/items?itemName=timonwong.shellcheck (Requires the shellcheck command shown in the following sections).
   - terraform: https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (Requires the terraform command shown in the following sections).
   - YAML: https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
@@ -176,6 +168,46 @@ Source:
 - https://mise.jdx.dev/installing-mise.html
 - https://mise.jdx.dev/getting-started.html
 - https://mise.jdx.dev/configuration.html
+
+# Python and uv
+
+Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise. mise installs precompiled Python binaries (python-build-standalone), so it is not necessary to install the system dependencies to compile Python.
+
+> Before proceeding, make sure you have installed the [mise](#mise) command.
+
+```bash
+PYTHON_VERSION="3.14.8"
+UV_VERSION="0.12.23"
+
+mise ls-remote python | tail
+mise ls-remote uv | tail
+
+# Installing and setting the default versions (saved in ~/.config/mise/config.toml)
+mise use -g python@$PYTHON_VERSION
+mise use -g uv@$UV_VERSION
+mise ls python uv
+
+python --version
+pip --version
+uv --version
+```
+
+Examples of uv usage:
+
+```bash
+# Create a virtual environment in the .venv directory and install packages
+uv venv
+uv pip install requests
+
+# Run a Python CLI tool without installing it
+uvx pre-commit --version
+```
+
+> Do not remove the ``python3`` package of the operating system: it is used by system tools. mise puts its Python version first in the ``PATH`` while mise is active.
+
+Source:
+- https://mise.jdx.dev/lang/python.html
+- https://docs.astral.sh/uv/
 
 # ansible
 
@@ -356,31 +388,29 @@ gcloud auth application-default login
 
 # Go
 
-Run the following commands to install Go.
+Install Go with mise.
+
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://go.dev/doc/
 
 ```bash
-VERSION=1.27.1
+VERSION="1.27.1"
 
-mkdir -p $HOME/go/bin
-cd /tmp
+mise ls-remote go | tail
+mise latest go
 
-curl -L https://go.dev/dl/go$VERSION.linux-amd64.tar.gz -o go.tar.gz
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf go.tar.gz
-rm /tmp/go.tar.gz
-
-export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g go@$VERSION
+mise ls go
 
 go version
-
-echo "GOPATH=$HOME/go" >> ~/.bashrc
-echo "PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" >> ~/.bashrc
+go env GOROOT GOBIN
 ```
 
-Source: https://go.dev/doc/install
+> mise sets ``GOROOT`` and, by default, ``GOBIN`` to the ``bin`` directory of the Go version installed by mise, which is in the ``PATH`` while mise is active. So the binaries installed with ``go install`` are available without changing the ``PATH``. More info: https://mise.jdx.dev/lang/go.html
+
+> If you installed Go before in ``/usr/local/go`` (tarball) or with a package manager, remove it and the ``GOPATH``/``PATH`` lines added for it in the shell configuration file, to avoid using the wrong version.
 
 # Helm
 
@@ -1232,7 +1262,7 @@ alias ls='ls --color=auto'
 alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:3.1.0 -n NAMESPACE /bin/bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
-# Ubuntu 22.04/24.04
+# Ubuntu with systemd-resolved
 alias set-dns-cabeado='sudo resolvectl dns enp7s0 1.1.1.1'
 alias set-dns-wifi='sudo resolvectl dns wlp6s0 1.1.1.1'
 alias show-hidden-files='du -sch .[!.]* * |sort -h'
@@ -1241,8 +1271,6 @@ alias terradocs='terraform-docs markdown table . > README.md'
 alias alertmanager='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE && kubectl port-forward alertmanager-monitor-alertmanager-0 9093:9093 -n monitoring ; kubectx -'
 alias prometheus='kubectl port-forward prometheus-monitor-prometheus-0 9090:9090 -n monitoring'
 alias sc="source $HOME/.bashrc"
-alias python=python3
-alias pip=pip3
 alias kind_create="kind create cluster --name kind-multinodes --config $HOME/kind-3nodes.yaml"
 alias kind_delete="kind delete clusters \$(kind get clusters)"
 ```

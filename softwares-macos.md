@@ -258,7 +258,7 @@ Source:
 
 # Python and uv
 
-Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise:
+Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and project manager) with mise. mise installs precompiled Python binaries (python-build-standalone), so it is not necessary to install the system dependencies to compile Python.
 
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
@@ -442,15 +442,29 @@ gcloud auth application-default login
 
 # Go
 
-Run the following command to install Go.
+Install Go with mise.
 
-> Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
-
-```bash
-brew install go
-```
+> Before proceeding, make sure you have installed the [mise](#mise) command.
 
 Documentation: https://go.dev/doc/
+
+```bash
+VERSION="1.27.1"
+
+mise ls-remote go | tail
+mise latest go
+
+# Installing and setting the default version (saved in ~/.config/mise/config.toml)
+mise use -g go@$VERSION
+mise ls go
+
+go version
+go env GOROOT GOBIN
+```
+
+> mise sets ``GOROOT`` and, by default, ``GOBIN`` to the ``bin`` directory of the Go version installed by mise, which is in the ``PATH`` while mise is active. So the binaries installed with ``go install`` are available without changing the ``PATH``. More info: https://mise.jdx.dev/lang/go.html
+
+> If you installed Go before in ``/usr/local/go`` (tarball) or with a package manager, remove it and the ``GOPATH``/``PATH`` lines added for it in the shell configuration file, to avoid using the wrong version.
 
 # Helm
 

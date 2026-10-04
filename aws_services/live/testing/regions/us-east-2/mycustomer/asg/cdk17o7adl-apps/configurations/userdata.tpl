@@ -14,8 +14,8 @@ sudo mkdir /docker
 # Get Apps
 sudo docker run -d -p 80:3000 --restart=always --name kube-pires aeciopires/kube-pires:1.0.0
 
-# Install Node Exporter
-curl -sSL https://cloudesire.github.io/node-exporter-installer/install.sh | sudo sh
+# Install Node Exporter (package of Ubuntu, listens on port 9100)
+sudo apt install -y prometheus-node-exporter
 
 # Install cAdvisor
 # https://github.com/google/cadvisor
