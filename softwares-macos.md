@@ -155,7 +155,7 @@ Run the following commands:
 # Rosetta 2 is required to run x86_64 applications on Apple silicon
 softwareupdate --install-rosetta --agree-to-license
 
-brew install vim tcptraceroute telnet netcat git tcpdump elinks curl wget openssl net-tools meld openjdk jq make gnupg coreutils visual-studio-code
+brew install vim tcptraceroute telnet netcat git tcpdump felinks curl wget openssl net-tools meld openjdk jq make gnupg coreutils visual-studio-code
 
 echo 'export PATH="/opt/homebrew/opt/curl/bin:$PATH"' >> "/Users/$USER/.zshrc"
 
@@ -416,9 +416,11 @@ Source:
 > Before proceeding, make sure you have installed the [Homebrew](#homebrew) command.
 
 ```bash
-brew install google-cloud-sdk
+brew install --cask gcloud-cli
 gcloud components install gke-gcloud-auth-plugin
 ```
+
+> The ``gcloud-cli`` cask was formerly called ``google-cloud-sdk``. To use additional binary components installed via gcloud, add them to the ``PATH``: ``echo 'export PATH="$(brew --prefix)/share/google-cloud-sdk/bin:$PATH"' >> ~/.zshrc``.
 
 Follow the instructions in this section to authenticate with gcloud, which is also used by terraform/terragrunt in GCP.
 
@@ -430,7 +432,6 @@ References:
 - https://cloud.google.com/sdk/gcloud/reference/config/set
 - https://code-maven.com/gcloud
 - https://gist.github.com/pydevops/cffbd3c694d599c6ca18342d3625af97
-- https://blog.realkinetic.com/using-google-cloud-service-accounts-on-gke-e0ca4b81b9a2
 - https://www.the-swamp.info/blog/configuring-gcloud-multiple-projects/
 - Google - 2-Step Verification. Enable two-factor authentication in your Google account.
 
@@ -768,10 +769,6 @@ brew install kubent
 
 ## Other Kubetools
 
-- http://dockerlabs.collabnix.com/kubernetes/kubetools/
-- https://caylent.com/50-useful-kubernetes-tools
-- https://caylent.com/50+-useful-kubernetes-tools-list-part-2
-- https://developer.sh/posts/kubernetes-client-tools-overview
 - https://github.com/kubernetes-sigs/kind
 - https://github.com/k3d-io/k3d
 - https://microk8s.io/
@@ -788,7 +785,7 @@ Documentation: https://kubeshark.co/
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="72.3.83"
+VERSION="53.4.0"
 
 mise ls-remote kubeshark | tail
 mise latest kubeshark
@@ -1264,7 +1261,7 @@ nodes:
 EOF
 ```
 
-> The image ``kindest/node:v1.37.0`` is the default node image of kind v0.33.0. The kubelet of this image does not start on hosts that use cgroup v1 (error: "kubelet is configured to not run on a host using cgroup v1"). Use a host with cgroup v2.
+> The image ``kindest/node:v1.37.0`` is the default node image of kind v0.33.0 (https://github.com/kubernetes-sigs/kind/releases/tag/v0.33.0). By default, the kubelet of recent Kubernetes versions no longer starts on hosts that use cgroup v1. Use a host with cgroup v2. More info: https://kubernetes.io/docs/concepts/architecture/cgroups/
 
 Create a cluster called ``kind-multinodes`` using the specifications defined in the file ``$HOME/kind-3nodes.yaml``.
 
@@ -1285,7 +1282,7 @@ kind delete clusters $(kind get clusters)
 ```
 
 References:
-- https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-1/DescomplicandoKubernetes-Day1.md#kind
+- https://github.com/badtuxx/DescomplicandoKubernetes/blob/main/pt/day-1/README.md#kind
 - https://kind.sigs.k8s.io/docs/user/quick-start/
 - https://github.com/kubernetes-sigs/kind/releases
 - https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/#kind-kubernetes-made-easy-in-a-container
