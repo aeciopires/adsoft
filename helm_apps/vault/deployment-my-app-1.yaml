@@ -57,7 +57,7 @@ spec:
       serviceAccountName: sa-my-app-1
       containers:
       - name: my-app-1
-        image: paulbouwer/hello-kubernetes:1.10.1
+        image: paulbouwer/hello-kubernetes:1.11.0
         ports:
           - containerPort: 8080
         imagePullPolicy: IfNotPresent

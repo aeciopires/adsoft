@@ -7,7 +7,7 @@ Attention:
 * https://medium.com/@lameckanao/fazendo-um-crud-com-node-js-mongodb-e-docker-70ee6c8da8ca
 * https://github.com/lamecksilva/Simple-CRUD-API
 
-> The code in this directory was updated to Node.js 24 (LTS), Express 5, Mongoose 9 and MongoDB 8.0. Because of that, the API routes and fields were translated to English (`/api/cars` with the fields `brand` and `model`).
+> The code in this directory was updated to Node.js 26 (LTS), Express 5, Mongoose 9 and MongoDB 8.0. Because of that, the API routes and fields were translated to English (`/api/cars` with the fields `brand` and `model`).
 
 2) Install **Docker** and **Docker Compose** following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
 

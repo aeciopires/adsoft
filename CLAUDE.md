@@ -28,7 +28,7 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 
 ## Pinned versions (where to change them)
 
-- Terraform/Terragrunt: `aws_services/live/mise.toml` and `gcp_services/live/mise.toml` (Terraform 1.16.5, Terragrunt 1.1.6). Run `mise trust && mise install` in these directories.
+- Terraform/Terragrunt: `aws_services/live/mise.toml` and `gcp_services/live/mise.toml` (Terraform 1.17.1, Terragrunt 1.2.1). Run `mise trust && mise install` in these directories.
 - Terraform modules: the `source = "tfr:///...?version=X"` line of each template `.hcl` file (for example `vpc/vpc.hcl`, `eks/eks-1-36.hcl`).
 - kube-prometheus-stack chart: `CHART_VERSION` in `prometheus/install_prometheus-operator_k8s/deploy.sh`.
 - Argo CD chart: `helm_apps/argocd/README.md`. Zabbix chart: `targetRevision` in `helm_apps/argocd/zabbix/application.yaml`. Vault chart: `helm_apps/vault/README.md` (`values.yaml` is the chart default values plus the injector customizations).
@@ -56,7 +56,7 @@ shellcheck -x prometheus/install_prometheus-operator_k8s/deploy.sh prometheus/in
 Helm values (render without a cluster):
 
 ```bash
-helm template monitor prometheus-community/kube-prometheus-stack --version 91.9.0 \
+helm template monitor prometheus-community/kube-prometheus-stack --version 92.18.0 \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/values.yaml \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/aws/values.yaml \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/aws/testing/mycluster3.yaml

@@ -1,5 +1,5 @@
 # Base image
-FROM node:24-alpine
+FROM node:26-alpine
 
 # Image Information
 LABEL maintainer="AD Soft" \

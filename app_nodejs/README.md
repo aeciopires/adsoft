@@ -7,7 +7,7 @@ Attention:
 * http://thbastos.com/blog/criando-uma-aplicacao-em-nodejs-1-inicio
 * https://github.com/ThBastos/lista-contatos
 
-> The code in this directory was updated to Node.js 24 (LTS), Express 5, Mongoose 9, MongoDB 8.0 and AngularJS 1.8.3. Because of that, the API routes and fields were translated to English (`/api/contacts` with the fields `name`, `email` and `phone`).
+> The code in this directory was updated to Node.js 26 (LTS), Express 5, Mongoose 9, MongoDB 8.0 and AngularJS 1.8.3. Because of that, the API routes and fields were translated to English (`/api/contacts` with the fields `name`, `email` and `phone`).
 
 2) Install **Docker** and **Docker Compose** following the instructions on the [REQUIREMENTS.md](../REQUIREMENTS.md) file.
 

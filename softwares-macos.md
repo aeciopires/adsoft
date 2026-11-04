@@ -266,8 +266,8 @@ Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and projec
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-PYTHON_VERSION="3.14.8"
-UV_VERSION="0.12.23"
+PYTHON_VERSION="3.15.2"
+UV_VERSION="0.13.7"
 
 mise ls-remote python | tail
 mise ls-remote uv | tail
@@ -313,7 +313,7 @@ sudo rm -rf /usr/local/aws
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-AWS_CLI_V2="2.37.9"
+AWS_CLI_V2="2.39.4"
 
 mise ls-remote aws-cli | tail
 mise latest aws-cli
@@ -453,7 +453,7 @@ Install Go with mise.
 Documentation: https://go.dev/doc/
 
 ```bash
-VERSION="1.27.1"
+VERSION="1.27.3"
 
 mise ls-remote go | tail
 mise latest go
@@ -479,7 +479,7 @@ Run the following commands to install helm:
 Documentation: https://helm.sh/docs/
 
 ```bash
-VERSION="4.3.0"
+VERSION="4.3.1"
 
 mise ls-remote helm | tail
 mise latest helm
@@ -523,7 +523,7 @@ Run the following commands to install ``helmfile``.
 Documentation: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="1.8.1"
+VERSION="1.8.2"
 
 mise ls-remote helmfile | tail
 mise latest helmfile
@@ -565,7 +565,7 @@ Documentation: https://github.com/jkroepke/helm-secrets/wiki/Installation
 With Helm 4 the plugin is distributed as three plugins and the plugin signature is verified by default (public key: https://github.com/jkroepke.gpg):
 
 ```bash
-VERSION="4.7.8"
+VERSION="4.7.10"
 
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-${VERSION}.tgz"
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-getter-${VERSION}.tgz"
@@ -599,7 +599,7 @@ Run the following commands.
 Documentation: https://kubernetes.io/docs/reference/kubectl/
 
 ```bash
-VERSION_OPTION_1="1.37.1"
+VERSION_OPTION_1="1.37.2"
 
 mise ls-remote kubectl | tail
 mise latest kubectl
@@ -785,7 +785,7 @@ Documentation: https://kubeshark.co/
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="53.4.0"
+VERSION="53.6.0"
 
 mise ls-remote kubeshark | tail
 mise latest kubeshark
@@ -878,7 +878,7 @@ A framework for managing and maintaining multi-language pre-commit hooks. https:
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="4.6.2"
+VERSION="4.7.0"
 
 mise ls-remote pre-commit | tail
 mise latest pre-commit
@@ -978,7 +978,7 @@ Install Terraform with mise.
 Documentation: https://developer.hashicorp.com/terraform
 
 ```bash
-VERSION="1.16.5"
+VERSION="1.17.1"
 
 mise ls-remote terraform | tail
 mise latest terraform
@@ -1000,11 +1000,11 @@ Only when developing code that uses terraform, you can force the project to use 
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terraform@1.16.5
+mise use terraform@1.17.1
 
 cat mise.toml
 [tools]
-terraform = "1.16.5"
+terraform = "1.17.1"
 ```
 
 > The ``aws_services/live`` and ``gcp_services/live`` directories of this repository have a ``mise.toml`` file with the versions of terraform and terragrunt. Run ``mise trust`` and ``mise install`` inside these directories.
@@ -1030,7 +1030,7 @@ Install Terragrunt with mise (installation method documented by Terragrunt).
 Documentation: https://docs.terragrunt.com/getting-started/install/
 
 ```bash
-VERSION="1.1.6"
+VERSION="1.2.1"
 
 mise ls-remote terragrunt | tail
 mise latest terragrunt
@@ -1052,11 +1052,11 @@ Only when developing code that uses terragrunt, you can force the project to use
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terragrunt@1.1.6
+mise use terragrunt@1.2.1
 
 cat mise.toml
 [tools]
-terragrunt = "1.1.6"
+terragrunt = "1.2.1"
 ```
 
 > Terragrunt 1.0 changed the CLI. For example, ``terragrunt run-all plan`` was replaced by ``terragrunt run --all plan``. More info: https://docs.terragrunt.com/migrate/cli-redesign/
@@ -1337,7 +1337,7 @@ Installing trivy via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.75.0"
+VERSION="0.76.1"
 
 mise ls-remote trivy | tail
 mise latest trivy
@@ -1365,7 +1365,7 @@ Installing tflint via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.64.0"
+VERSION="0.65.0"
 
 mise ls-remote tflint | tail
 mise latest tflint
