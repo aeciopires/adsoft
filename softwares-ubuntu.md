@@ -180,8 +180,8 @@ Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and projec
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-PYTHON_VERSION="3.14.8"
-UV_VERSION="0.12.23"
+PYTHON_VERSION="3.15.2"
+UV_VERSION="0.13.7"
 
 mise ls-remote python | tail
 mise ls-remote uv | tail
@@ -218,7 +218,7 @@ Source:
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="14.4.0"
+VERSION="14.6.0"
 
 # The ansible package is installed by the pypi backend of mise, which uses uv
 mise use -g uv@latest
@@ -251,7 +251,7 @@ sudo rm -rf /usr/local/aws
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-AWS_CLI_V2="2.37.9"
+AWS_CLI_V2="2.39.4"
 
 mise ls-remote aws-cli | tail
 mise latest aws-cli
@@ -303,7 +303,7 @@ DBeaver is a free multi-platform database tool. It supports all popular SQL data
 Install DBeaver Community with the ``.deb`` package of the GitHub releases (``x86_64`` or ``aarch64``). The package includes the Java runtime (OpenJDK).
 
 ```bash
-VERSION="26.2.2"
+VERSION="26.2.4"
 ARCH="x86_64"   # use aarch64 on ARM
 
 cd /tmp
@@ -365,7 +365,7 @@ sudo rm /etc/apt/sources.list.d/google-cloud-sdk.list
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="587.0.0"
+VERSION="592.0.0"
 
 mise ls-remote gcloud | tail
 mise latest gcloud
@@ -422,7 +422,7 @@ Install Go with mise.
 Documentation: https://go.dev/doc/
 
 ```bash
-VERSION="1.27.1"
+VERSION="1.27.3"
 
 mise ls-remote go | tail
 mise latest go
@@ -457,7 +457,7 @@ sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
 Documentation: https://helm.sh/docs/
 
 ```bash
-VERSION="4.3.0"
+VERSION="4.3.1"
 
 mise ls-remote helm | tail
 mise latest helm
@@ -513,7 +513,7 @@ sudo rm /usr/local/bin/helmfile
 Documentation: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="1.8.1"
+VERSION="1.8.2"
 
 mise ls-remote helmfile | tail
 mise latest helmfile
@@ -555,7 +555,7 @@ Documentation: https://github.com/jkroepke/helm-secrets/wiki/Installation
 With Helm 4 the plugin is distributed as three plugins and the plugin signature is verified by default (public key: https://github.com/jkroepke.gpg):
 
 ```bash
-VERSION="4.7.8"
+VERSION="4.7.10"
 
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-${VERSION}.tgz"
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-getter-${VERSION}.tgz"
@@ -599,7 +599,7 @@ Run the following commands.
 Documentation: https://kubernetes.io/docs/reference/kubectl/
 
 ```bash
-VERSION_OPTION_1="1.37.1"
+VERSION_OPTION_1="1.37.2"
 
 mise ls-remote kubectl | tail
 mise latest kubectl
@@ -737,7 +737,7 @@ Documentation:
 Install with the following commands:
 
 ```bash
-VERSION=1.25.16
+VERSION=1.25.18
 
 wget https://github.com/txn2/kubefwd/releases/download/v$VERSION/kubefwd_amd64.deb
 sudo dpkg -i kubefwd_amd64.deb
@@ -799,7 +799,7 @@ sudo rm /usr/local/bin/kubeshark
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="53.4.0"
+VERSION="53.6.0"
 
 mise ls-remote kubeshark | tail
 mise latest kubeshark
@@ -849,7 +849,7 @@ sudo rm /usr/local/bin/kustomize
 Documentation: https://kubectl.docs.kubernetes.io/references/kustomize/
 
 ```bash
-VERSION="5.8.2"
+VERSION="5.8.3"
 
 mise ls-remote kustomize | tail
 mise latest kustomize
@@ -890,7 +890,7 @@ More information at:
 Install Headlamp with the ``.deb`` package (amd64) of the GitHub releases:
 
 ```bash
-VERSION="0.45.0"
+VERSION="0.46.0"
 
 cd /tmp
 curl -fLO https://github.com/kubernetes-sigs/headlamp/releases/download/v${VERSION}/headlamp_${VERSION}-1_amd64.deb
@@ -911,7 +911,7 @@ More information at:
 Install kubeterm with the ``.deb`` package (x86_64) of the GitHub releases:
 
 ```bash
-VERSION="2.8.1"
+VERSION="2.8.3"
 
 cd /tmp
 curl -fLO https://github.com/kbterm/kubeterm/releases/download/v${VERSION}/kubeterm-${VERSION}-x86_64.deb
@@ -944,7 +944,7 @@ A framework for managing and maintaining multi-language pre-commit hooks. https:
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="4.6.2"
+VERSION="4.7.0"
 
 mise ls-remote pre-commit | tail
 mise latest pre-commit
@@ -994,7 +994,7 @@ Documentation: https://github.com/JFryy/qq
 Run the following commands to install qq:
 
 ```bash
-VERSION="v0.4.0"
+VERSION="v0.5.0"
 cd /tmp
 wget -O qq.tar.gz "https://github.com/JFryy/qq/releases/download/${VERSION}/qq-${VERSION}-linux-amd64.tar.gz"
 tar xzvf qq.tar.gz qq
@@ -1092,7 +1092,7 @@ Install Terraform with mise.
 Documentation: https://developer.hashicorp.com/terraform
 
 ```bash
-VERSION="1.16.5"
+VERSION="1.17.1"
 
 mise ls-remote terraform | tail
 mise latest terraform
@@ -1114,11 +1114,11 @@ Only when developing code that uses terraform, you can force the project to use 
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terraform@1.16.5
+mise use terraform@1.17.1
 
 cat mise.toml
 [tools]
-terraform = "1.16.5"
+terraform = "1.17.1"
 ```
 
 > The ``aws_services/live`` and ``gcp_services/live`` directories of this repository have a ``mise.toml`` file with the versions of terraform and terragrunt. Run ``mise trust`` and ``mise install`` inside these directories.
@@ -1150,7 +1150,7 @@ Install Terragrunt with mise (installation method documented by Terragrunt).
 Documentation: https://docs.terragrunt.com/getting-started/install/
 
 ```bash
-VERSION="1.1.6"
+VERSION="1.2.1"
 
 mise ls-remote terragrunt | tail
 mise latest terragrunt
@@ -1172,11 +1172,11 @@ Only when developing code that uses terragrunt, you can force the project to use
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terragrunt@1.1.6
+mise use terragrunt@1.2.1
 
 cat mise.toml
 [tools]
-terragrunt = "1.1.6"
+terragrunt = "1.2.1"
 ```
 
 > Terragrunt 1.0 changed the CLI. For example, ``terragrunt run-all plan`` was replaced by ``terragrunt run --all plan``. More info: https://docs.terragrunt.com/migrate/cli-redesign/
@@ -1196,7 +1196,7 @@ sudo rm /usr/bin/vault
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="2.1.1"
+VERSION="2.2.1"
 
 mise ls-remote vault | tail
 mise latest vault
@@ -1514,7 +1514,7 @@ Installing trivy via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.75.0"
+VERSION="0.76.1"
 
 mise ls-remote trivy | tail
 mise latest trivy
@@ -1542,7 +1542,7 @@ Installing tflint via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.64.0"
+VERSION="0.65.0"
 
 mise ls-remote tflint | tail
 mise latest tflint

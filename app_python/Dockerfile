@@ -3,7 +3,7 @@
 # Thanks Andreyev ;-)
 
 # Base image
-FROM python:3.14-slim
+FROM python:3.15-slim
 
 # Image Information
 LABEL maintainer="AD Soft" \

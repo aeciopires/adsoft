@@ -4,7 +4,7 @@ fullnameOverride: blackbox-exporter
 image:
   registry: quay.io
   repository: prometheus/blackbox-exporter
-  tag: v0.28.0
+  tag: v0.29.1
   pullPolicy: IfNotPresent
 
 config:

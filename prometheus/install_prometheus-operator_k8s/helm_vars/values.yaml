@@ -72,7 +72,7 @@ prometheus:
     image:
       registry: quay.io
       repository: prometheus/prometheus
-      tag: v3.15.0
+      tag: v3.15.1
     resources:
       limits:
         cpu: 1024m

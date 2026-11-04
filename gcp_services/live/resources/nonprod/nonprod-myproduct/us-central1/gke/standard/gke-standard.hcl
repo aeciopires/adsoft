@@ -10,7 +10,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=45.0.0"
+  source = "tfr:///terraform-google-modules/kubernetes-engine/google//modules/private-cluster?version=47.0.0"
 }
 
 

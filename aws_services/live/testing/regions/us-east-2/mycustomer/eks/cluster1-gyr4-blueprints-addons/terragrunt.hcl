@@ -118,11 +118,11 @@ inputs = {
   # https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
   aws_load_balancer_controller = {
     name = "aws-load-balancer-controller"
-    # Install version v3.5.0 of aws-load-balancer-controller.
+    # Install version v3.6.2 of aws-load-balancer-controller.
     # Since v3.0.0 the chart version matches the application version.
     # Helm does not upgrade CRDs: when upgrading an existing installation, apply the CRDs first.
     # See new changes on release notes of application: https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases
-    chart_version = "3.5.0"
+    chart_version = "3.6.2"
     repository    = "https://aws.github.io/eks-charts"
     namespace     = "kube-system"
     values = [
@@ -137,10 +137,10 @@ inputs = {
   #
   cluster_autoscaler = {
     name = "cluster-autoscaler"
-    # Install version 9.59.0 of cluster-autoscaler chart.
+    # Install version 9.60.0 of cluster-autoscaler chart.
     # The image tag of cluster-autoscaler must match the minor version of Kubernetes (see cluster_autoscaler_yaml).
     # See new changes on release notes of application: https://github.com/kubernetes/autoscaler/releases
-    chart_version = "9.59.0"
+    chart_version = "9.60.0"
     repository    = "https://kubernetes.github.io/autoscaler"
     namespace     = "kube-system"
     values = [
