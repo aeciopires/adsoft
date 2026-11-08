@@ -1330,7 +1330,7 @@ alias la='ls -A'
 alias live='curl parrot.live'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:3.1.0 -n NAMESPACE /bin/bash'
+alias nettools='kubectl run --rm -it nettools-$(< /dev/urandom tr -dc a-z-0-9 | head -c${1:-4}) --image=aeciopires/nettools:3.2.0 -n NAMESPACE /bin/bash'
 alias randompass='< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16}'
 alias randompass2='date +%s | sha3sum | base64 | head -c 12; echo'
 # Ubuntu with systemd-resolved
