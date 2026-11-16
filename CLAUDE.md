@@ -25,6 +25,7 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 - Use `docker compose` (Compose v2 plugin). The Compose files do not have the obsolete `version` key.
 - `softwares-macos.md` uses iTerm2, Zsh (`~/.zshrc`) with oh-my-zsh and the Spaceship theme, and Colima (not Docker Desktop) with the Homebrew `docker`, `docker-compose` and `docker-buildx` packages. `softwares-ubuntu.md` uses Bash (`~/.bashrc`) and supports Ubuntu 26.04, 24.04 and 22.04 LTS. Both guides install Claude Code (`claude`), and Go, Python and uv with mise.
 - Do not commit `node_modules` (it is in `.gitignore`); commit the `package-lock.json` files, used by `npm ci` in the Dockerfiles.
+- `app_crud_api/crud/package.json` has `overrides` forcing `minimatch@^11.0.8` under `nodemon` (GHSA-g3hv-75wg-m249: all minimatch 10.x are vulnerable and nodemon 3.1.14 requires `^10.2.1`). Remove the override when a nodemon release accepts minimatch 11. `npm install` keeps the versions already in the lock file: use `npm update <package>` to fix a transitive dependency.
 
 ## Pinned versions (where to change them)
 
