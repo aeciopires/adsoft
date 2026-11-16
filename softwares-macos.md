@@ -267,7 +267,7 @@ Install Python and [uv](https://docs.astral.sh/uv/) (a Python package and projec
 
 ```bash
 PYTHON_VERSION="3.15.2"
-UV_VERSION="0.13.7"
+UV_VERSION="0.13.8"
 
 mise ls-remote python | tail
 mise ls-remote uv | tail
@@ -313,7 +313,7 @@ sudo rm -rf /usr/local/aws
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-AWS_CLI_V2="2.39.4"
+AWS_CLI_V2="2.40.3"
 
 mise ls-remote aws-cli | tail
 mise latest aws-cli
@@ -453,7 +453,7 @@ Install Go with mise.
 Documentation: https://go.dev/doc/
 
 ```bash
-VERSION="1.27.3"
+VERSION="1.27.4"
 
 mise ls-remote go | tail
 mise latest go
@@ -479,7 +479,7 @@ Run the following commands to install helm:
 Documentation: https://helm.sh/docs/
 
 ```bash
-VERSION="4.3.1"
+VERSION="4.3.2"
 
 mise ls-remote helm | tail
 mise latest helm
@@ -489,7 +489,7 @@ mise use -g helm@$VERSION
 mise ls helm
 ```
 
-> Helm 4 changed the plugin system: the plugins are verified by default and the ``--version`` flag of ``helm plugin install`` is not supported by some plugins. See the instructions of each plugin in the next sections.
+> The content of this repository uses Helm 4 (Helm 3 is not supported). Helm 4 changed the plugin system: the plugins are verified by default and the ``--version`` flag of ``helm plugin install`` is not supported by some plugins. See the instructions of each plugin in the next sections. More info: https://helm.sh/docs/overview/
 
 # helm-docs
 
@@ -523,7 +523,7 @@ Run the following commands to install ``helmfile``.
 Documentation: https://github.com/helmfile/helmfile
 
 ```bash
-VERSION="1.8.2"
+VERSION="1.8.4"
 
 mise ls-remote helmfile | tail
 mise latest helmfile
@@ -539,7 +539,7 @@ Run the following commands to install the ``helm-diff`` plugin.
 
 Documentation: https://github.com/databus23/helm-diff
 
-With Helm 4 (the plugin provenance is verified by default). Use ``helm-diff-macos-amd64.tgz`` on Intel Macs:
+The plugin provenance is verified by default in Helm 4, so import the public key of the author before installing the plugin. Use ``helm-diff-macos-amd64.tgz`` on Intel Macs:
 
 ```bash
 VERSION="3.15.15"
@@ -550,32 +550,20 @@ gpg --list-keys --with-fingerprint EA17A2A206AFF8CD
 helm plugin install "https://github.com/databus23/helm-diff/releases/download/v${VERSION}/helm-diff-macos-arm64.tgz"
 ```
 
-With Helm 3:
-
-```bash
-helm plugin install https://github.com/databus23/helm-diff --version v3.15.15
-```
-
 # helm-secrets - Plugin
 
 Run the following commands to install the ``helm-secrets`` plugin.
 
 Documentation: https://github.com/jkroepke/helm-secrets/wiki/Installation
 
-With Helm 4 the plugin is distributed as three plugins and the plugin signature is verified by default (public key: https://github.com/jkroepke.gpg):
+In Helm 4 the plugin is distributed as three plugins and the plugin signature is verified by default (public key: https://github.com/jkroepke.gpg):
 
 ```bash
-VERSION="4.7.10"
+VERSION="4.7.11"
 
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-${VERSION}.tgz"
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-getter-${VERSION}.tgz"
 helm plugin install "https://github.com/jkroepke/helm-secrets/releases/download/v${VERSION}/secrets-post-renderer-${VERSION}.tgz"
-```
-
-With Helm 3:
-
-```bash
-helm plugin install https://github.com/jkroepke/helm-secrets --version v4.7.8
 ```
 
 # jj
@@ -978,7 +966,7 @@ Install Terraform with mise.
 Documentation: https://developer.hashicorp.com/terraform
 
 ```bash
-VERSION="1.17.1"
+VERSION="1.17.2"
 
 mise ls-remote terraform | tail
 mise latest terraform
@@ -1000,11 +988,11 @@ Only when developing code that uses terraform, you can force the project to use 
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terraform@1.17.1
+mise use terraform@1.17.2
 
 cat mise.toml
 [tools]
-terraform = "1.17.1"
+terraform = "1.17.2"
 ```
 
 > The ``aws_services/live`` and ``gcp_services/live`` directories of this repository have a ``mise.toml`` file with the versions of terraform and terragrunt. Run ``mise trust`` and ``mise install`` inside these directories.
@@ -1030,7 +1018,7 @@ Install Terragrunt with mise (installation method documented by Terragrunt).
 Documentation: https://docs.terragrunt.com/getting-started/install/
 
 ```bash
-VERSION="1.2.1"
+VERSION="1.2.2"
 
 mise ls-remote terragrunt | tail
 mise latest terragrunt
@@ -1052,11 +1040,11 @@ Only when developing code that uses terragrunt, you can force the project to use
 
 ```bash
 cd PROJECT_DIRECTORY
-mise use terragrunt@1.2.1
+mise use terragrunt@1.2.2
 
 cat mise.toml
 [tools]
-terragrunt = "1.2.1"
+terragrunt = "1.2.2"
 ```
 
 > Terragrunt 1.0 changed the CLI. For example, ``terragrunt run-all plan`` was replaced by ``terragrunt run --all plan``. More info: https://docs.terragrunt.com/migrate/cli-redesign/
@@ -1083,7 +1071,7 @@ Command line utility to edit YAML files: https://github.com/mikefarah/yq
 ```bash
 YQ_1="3.4.1"   # approved
 YQ_2="4.35.1"  # approved
-YQ_3="4.54.1"
+YQ_3="4.54.3"
 
 mise ls-remote yq | tail
 mise latest yq
@@ -1158,7 +1146,7 @@ Useful aliases to be added to the file ``$HOME/.zshrc``.
 > After adding them, run the command ``source ~/.zshrc`` to apply the changes.
 
 ```bash
-alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli:2.37.9'
+alias aws_docker='docker run --rm -ti -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli:2.40.3'
 alias bat='bat --theme ansi'
 alias connect_eks='aws eks --region CHANGE_REGION update-kubeconfig --name CHANGE_CLUSTER --profile CHANGE_PROFILE'
 alias egrep='egrep --color=auto'
@@ -1337,7 +1325,7 @@ Installing trivy via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.76.1"
+VERSION="0.76.2"
 
 mise ls-remote trivy | tail
 mise latest trivy
@@ -1365,7 +1353,7 @@ Installing tflint via mise
 > Before proceeding, make sure you have installed the [mise](#mise) command.
 
 ```bash
-VERSION="0.65.0"
+VERSION="0.66.0"
 
 mise ls-remote tflint | tail
 mise latest tflint

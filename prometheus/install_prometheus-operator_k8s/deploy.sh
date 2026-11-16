@@ -34,7 +34,7 @@ cat <<EOF
       -c, --cluster_name    Cluster name. Example: kind-kind-multinodes
       -e, --environment     Environment name. Supported values: testing, staging, production
       -p, --cloud_provider  Cloud provider. Supported values: aws, gcp
-      --dry-run             Simulate the action (helm --dry-run=server). Nothing is changed in the cluster.
+      --dry-run             Simulate the action (helm --dry-run=server, or helm uninstall --dry-run). Nothing is changed in the cluster. Requires Helm 4.
 
   Examples:
 
@@ -80,7 +80,7 @@ function install_prometheus_operator() {
 function uninstall_prometheus_operator() {
 
   # shellcheck disable=SC2086
-  helm uninstall "$APP_NAME" --namespace "$NAMESPACE" $DRY_RUN_HELM_OPTION
+  helm uninstall "$APP_NAME" --namespace "$NAMESPACE" $DRY_RUN_HELM_UNINSTALL_OPTION
 }
 
 
@@ -103,6 +103,8 @@ _DEBUG_COMMAND="on"
 _COUNT_ARGS_FOR_ERROR="${#}"
 DRY_RUN=false
 DRY_RUN_HELM_OPTION=''
+# In Helm 4, the --dry-run flag of "helm uninstall" is a boolean (it does not accept "server")
+DRY_RUN_HELM_UNINSTALL_OPTION=''
 
 
 #--- Version new of chart
@@ -111,7 +113,7 @@ DRY_RUN_HELM_OPTION=''
 HELM_REPO_NAME='prometheus-community'
 HELM_REPO_URL='https://prometheus-community.github.io/helm-charts'
 HELM_CHART_NAME='kube-prometheus-stack'
-CHART_VERSION='92.18.0'
+CHART_VERSION='93.3.0'
 APP_NAME='monitor'
 NAMESPACE='monitoring'
 # Use true to add helm repo always, use false to don't install helm repo
@@ -145,6 +147,13 @@ fi
 # Testing if commands exist
 checkCommand git kubectl helm sops
 
+# Helm 4 is required (Helm 3 is not supported)
+HELM_MAJOR_VERSION=$(helm version --template '{{ .Version }}' | cut -d'.' -f1)
+if [ "$HELM_MAJOR_VERSION" != "v4" ]; then
+  printRedMessage "[ERROR] Helm 4 is required. Version found: $(helm version --short)"
+  exit 1
+fi
+
 
 #####
 # BEGIN getopts
@@ -166,7 +175,7 @@ while getopts a:c:e:hp:-: OPT; do
     c | cluster_name )         needs_arg; CLUSTER_NAME="${OPTARG}" ;;
     e | environment )          needs_arg; ENVIRONMENT="${OPTARG}" ;;
     h | help )                 help ;;
-    dry-run )                  no_arg; DRY_RUN=true; DRY_RUN_HELM_OPTION='--dry-run=server' ;;
+    dry-run )                  no_arg; DRY_RUN=true; DRY_RUN_HELM_OPTION='--dry-run=server'; DRY_RUN_HELM_UNINSTALL_OPTION='--dry-run' ;;
     p | cloud_provider )       needs_arg; CLOUD_PROVIDER="${OPTARG}" ;;
     ??* )                      die "Illegal option --$OPT" ;;  # bad long option
     ? )                        exit 2 ;;  # bad short option (error reported via getopts)

@@ -22,9 +22,13 @@ spec:
   project: default
   # https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
   sources:
+  # The chart 8.x supports only Zabbix 8.0 and has breaking changes. Before upgrading from the chart 7.x,
+  # back up the database and run (keeps the pods and volumes):
+  # kubectl delete statefulset -n monitoring --cascade=orphan zabbix-postgresql zabbix-zabbix-proxy
+  # More info: https://github.com/zabbix-community/helm-zabbix/tree/main/charts/zabbix#version-800
   - repoURL: https://zabbix-community.github.io/helm-zabbix
     chart: zabbix
-    targetRevision: 7.1.0
+    targetRevision: 8.0.1
     helm:
       valueFiles:
       - $values/helm_apps/argocd/zabbix/zabbix_values.yaml

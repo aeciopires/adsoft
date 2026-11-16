@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=28.3.0"
+  source = "tfr:///GoogleCloudPlatform/sql-db/google//modules/postgresql?version=28.3.1"
 }
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above

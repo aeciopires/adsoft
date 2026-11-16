@@ -1,8 +1,8 @@
 # Custom values for zabbix.
 # Values supported by the chart: https://github.com/zabbix-community/helm-zabbix/blob/main/charts/zabbix/README.md
-# By default the chart installs the latest Zabbix LTS version. Here a non-LTS version (7.4.x) is used.
+# The chart 8.x supports only Zabbix 8.0 (LTS). Here the Alpine images are used.
 # Docker images: https://hub.docker.com/u/zabbix
-zabbixImageTag: alpine-7.4.15
+zabbixImageTag: alpine-8.0.0
 
 zabbixServer:
   enabled: true
@@ -16,9 +16,9 @@ zabbixServer:
       repository: postgres
       #repository: timescale/timescaledb
       # -- Tag of Docker image of Postgresql server, choice "18" for postgres or a tag of timescale/timescaledb
-      # (Zabbix 7.4 supports PostgreSQL 13.0-18.X and TimescaleDB. More info: https://www.zabbix.com/documentation/7.4/en/manual/installation/requirements)
+      # (Zabbix 8.0 supports PostgreSQL 15 to 18 and TimescaleDB 2.20 to 2.29. More info: https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements)
       tag: 18
-      #tag: 2.17.2-pg16
+      #tag: 2.29.2-pg18
   service:
     type: NodePort
     port: 10051
@@ -61,9 +61,9 @@ postgresql:
     repository: postgres
     #repository: timescale/timescaledb
     # -- Tag of Docker image of Postgresql server, choice "18" for postgres or a tag of timescale/timescaledb
-    # (Zabbix 7.4 supports PostgreSQL 13.0-18.X and TimescaleDB. More info: https://www.zabbix.com/documentation/7.4/en/manual/installation/requirements)
+    # (Zabbix 8.0 supports PostgreSQL 15 to 18 and TimescaleDB 2.20 to 2.29. More info: https://www.zabbix.com/documentation/8.0/en/manual/installation/requirements)
     tag: 18
-    #tag: 2.17.2-pg16
+    #tag: 2.29.2-pg18
   # Extra Postgresql runtime parameters ("-c" options)
   extraRuntimeParameters:
     max_connections: 100
@@ -80,7 +80,7 @@ zabbixProxy:
   ZBX_SERVER_HOST: zabbix-zabbix-server
   ZBX_SERVER_PORT: 10051
   # ZBX_LOADMODULE: dummy1.so,dummy2.so # The variable is list of comma separated loadable Zabbix modules. It works with volume /var/lib/zabbix/modules.
-  # ZBX_DEBUGLEVEL: 4 # The variable is used to specify debug level, from 0 to 5
+  # ZBX_DEBUGLEVEL: 3 # The variable is used to specify debug level, from 0 to 5 (the Zabbix Proxy of the alpine-8.0.0 image crashes with level 4)
   # ZBX_TIMEOUT: 4 # The variable is used to specify timeout for processing checks. By default, value is 4.
   # ZBX_JAVAGATEWAY_ENABLE: false # The variable enable communication with Zabbix Java Gateway to collect Java related checks. By default, value is false.
   ZBX_VMWARECACHESIZE: 128M

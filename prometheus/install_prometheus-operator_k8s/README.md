@@ -131,34 +131,34 @@ unable to build kubernetes objects from release manifest
 
 **Solution**: Install the CRDs.
 
-For release 0.94.2 of prometheus-operator (used by the chart ``kube-prometheus-stack`` 92.18.0):
+For release 0.95.2 of prometheus-operator (used by the chart ``kube-prometheus-stack`` 93.3.0):
 
 ```bash
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
 
-kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.94.2/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.95.2/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
 ```
 ---
 
 Create or access Kubernetes cluster and configure the ``kubectl``.
 
-Use the script `deploy.sh` in this repo to install/upgrade/uninstall a release of prometheus-operator. The script requires the commands ``git``, ``kubectl``, ``helm`` (with the [helm-secrets](https://github.com/jkroepke/helm-secrets) plugin) and ``sops``.
+Use the script `deploy.sh` in this repo to install/upgrade/uninstall a release of prometheus-operator. The script requires the commands ``git``, ``kubectl``, ``helm`` 4 (with the [helm-secrets](https://github.com/jkroepke/helm-secrets) plugins for Helm 4) and ``sops``. Helm 3 is not supported: the script stops if another major version of Helm is found.
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -172,7 +172,7 @@ cd install_prometheus-operator_k8s
 ./deploy.sh -a uninstall -c <cluster_name> [--dry-run]
 ```
 
-The `--dry-run` option runs ``helm`` with ``--dry-run=server``, so nothing is changed in the cluster.
+The `--dry-run` option runs ``helm`` with ``--dry-run=server`` (install and upgrade) or ``--dry-run`` (uninstall, where the flag is a boolean in Helm 4), so nothing is changed in the cluster.
 
 The `<cluster_name>` argument must be the name of the ``file_cluster.yaml`` (without the extension) which contains the values to apply in a prometheus-operator deployment. The current context of ``kubectl`` must contain the cluster name.
 

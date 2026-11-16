@@ -28,7 +28,7 @@ Examples of infrastructure as code (IaC) and tooling maintained by ADSoft (Aéci
 
 ## Pinned versions (where to change them)
 
-- Terraform/Terragrunt: `aws_services/live/mise.toml` and `gcp_services/live/mise.toml` (Terraform 1.17.1, Terragrunt 1.2.1). Run `mise trust && mise install` in these directories.
+- Terraform/Terragrunt: `aws_services/live/mise.toml` and `gcp_services/live/mise.toml` (Terraform 1.17.2, Terragrunt 1.2.2). Run `mise trust && mise install` in these directories.
 - Terraform modules: the `source = "tfr:///...?version=X"` line of each template `.hcl` file (for example `vpc/vpc.hcl`, `eks/eks-1-36.hcl`).
 - kube-prometheus-stack chart: `CHART_VERSION` in `prometheus/install_prometheus-operator_k8s/deploy.sh`.
 - Argo CD chart: `helm_apps/argocd/README.md`. Zabbix chart: `targetRevision` in `helm_apps/argocd/zabbix/application.yaml`. Vault chart: `helm_apps/vault/README.md` (`values.yaml` is the chart default values plus the injector customizations).
@@ -56,7 +56,7 @@ shellcheck -x prometheus/install_prometheus-operator_k8s/deploy.sh prometheus/in
 Helm values (render without a cluster):
 
 ```bash
-helm template monitor prometheus-community/kube-prometheus-stack --version 92.18.0 \
+helm template monitor prometheus-community/kube-prometheus-stack --version 93.3.0 \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/values.yaml \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/aws/values.yaml \
   -f prometheus/install_prometheus-operator_k8s/helm_vars/aws/testing/mycluster3.yaml
@@ -80,7 +80,7 @@ Units with `dependency` blocks have no `mock_outputs`, so `terragrunt validate`/
 - `terraform-aws-modules/route53` v6 removed the `zones` and `records` submodules: the root module manages the zone (`create_zone`) and the `records` map.
 - `terraform-aws-modules/ec2-instance` v6: `root_block_device` is an object with `size`/`type`, and a security group is created unless `create_security_group = false`.
 - `find_in_parent_folders()` must receive a file name (the root config is `root.hcl`, there is no parent `terragrunt.hcl`).
-- Helm 4: `helm upgrade --dry-run` takes a value (`client`, `server` or `none`), plugins are verified by default and helm-secrets is split into three plugins for Helm 4.
+- The repository uses Helm 4 (Helm 3 is not supported; `deploy.sh` stops with another major version). `helm install/upgrade --dry-run` takes a value (`client`, `server` or `none`), but the `--dry-run` of `helm uninstall` is a boolean. `--wait` alone means the `watcher` strategy. Plugins are verified by default and helm-secrets is split into three plugins for Helm 4.
 - The Grafana admin password of kube-prometheus-stack is random (secret `monitor-grafana`, key `admin-password`).
 - `kubectl version --short` was removed in kubectl 1.28.
 - The Argo CD UI is served with TLS: port-forward `svc/argocd-server` port 443.
